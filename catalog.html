@@ -76,7 +76,7 @@
   function card(n){
     const cap = LANG==='uk' ? 'діалог → кваліфікація → заперечення → <b>угода</b>' : 'диалог → квалификация → возражения → <b>сделка</b>';
     return `<div class="ncard">
-      <a class="ncard-body" href="niche.html?slug=${n.slug}">
+      <a class="ncard-body" href="${LANG==='uk'?'/ua/':'/n/'}${n.slug}/">
         <div class="top"><span class="slug">${n.slug}</span><span class="tag ${n.archetype}">${archLabel(n.archetype)}</span></div>
         <h3>${trN(n,'name')}</h3>
         <p class="tl">${trN(n,'tagline')}</p>

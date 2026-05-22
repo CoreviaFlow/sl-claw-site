@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /checkout.html
 
 Sitemap: https://sl-claw.tech/sitemap.xml

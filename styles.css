@@ -122,6 +122,21 @@ section{padding:64px 0}
 .ch-lvl.l2{background:#fffbeb;border-color:#fde68a;color:#b45309}
 .ch-lvl.l3{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
 
+/* ── статические SEO-страницы ниш (prerender) ──────────────────── */
+.np-wrap{padding:8px 0 8px}
+.demo-static{display:flex;flex-direction:column;gap:8px;margin:4px 0 10px}
+.dm{padding:9px 13px;border-radius:12px;max-width:92%;font-size:.92rem;line-height:1.5}
+.dm.bot{background:var(--accent-soft);align-self:flex-start;border:1px solid #c9f2e1}
+.dm.them{background:var(--bg-soft);align-self:flex-end;border:1px solid var(--line)}
+.dm b{color:var(--ink-faint);font-weight:600;font-size:.78rem;margin-right:4px}
+.blog-list{columns:2;column-gap:22px;margin:6px 0 4px;padding-left:18px}
+.blog-list li{margin:5px 0;color:var(--ink-soft);font-size:.9rem;break-inside:avoid}
+@media(max-width:600px){.blog-list{columns:1}}
+.geo-switch{display:inline-flex;gap:4px;margin-left:12px;flex:0 0 auto}
+.geo-switch a{font-family:var(--mono);font-size:.7rem;color:var(--ink-faint);border:1px solid var(--line-strong);border-radius:6px;padding:4px 7px;text-decoration:none;line-height:1}
+.geo-switch a:hover{border-color:var(--ink)}
+.geo-switch a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
 /* niche page */
 .crumb{font-family:var(--mono);font-size:.82rem;color:var(--ink-faint);padding:24px 0 0}
 .crumb a:hover{color:var(--ink)}

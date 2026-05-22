@@ -19,6 +19,8 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SL-CLAW","legalName":"COREVIA FLOW","url":"https://sl-claw.tech/","logo":"https://sl-claw.tech/icon-512.png","email":"support@sl-claw.tech","description":"Маркетплейс готовых AI-продавцов (чат-ботов) по нишам: автоматизация продаж в переписке 24/7.","areaServed":["UA","KZ","UZ"],"sameAs":["https://app.sl-claw.tech"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"SL-CLAW","url":"https://sl-claw.tech/","inLanguage":["ru-UA","uk-UA"],"potentialAction":{"@type":"SearchAction","target":"https://sl-claw.tech/catalog.html?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
 </head>
 <body>
 <header class="nav"><div class="wrap row">
@@ -110,7 +112,7 @@
   function card(n){
     const cap = LANG==='uk' ? 'діалог → кваліфікація → заперечення → <b>угода</b>' : 'диалог → квалификация → возражения → <b>сделка</b>';
     return `<div class="ncard">
-      <a class="ncard-body" href="niche.html?slug=${n.slug}">
+      <a class="ncard-body" href="${LANG==='uk'?'/ua/':'/n/'}${n.slug}/">
         <div class="top"><span class="slug">${n.slug}</span><span class="tag ${n.archetype}">${archLabel(n.archetype)}</span></div>
         <h3>${trN(n,'name')}</h3>
         <p class="tl">${trN(n,'tagline')}</p>

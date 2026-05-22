@@ -42,7 +42,7 @@
       items = list; active = list.length ? 0 : -1;
       res.innerHTML = list.length
         ? list.map(function(n,i){
-            return '<a class="sr'+(i===0?' active':'')+'" href="niche.html?slug='+n.slug+'">' +
+            return '<a class="sr'+(i===0?' active':'')+'" href="'+(localStorage.getItem('sl_lang')==='uk'?'/ua/':'/n/')+n.slug+'/">' +
               '<span class="srn">'+nm(n)+'</span>' +
               '<span class="srt tag '+n.archetype+'">'+al(n)+'</span>' +
               '<span class="srs">'+n.sector+'</span></a>';
@@ -58,7 +58,7 @@
     inp.addEventListener('input', function(){ render(inp.value); });
     inp.addEventListener('keydown', function(e){
       if (e.key==='Escape') close();
-      else if (e.key==='Enter') { if (items[active]) location.href = 'niche.html?slug='+items[active].slug; }
+      else if (e.key==='Enter') { if (items[active]) location.href = (localStorage.getItem('sl_lang')==='uk'?'/ua/':'/n/')+items[active].slug+'/'; }
       else if (e.key==='ArrowDown'){ e.preventDefault(); move(1); }
       else if (e.key==='ArrowUp'){ e.preventDefault(); move(-1); }
     });

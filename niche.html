@@ -43,6 +43,7 @@
 <script>
   const D = window.NICHES;
   const slug = new URLSearchParams(location.search).get('slug');
+  if(slug){ location.replace((localStorage.getItem('sl_lang')==='uk'?'/ua/':'/n/')+slug.replace(/[^a-z0-9-]/gi,'')+'/'); }
   const n = D.niches.find(x=>x.slug===slug);
   const page = document.getElementById('page');
   const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
