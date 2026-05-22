@@ -48,6 +48,8 @@
   } else {
     const name = trN(n,'name'), tagline = trN(n,'tagline'), cta = trN(n,'cta');
     const does = trN(n,'does'), demo = trDemo(n), sel = T('demo.seller');
+    const depth = (LANG==='uk' && n.uk && n.uk.depth) ? n.uk.depth : (n.depth || {});
+    const objs = depth.objections || [], knows = depth.knows || [], market = depth.market || [];
     const title = `AI-${sel}: ${name} — SL-CLAW`;
     document.getElementById('ttl').textContent = title;
     document.getElementById('desc').setAttribute('content', tagline);
@@ -76,6 +78,9 @@
           <p class="muted" style="margin:-6px 0 14px;font-size:.92rem">${T('niche.fullseller')}</p>
           <ul class="does">${does.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>
 
+          ${objs.length?`<h2>${T('niche.handles')}</h2><div class="chips-row">${objs.map(o=>`<span class="chipx">${esc(o)}</span>`).join('')}</div>`:''}
+          ${knows.length?`<h2>${T('niche.knows')}</h2><div class="chips-row">${knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div>`:''}
+
           <h2>${T('niche.demo')}</h2>
           <div class="phone"><div class="phone-bezel"><div class="phone-screen">
             <div class="phone-island"></div>
@@ -100,7 +105,7 @@
           </div></div></div>
 
           <h2 style="margin-top:32px">${T('niche.market')}</h2>
-          <div class="stat-note">${T('niche.marketnote')}</div>
+          ${market.length?`<div class="stats">${market.map(m=>`<div class="stat"><div class="sv">${esc(m.value)}</div><div class="sl">${esc(m.label)}</div><div class="ss">${esc(m.source)}</div></div>`).join('')}</div>`:`<div class="stat-note">${T('niche.marketnote')}</div>`}
         </div>
 
         <aside class="side">
