@@ -277,28 +277,32 @@ function footerHTML(lang){
 }
 
 // ── генерация ──
-// ── планировщик публикаций: через ~2 дня, хаотично, со стартовым разбросом по нишам ──
+// ── планировщик публикаций: через ~2 дня, хаотично, детерминированно (seed по slug) ──
 function fmtDate(d){ return d.toISOString().slice(0,10); }
-function schedule(titlesRu, titlesUk){
+function rng(seed){ let h=1779033703^seed.length; for(let i=0;i<seed.length;i++){ h=Math.imul(h^seed.charCodeAt(i),3432918353); h=h<<13|h>>>19; }
+  return function(){ h=Math.imul(h^h>>>16,2246822507); h=Math.imul(h^h>>>13,3266489909); h^=h>>>16; return (h>>>0)/4294967296; }; }
+function schedule(titlesRu, titlesUk, seed){
+  const r = rng(seed);
   const items = titlesRu.map(t=>({title:t,lang:'ru'})).concat(titlesUk.map(t=>({title:t,lang:'uk'})));
-  for(let i=items.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [items[i],items[j]]=[items[j],items[i]]; } // хаотичный порядок
+  for(let i=items.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [items[i],items[j]]=[items[j],items[i]]; } // хаотичный порядок
   let d = new Date('2026-05-23T09:00:00+03:00');
-  d.setDate(d.getDate() + Math.floor(Math.random()*14)); // стартовый разброс ниши 0–13 дн
+  d.setDate(d.getDate() + Math.floor(r()*14)); // стартовый разброс ниши 0–13 дн
   return items.map(it=>{
-    const gap = 1 + Math.floor(Math.random()*3); // 1–3 дня (≈ через день, хаотично)
-    const hour = 8 + Math.floor(Math.random()*11);
-    d = new Date(d.getTime() + gap*86400000); d.setHours(hour, Math.floor(Math.random()*60));
+    const gap = 1 + Math.floor(r()*3); // 1–3 дня (≈ через день, хаотично)
+    const hour = 8 + Math.floor(r()*11);
+    d = new Date(d.getTime() + gap*86400000); d.setHours(hour, Math.floor(r()*60));
     return { title: it.title, lang: it.lang, publish: fmtDate(d), status:'planned' };
   });
 }
 
 let cnt=0;
+const today = new Date().toISOString().slice(0,10);
 const sitemap=[];
 const postsPlan={ _meta:{ generated:fmtDate(new Date()), per_niche:50, cadence:'каждую нишу — через день, хаотично (1–3 дня)',
   rules:'Только настоящие цифры с источниками (Statista, Eurostat, Держстат, World Bank, NAR и т.п. — без РФ/Беларуси). Каждый текст уникальный, без плагиата. E-E-A-T.',
   geo:'RU и UK → Украина; RU → Азия (KZ/UZ и т.д.), без РФ/BY.' }, niches:{} };
 for(const n of D.niches){
-  postsPlan.niches[n.slug] = { niche:n.name, posts: schedule(postTitles(n.name,'ru'), postTitles((n.uk&&n.uk.name)||n.name,'uk')) };
+  postsPlan.niches[n.slug] = { niche:n.name, posts: schedule(postTitles(n.name,'ru'), postTitles((n.uk&&n.uk.name)||n.name,'uk'), n.slug) };
   const altBlock = VARIANTS.map(v=>`    <xhtml:link rel="alternate" hreflang="${v.hl}" href="${urlFor(v,n.slug)}"/>`).join('\n')
     + `\n    <xhtml:link rel="alternate" hreflang="x-default" href="${urlFor(VARIANTS[0],n.slug)}"/>`;
   for(const v of VARIANTS){
@@ -306,12 +310,12 @@ for(const n of D.niches){
     fs.mkdirSync(dir, {recursive:true});
     fs.writeFileSync(path.join(dir,'index.html'), page(n,v));
     cnt++;
-    sitemap.push(`  <url><loc>${urlFor(v,n.slug)}</loc>\n${altBlock}\n  </url>`);
+    sitemap.push(`  <url><loc>${urlFor(v,n.slug)}</loc>\n    <lastmod>${today}</lastmod>\n${altBlock}\n  </url>`);
   }
 }
 // статические корневые страницы
 const staticUrls = ['/','/catalog.html','/pricing.html','/oferta.html','/privacy.html','/payment-refund.html','/contacts.html'];
-const head = staticUrls.map(p=>`  <url><loc>${BASE}${p}</loc></url>`).join('\n');
+const head = staticUrls.map(p=>`  <url><loc>${BASE}${p}</loc><lastmod>${today}</lastmod><priority>${p==='/'?'1.0':'0.8'}</priority></url>`).join('\n');
 fs.writeFileSync(path.join(ROOT,'sitemap.xml'),
 `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
