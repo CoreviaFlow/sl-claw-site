@@ -21,8 +21,8 @@
   window.LEGAL = {
     entity:  'ФОП Корогодський Михайло Геннадійович', // юр.особа-продавець
     edrpou:  '3420600578',                          // ЄДРПОУ/РНОКПП мерчанта Reboot
-    email:   'support@sl-claw.tech',                // ⚑ підтвердити
-    phone:   '+380 (00) 000-00-00',                 // ⚑ вказати
+    email:   'support@sl-claw.tech',                // боевой ящик (mail.adm.tools)
+    phone:   '',                                    // прибрано (телефон не публікуємо)
     address: 'Україна (вкажіть юридичну адресу)'    // ⚑ вказати
   };
 
@@ -126,7 +126,6 @@
       dh:'Документы', oferta:'Публичная оферта', privacy:'Политика конфиденциальности', pay:'Оплата, доставка и возврат', contacts:'Контакты и реквизиты',
       ch:'Контакты', edr:'ЕГРПОУ/ИНН: ', geo:'Услуги недоступны для резидентов рф и рб'
     };
-    var telHref = 'tel:'+L.phone.replace(/[^+0-9]/g,'');
     f.innerHTML =
       '<div class="wrap foot-grid">'+
         '<div class="fcol fcol-brand">'+
@@ -152,7 +151,6 @@
         '<div class="fcol">'+
           '<div class="fc-h">'+t.ch+'</div>'+
           '<a href="mailto:'+L.email+'">'+L.email+'</a>'+
-          '<a href="'+telHref+'">'+L.phone+'</a>'+
           '<div class="fc-sub mono">'+L.entity+'<br>'+t.edr+L.edrpou+'</div>'+
         '</div>'+
       '</div>'+
