@@ -86,11 +86,22 @@
   }
   function toggle(){
     var row = document.querySelector('.nav .row'); if(!row) return;
-    var s = document.createElement('div'); s.className='lang-switch';
-    s.innerHTML = '<button data-l="ru"'+(window.LANG==='ru'?' class="on"':'')+'>РУ</button>' +
-                  '<button data-l="uk"'+(window.LANG==='uk'?' class="on"':'')+'>УК</button>';
+    var cur = window.LANG==='uk' ? 'УК' : 'РУ';
+    var s = document.createElement('div'); s.className='lang-dd';
+    s.innerHTML =
+      '<button class="lang-cur" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Язык / Мова">'
+      + '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>'
+      + '<span>'+cur+'</span><i class="lang-caret">▾</i></button>'
+      + '<div class="lang-menu" role="menu">'
+      +   '<button type="button" data-l="ru" role="menuitem"'+(window.LANG==='ru'?' class="on"':'')+'>Русский</button>'
+      +   '<button type="button" data-l="uk" role="menuitem"'+(window.LANG==='uk'?' class="on"':'')+'>Українська</button>'
+      + '</div>';
     row.appendChild(s);
-    var bs = s.querySelectorAll('button');
+    var trigger = s.querySelector('.lang-cur'), menu = s.querySelector('.lang-menu');
+    trigger.onclick = function(e){ e.stopPropagation(); var open = s.classList.toggle('open'); trigger.setAttribute('aria-expanded', open?'true':'false'); };
+    document.addEventListener('click', function(){ if(s.classList.contains('open')){ s.classList.remove('open'); trigger.setAttribute('aria-expanded','false'); } });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') s.classList.remove('open'); });
+    var bs = menu.querySelectorAll('button');
     for (var i=0;i<bs.length;i++){ bs[i].onclick=function(){ localStorage.setItem('sl_lang', this.getAttribute('data-l')); location.reload(); }; }
   }
   function fmtLeft(ms){

@@ -58,7 +58,7 @@
   document.getElementById('total').textContent = '['+D.niches.length+']';
   if(tierF==='pro'){
     const h=document.querySelector('.eyebrow'); if(h) h.textContent='// специальности Professional · −55%';
-    const s=document.querySelector('.sub'); if(s) s.innerHTML='Выберите <b>специальность (фах)</b> для тарифа <b>Professional</b> — готового эксперта ниши. Цена со скидкой −55% действует только здесь.';
+    const s=document.querySelector('.sub'); if(s) s.innerHTML='Выберите <b>специальность</b> для тарифа <b>Professional</b> — готового эксперта ниши. Цена со скидкой −55% действует только здесь.';
   }
 
   const chips = [['all', T('cat.all')]].concat(Object.keys(D.archetypes).map(k=>[k, archLabel(k)]));
