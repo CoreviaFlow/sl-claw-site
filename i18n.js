@@ -3,6 +3,19 @@
   window.LANG = (localStorage.getItem('sl_lang') === 'uk') ? 'uk' : 'ru';
   try { document.documentElement.lang = window.LANG; } catch (e) {}
 
+  // ── Промо «Открытие маркетплейса»: −55% до дедлайна ──────────────
+  // Цены: регуляр = старая ×2,5; промо = регуляр −55%. Меняй здесь — подхватят витрина и страница ниши.
+  window.PROMO = {
+    deadline: '2026-06-10T23:59:59+03:00',  // ⚑ дедлайн акции
+    off: 55,
+    prices: {
+      Lite: { old:'$249', now:'$112', oldUah:'9 990',  nowUah:'4 495'  },
+      Std:  { old:'$499', now:'$224', oldUah:'19 990', nowUah:'8 995'  },
+      Pro:  { old:'$999', now:'$449', oldUah:'39 990', nowUah:'17 995' }
+    }
+  };
+  window.promoActive = function () { return Date.now() < new Date(window.PROMO.deadline).getTime(); };
+
   var UI = {
     'nav.catalog':   {ru:'Каталог ниш',     uk:'Каталог ніш'},
     'nav.pricing':   {ru:'Тарифы',          uk:'Тарифи'},
@@ -38,7 +51,14 @@
     'cat.h1':        {ru:'Каталог ниш',      uk:'Каталог ніш'},
     'cat.sub':       {ru:'Каждый — <b>полноценный AI-продавец</b>: ведёт диалог, квалифицирует, снимает возражения и доводит до сделки 24/7. Зелёным внизу карточки — целевое действие, которым бот <b>закрывает</b> (а не единственное, что он умеет).', uk:'Кожен — <b>повноцінний AI-продавець</b>: веде діалог, кваліфікує, знімає заперечення та доводить до угоди 24/7. Зеленим унизу картки — цільова дія, якою бот <b>закриває</b> (а не єдине, що він уміє).'},
     'cat.all':       {ru:'Все',             uk:'Усі'},
-    'cat.empty':     {ru:'// ничего не найдено', uk:'// нічого не знайдено'}
+    'cat.empty':     {ru:'// ничего не найдено', uk:'// нічого не знайдено'},
+    'promo.title':   {ru:'Открытие маркетплейса AI-продавцов', uk:'Відкриття маркетплейсу AI-продавців'},
+    'promo.off':     {ru:'−55% на всех ботов', uk:'−55% на всіх ботів'},
+    'promo.left':    {ru:'до конца акции',   uk:'до кінця акції'},
+    'promo.cta':     {ru:'Забрать со скидкой →', uk:'Забрати зі знижкою →'},
+    'promo.note':    {ru:'Акция в честь открытия маркетплейса. Цена −55% фиксируется при оплате до конца акции.', uk:'Акція на честь відкриття маркетплейсу. Ціна −55% фіксується при оплаті до кінця акції.'},
+    'price.old':     {ru:'без акции',        uk:'без акції'},
+    'price.now':     {ru:'по акции',         uk:'за акцією'}
   };
 
   window.T = function (k) { var e = UI[k]; return e ? (e[window.LANG] || e.ru) : k; };
@@ -63,5 +83,20 @@
     var bs = s.querySelectorAll('button');
     for (var i=0;i<bs.length;i++){ bs[i].onclick=function(){ localStorage.setItem('sl_lang', this.getAttribute('data-l')); location.reload(); }; }
   }
-  document.addEventListener('DOMContentLoaded', function(){ apply(); toggle(); });
+  function fmtLeft(ms){
+    var s=Math.floor(ms/1000), d=Math.floor(s/86400), h=Math.floor(s%86400/3600), m=Math.floor(s%3600/60);
+    var U = window.LANG==='uk' ? ['д','г','хв'] : ['д','ч','м'];
+    return d+U[0]+' '+h+U[1]+' '+m+U[2];
+  }
+  function injectPromo(){
+    if(!window.promoActive || !window.promoActive()) return;
+    var bar=document.createElement('a'); bar.className='promobar'; bar.href='pricing.html';
+    bar.innerHTML='<span class="pb-dot"></span><b>'+window.T('promo.title')+'</b> · <span class="pb-off">'+window.T('promo.off')+'</span> <span class="cd"></span>';
+    document.body.insertBefore(bar, document.body.firstChild);
+    var cd=bar.querySelector('.cd');
+    function tick(){ var left=new Date(window.PROMO.deadline)-Date.now(); if(left<=0){ bar.remove(); return; }
+      cd.innerHTML='· '+window.T('promo.left')+': <b>'+fmtLeft(left)+'</b>'; }
+    tick(); setInterval(tick, 30000);
+  }
+  document.addEventListener('DOMContentLoaded', function(){ apply(); toggle(); injectPromo(); });
 })();

@@ -50,6 +50,12 @@
     const does = trN(n,'does'), demo = trDemo(n), sel = T('demo.seller');
     const depth = (LANG==='uk' && n.uk && n.uk.depth) ? n.uk.depth : (n.depth || {});
     const objs = depth.objections || [], knows = depth.knows || [], market = depth.market || [];
+    const pr = (window.PROMO && window.PROMO.prices[n.tier]) || null;
+    const promoOn = window.promoActive && window.promoActive();
+    const once = LANG==='uk' ? 'одноразово' : 'разово';
+    const priceHtml = pr
+      ? `<div class="np-price"><span class="now">${promoOn?pr.now:pr.old}</span>${promoOn?`<span class="old">${pr.old}</span><span class="promo-badge">−55%</span>`:''}<div class="small">${n.tier} · ${once}</div></div>`
+      : `<div class="price">${n.tier}</div>`;
     const title = `AI-${sel}: ${name} — SL-CLAW`;
     document.getElementById('ttl').textContent = title;
     document.getElementById('desc').setAttribute('content', tagline);
@@ -110,8 +116,8 @@
 
         <aside class="side">
           <div class="box">
-            <div class="muted mono" style="font-size:.78rem">тариф</div>
-            <div class="price">${n.tier}</div>
+            <div class="muted mono" style="font-size:.78rem">${promoOn?(LANG==='uk'?'ціна зі знижкою −55%':'цена со скидкой −55%'):'тариф'}</div>
+            ${priceHtml}
             <div class="row2"><span>${T('niche.type')}</span><span>${archLabel(n.archetype)}</span></div>
             <div class="row2"><span>${T('niche.sector')}</span><span>${esc(n.sector)}</span></div>
             <div class="row2"><span>${T('niche.target')}</span><span>${esc(cta)}</span></div>
