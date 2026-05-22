@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Оформление заказа — SL-CLAW</title>
+<meta name="description" content="Оформление заказа AI-продавца SL-CLAW. Оплата Visa/Mastercard.">
+<link rel="canonical" href="https://sl-claw.tech/checkout.html">
+<meta name="robots" content="noindex,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
+<link rel="icon" href="favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav"><div class="wrap row">
+  <a class="logo" href="index.html">SL<b>_</b>CLAW</a>
+  <nav>
+    <a href="catalog.html" data-i18n="nav.catalog">Каталог ниш</a>
+    <a href="pricing.html" data-i18n="nav.pricing">Тарифы</a>
+    <a href="index.html#how" data-i18n="nav.how">Как это работает</a>
+    <a href="https://app.sl-claw.tech" target="_blank" rel="noopener" data-i18n="nav.cabinet">Кабинет ↗</a>
+  </nav>
+</div></header>
+
+<section class="wrap"><div class="checkout">
+  <div class="crumb"><a href="pricing.html">тарифы</a> / <span>оформление</span></div>
+  <h1 id="cohead">Оформление заказа</h1>
+
+  <div class="co-grid">
+    <div class="co-summary" id="summary"><!-- JS --></div>
+
+    <div class="co-form">
+      <label class="co-field">
+        <span class="co-lbl">Email <i>для доступа и чека</i></span>
+        <input type="email" id="email" placeholder="you@company.com" autocomplete="email" inputmode="email">
+        <small id="emailhint">На него придёт доступ к репозиторию бота и чек об оплате.</small>
+      </label>
+
+      <label class="co-agree"><input type="checkbox" id="agree">
+        <span>Я согласен с <a href="oferta.html" target="_blank" rel="noopener">публичной офертой</a> и <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.</span>
+      </label>
+
+      <button class="btn btn-primary co-pay" id="pay">Оплатить картой →</button>
+      <div id="coerr" class="co-err" style="display:none"></div>
+
+      <div class="co-secure">
+        🔒 Оплата картами Visa / Mastercard через Monobank. Данные карты вводятся на стороне банка — мы их не получаем.
+        <span class="pay-badges" id="cobadges"></span>
+      </div>
+      <div class="co-secure" style="margin-top:8px">⛔ Послуги недоступні для резидентів рф та рб.</div>
+    </div>
+  </div>
+</div></section>
+
+<footer class="foot-site"></footer>
+
+<script src="niches.js"></script>
+<script src="i18n.js"></script>
+<script>
+(function(){
+  var P = new URLSearchParams(location.search);
+  var tier = (P.get('tier')||'Std');
+  // нормализация тарифа → ключ PROMO (Lite/Std/Pro)
+  var TK = {lite:'Lite',std:'Std',standard:'Std',pro:'Pro',core:'Lite','core-study':'Std','core-study-pro':'Pro'};
+  tier = TK[tier.toLowerCase()] || (['Lite','Std','Pro'].indexOf(tier)>=0?tier:'Std');
+  var nicheSlug = (P.get('niche')||'').toLowerCase();
+
+  var TIER_NAME = {
+    Lite:{t:'Core', s:'движок-продавец «baby» 👶', inc:'ядро + персона, живой диалог во всех каналах'},
+    Std :{t:'Core + Study', s:'со школой продаж 🎓', inc:'+ методология продаж (SPIN, MEDDPICC, возражения)'},
+    Pro :{t:'Core + Study + Professional', s:'эксперт ниши 🧠', inc:'+ профессиональная экспертиза ниши (рынок, цифры, сделки)'}
+  };
+  var pr = (window.PROMO && window.PROMO.prices[tier]) || {price:''};
+  var onSale = !!(pr.sale && window.promoActive && window.promoActive());
+
+  // имя продукта: ниша (если есть) или тариф
+  var prodTitle, prodSub, refNiche;
+  var n = nicheSlug && window.NICHES ? window.NICHES.niches.find(function(x){return x.slug===nicheSlug;}) : null;
+  if (n){
+    prodTitle = 'AI-продавец: ' + (typeof trN==='function'?trN(n,'name'):n.name);
+    prodSub = TIER_NAME[tier].t + ' · ' + TIER_NAME[tier].s;
+    refNiche = n.slug;
+  } else {
+    prodTitle = TIER_NAME[tier].t;
+    prodSub = TIER_NAME[tier].s;
+    refNiche = {Lite:'core',Std:'core-study',Pro:'core-study-pro'}[tier];
+  }
+
+  var priceNow = onSale ? pr.sale : pr.price;
+  document.getElementById('summary').innerHTML =
+    '<div class="co-prod">'+
+      '<div class="co-tag">заказ</div>'+
+      '<div class="co-name">'+prodTitle+'</div>'+
+      '<div class="co-sub">'+prodSub+'</div>'+
+      '<div class="co-inc">'+TIER_NAME[tier].inc+'</div>'+
+    '</div>'+
+    '<div class="co-pricebox">'+
+      (onSale?'<div class="co-pl"><span>Без скидки</span><s>'+pr.price+'</s></div>':'')+
+      '<div class="co-pl big"><span>'+(onSale?'По акции −'+pr.off+'%':'Цена')+'</span><b>'+priceNow+'</b></div>'+
+      '<div class="co-pl muted"><span>Тип</span><span>разовый платёж · бот навсегда</span></div>'+
+    '</div>';
+
+  document.getElementById('cobadges').innerHTML =
+    '<svg class="pay-ic" viewBox="0 0 48 30" xmlns="http://www.w3.org/2000/svg"><rect width="47" height="29" x="0.5" y="0.5" rx="4" fill="#fff" stroke="#e6e8ec"/><text x="24" y="20" text-anchor="middle" font-family="Arial" font-weight="700" font-style="italic" font-size="12" fill="#1A1F71">VISA</text></svg>'+
+    '<svg class="pay-ic" viewBox="0 0 48 30" xmlns="http://www.w3.org/2000/svg"><rect width="47" height="29" x="0.5" y="0.5" rx="4" fill="#fff" stroke="#e6e8ec"/><circle cx="20" cy="15" r="7.5" fill="#EB001B"/><circle cx="28" cy="15" r="7.5" fill="#F79E1B"/><path d="M24 9.7a7.5 7.5 0 010 10.6 7.5 7.5 0 010-10.6z" fill="#FF5F00"/></svg>';
+
+  function showErr(m){ var e=document.getElementById('coerr'); e.textContent=m; e.style.display='block'; }
+  document.getElementById('pay').onclick = function(){
+    var email = (document.getElementById('email').value||'').trim();
+    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if(!ok){ showErr('Введите корректный email — на него придёт доступ и чек.'); document.getElementById('email').focus(); return; }
+    if(!document.getElementById('agree').checked){ showErr('Подтвердите согласие с офертой и политикой конфиденциальности.'); return; }
+    var url = 'https://pay.sl-claw.tech/create?tier='+encodeURIComponent(tier)
+            + '&niche='+encodeURIComponent(refNiche)
+            + '&email='+encodeURIComponent(email);
+    document.getElementById('pay').textContent = 'Переход к оплате…';
+    document.getElementById('pay').disabled = true;
+    location.href = url;
+  };
+  document.getElementById('email').addEventListener('keydown',function(e){ if(e.key==='Enter') document.getElementById('pay').click(); });
+})();
+</script>
+</body>
+</html>

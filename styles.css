@@ -245,6 +245,39 @@ section{padding:64px 0}
 .np-price .small{font-size:.74rem;color:var(--ink-faint);font-family:var(--mono)}
 .np-price .usd{font-size:.8rem;color:var(--ink-faint);font-family:var(--mono);margin-left:8px}
 .tier-sub{display:block;font-size:.74rem;font-weight:500;color:var(--ink-faint);font-family:var(--mono);margin-top:3px}
+.co-cta{width:100%;justify-content:center;margin-top:14px}
+
+/* ── страница оформления заказа ───────────────────────────────── */
+.checkout{max-width:880px;margin:0 auto;padding:32px 0 24px}
+.checkout h1{font-size:1.8rem;margin:6px 0 22px}
+.co-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:start}
+@media(max-width:720px){.co-grid{grid-template-columns:1fr}}
+.co-summary{border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-soft);padding:22px}
+.co-tag{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint)}
+.co-name{font-size:1.3rem;font-weight:800;margin:6px 0 2px;line-height:1.2}
+.co-sub{color:var(--ink-soft);font-family:var(--mono);font-size:.84rem;margin-bottom:12px}
+.co-inc{font-size:.9rem;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:12px}
+.co-pricebox{margin-top:16px;border-top:1px dashed var(--line-strong);padding-top:14px}
+.co-pl{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:7px 0;font-size:.92rem}
+.co-pl span:first-child{color:var(--ink-faint)}
+.co-pl s{color:var(--ink-faint)}
+.co-pl.big b{font-size:1.6rem;font-weight:800;color:var(--accent-ink)}
+.co-pl .uah{font-family:var(--mono);font-weight:700}
+.co-pl.muted{font-size:.82rem;color:var(--ink-faint)}
+.co-form{display:flex;flex-direction:column;gap:16px}
+.co-field{display:flex;flex-direction:column;gap:6px}
+.co-lbl{font-weight:600;font-size:.95rem}
+.co-lbl i{font-style:normal;color:var(--ink-faint);font-weight:400;font-size:.85rem}
+.co-field input{border:1px solid var(--line-strong);border-radius:10px;padding:13px 14px;font-size:1rem;font-family:var(--sans);background:#fff;outline:none;transition:border-color .15s}
+.co-field input:focus{border-color:var(--accent)}
+.co-field small{color:var(--ink-faint);font-size:.82rem}
+.co-agree{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:var(--ink-soft);line-height:1.5;cursor:pointer}
+.co-agree input{margin-top:3px;flex:0 0 auto;width:16px;height:16px;accent-color:var(--accent)}
+.co-agree a{color:var(--accent-ink)}
+.co-pay{width:100%;justify-content:center;font-size:1.02rem;padding:14px}
+.co-err{color:#b4232a;font-size:.88rem;background:#fdf3f3;border:1px solid #f3c9cc;border-radius:9px;padding:9px 12px}
+.co-secure{font-size:.8rem;color:var(--ink-faint);line-height:1.5;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.co-secure .pay-badges{margin-left:auto}
 .cta .usd{color:var(--ink-faint);font-weight:500;font-size:.82rem;margin-left:6px}
 
 /* ── богатый футер (эквайринг-соответствие) ───────────────────── */

@@ -56,10 +56,10 @@
     const depth = (LANG==='uk' && n.uk && n.uk.depth) ? n.uk.depth : (n.depth || {});
     const objs = depth.objections || [], knows = depth.knows || [], market = depth.market || [];
     const pr = (window.PROMO && window.PROMO.prices[n.tier]) || null;
-    const promoOn = window.promoActive && window.promoActive();
+    const onSale = !!(pr && pr.sale && window.promoActive && window.promoActive());
     const once = LANG==='uk' ? 'одноразово' : 'разово';
     const priceHtml = pr
-      ? `<div class="np-price"><span class="now">${promoOn?pr.now:pr.old}</span>${promoOn?`<span class="old">${pr.old}</span><span class="promo-badge">−55%</span>`:''}<span class="usd">≈ ${promoOn?pr.nowUah:pr.oldUah} ₴</span><div class="small">${once}</div></div>`
+      ? `<div class="np-price"><span class="now">${onSale?pr.sale:pr.price}</span>${onSale?`<span class="old">${pr.price}</span><span class="promo-badge">−${pr.off}%</span>`:''}<div class="small">${once}</div></div>`
       : `<div class="price">${n.tier}</div>`;
     const title = `AI-${sel}: ${name} — SL-CLAW`;
     document.getElementById('ttl').textContent = title;
@@ -122,7 +122,7 @@
 
         <aside class="side">
           <div class="box">
-            <div class="muted mono" style="font-size:.78rem">${promoOn?(LANG==='uk'?'ціна зі знижкою −55%':'цена со скидкой −55%'):'тариф'}</div>
+            <div class="muted mono" style="font-size:.78rem">${onSale?(LANG==='uk'?'ціна зі знижкою':'цена со скидкой'):(LANG==='uk'?'ціна':'цена')}</div>
             ${priceHtml}
             <div class="row2"><span>${T('niche.type')}</span><span>${archLabel(n.archetype)}</span></div>
             <div class="row2"><span>${T('niche.sector')}</span><span>${esc(n.sector)}</span></div>
