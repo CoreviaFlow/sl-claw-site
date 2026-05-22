@@ -52,6 +52,7 @@
         <span class="pay-badges" id="cobadges"></span>
       </div>
       <div class="co-secure" id="cogeo" style="margin-top:8px">⛔ Услуги недоступны для резидентов рф и рб.</div>
+      <div id="coimpl" style="margin-top:16px;padding:14px 16px;border:1px solid #cdebd9;background:#f0faf4;border-radius:14px;font-size:13.5px;line-height:1.55;color:#0f5132"></div>
     </div>
   </div>
 </div></section>
@@ -76,6 +77,7 @@
     geo:'⛔ Послуги недоступні для резидентів рф та рб.',
     order:'замовлення', nodisc:'Без знижки', sale:'За акцією', price:'Ціна', typeLbl:'Тип', typeVal:'разовий платіж · бот назавжди',
     save:'Економія', prodPrefix:'AI-продавець: ',
+    impl:'💼 <b>Потрібно більше?</b> Після оплати можна доплатити й замовити <b>індивідуальне впровадження «під ключ»</b> у ваш бізнес — налаштування під процеси, інтеграції та навчання команди. Вартість послуги — <b>від $2000</b>.',
     errEmail:'Введіть коректний email — на нього прийде доступ і чек.', errAgree:'Підтвердіть згоду з офертою та політикою конфіденційності.'
   } : {
     title:'Оформление заказа — SL-CLAW', crumbT:'тарифы', crumbC:'оформление', h1:'Оформление заказа',
@@ -87,6 +89,7 @@
     geo:'⛔ Услуги недоступны для резидентов рф и рб.',
     order:'заказ', nodisc:'Без скидки', sale:'По акции', price:'Цена', typeLbl:'Тип', typeVal:'разовый платёж · бот навсегда',
     save:'Экономия', prodPrefix:'AI-продавец: ',
+    impl:'💼 <b>Нужно больше?</b> После оплаты можно доплатить и заказать <b>индивидуальное внедрение «под ключ»</b> в ваш бизнес — настройка под процессы, интеграции и обучение команды. Стоимость услуги — <b>от $2000</b>.',
     errEmail:'Введите корректный email — на него придёт доступ и чек.', errAgree:'Подтвердите согласие с офертой и политикой конфиденциальности.'
   };
 
@@ -94,7 +97,7 @@
   function setHTML(id,v){ var e=document.getElementById(id); if(e) e.innerHTML=v; }
   setHTML('cocrumbT',TX.crumbT); setHTML('cocrumbC',TX.crumbC); setHTML('cohead',TX.h1);
   setHTML('emaillbl',TX.emaillbl); setHTML('emailhint',TX.emailhint); setHTML('agreetxt',TX.agree);
-  setHTML('pay',TX.pay); setHTML('cogeo',TX.geo);
+  setHTML('pay',TX.pay); setHTML('cogeo',TX.geo); setHTML('coimpl',TX.impl);
   setHTML('cosecure', TX.secure + '<span class="pay-badges" id="cobadges"></span>');
 
   var P = new URLSearchParams(location.search);
