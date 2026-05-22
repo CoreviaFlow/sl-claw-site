@@ -56,13 +56,12 @@
 
 <section id="archetypes" style="background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
   <div class="eyebrow">// типы ботов</div>
-  <h2 class="h2">Четыре типа под любой бизнес</h2>
-  <p class="sub">Одно ядро продаж — разные специальности. Под товар, под услугу, под B2B-экспертизу и даже под закупки.</p>
-  <div class="grid g4">
+  <h2 class="h2">Три типа под любой бизнес</h2>
+  <p class="sub">Одно ядро продаж — разные специальности. Под товар, под услугу и под B2B-экспертизу.</p>
+  <div class="grid g3">
     <div class="card"><span class="tag product-sell">Продажа товара</span><h3 style="margin-top:12px">Товар</h3><p>Подбор под задачу, характеристики, закрытие на покупку/осмотр. Спецтехника, авто, мебель, стройматериалы…</p></div>
     <div class="card"><span class="tag b2c-service">Услуга людям</span><h3 style="margin-top:12px">Услуга</h3><p>Подбор и запись. Салоны, клиники, фитнес, школы, рестораны, туризм…</p></div>
     <div class="card"><span class="tag b2b-services">B2B-экспертиза</span><h3 style="margin-top:12px">Консалтинг</h3><p>Консультативная продажа, закрытие на диагностику/аудит. Кайдзен, ISO, HR, маркетинг…</p></div>
-    <div class="card"><span class="tag procurement">Закупщик</span><h3 style="margin-top:12px">Закупки</h3><p>Бот со стороны покупателя: ищет поставщиков, собирает КП, торгуется за условия.</p></div>
   </div>
 </div></section>
 
@@ -84,7 +83,7 @@
 <script>
   const D = window.NICHES;
   document.getElementById('total').textContent = '['+D.niches.length+']';
-  const pick = ['spectech','realestate-resale','beauty-salon','lean-kaizen','restaurant-delivery','procure-construction'];
+  const pick = ['spectech','realestate-resale','beauty-salon','lean-kaizen','restaurant-delivery','sales-training'];
   const featured = pick.map(s=>D.niches.find(n=>n.slug===s)).filter(Boolean);
   document.getElementById('featured').innerHTML = featured.map(card).join('');
   function card(n){
