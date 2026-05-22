@@ -272,7 +272,7 @@ function footerHTML(lang){
     <div class="fcol fcol-brand"><span class="logo">SL<b>_</b>CLAW</span><p class="fc-sub mono">${t.tag} · COREVIA FLOW</p><div class="fc-sub mono">${t.accept}:</div><div class="pay-badges">${VISA}${MC}</div></div>
     <div class="fcol"><div class="fc-h">${t.mh}</div><a href="/catalog.html">${t.cat}</a><a href="/pricing.html">${t.price}</a><a href="/#how">${t.how}</a><a href="https://app.sl-claw.tech" target="_blank" rel="noopener">${t.cab}</a></div>
     <div class="fcol"><div class="fc-h">${t.dh}</div><a href="/oferta.html">${t.oferta}</a><a href="/privacy.html">${t.privacy}</a><a href="/payment-refund.html">${t.pay}</a><a href="/contacts.html">${t.contacts}</a></div>
-    <div class="fcol"><div class="fc-h">${t.ch}</div><a href="mailto:${LEGAL.email}">${LEGAL.email}</a><div class="fc-sub mono">${LEGAL.entity}<br>${t.edr}${LEGAL.edrpou}</div></div>
+    <div class="fcol"><div class="fc-h">${t.ch}</div><a href="mailto:${LEGAL.email}">${LEGAL.email}</a><div class="fc-sub mono">${LEGAL.entity}</div></div>
   </div>
   <div class="wrap foot-bottom mono"><span>© 2026 ${LEGAL.entity}</span><span class="geo-note">⛔ ${t.geo}</span></div></footer>`;
 }

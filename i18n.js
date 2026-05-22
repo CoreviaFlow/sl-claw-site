@@ -22,10 +22,10 @@
   // ⚑ ЗАМЕНИТЬ плейсхолдеры на реальные данные мерчанта (см. data-legal в юр-страницах).
   window.LEGAL = {
     entity:  'ТОВ «Корвія Флоу»',                    // юр.особа-продавець
-    edrpou:  '3420600578',                          // ЄДРПОУ/РНОКПП мерчанта Reboot
+    edrpou:  '',                                     // прибрано (по фірмі)
     email:   'support@sl-claw.tech',                // боевой ящик (mail.adm.tools)
-    phone:   '',                                    // прибрано (телефон не публікуємо)
-    address: 'Україна (вкажіть юридичну адресу)'    // ⚑ вказати
+    phone:   '',                                     // прибрано
+    address: ''                                      // прибрано (по фірмі)
   };
 
   var UI = {
@@ -164,7 +164,7 @@
         '<div class="fcol">'+
           '<div class="fc-h">'+t.ch+'</div>'+
           '<a href="mailto:'+L.email+'">'+L.email+'</a>'+
-          '<div class="fc-sub mono">'+L.entity+'<br>'+t.edr+L.edrpou+'</div>'+
+          '<div class="fc-sub mono">'+L.entity+'</div>'+
         '</div>'+
       '</div>'+
       '<div class="wrap foot-bottom mono">'+
