@@ -41,6 +41,12 @@
         <small id="emailhint">На него придёт доступ к репозиторию бота и чек об оплате.</small>
       </label>
 
+      <label class="co-field">
+        <span class="co-lbl" id="phonelbl">Телефон <i>для связи</i></span>
+        <input type="tel" id="phone" placeholder="+380 __ ___ __ __" autocomplete="tel" inputmode="tel">
+        <small id="phonehint">Менеджер свяжется при необходимости и поможет с запуском.</small>
+      </label>
+
       <label class="co-agree"><input type="checkbox" id="agree">
         <span id="agreetxt">Я согласен с <a href="oferta.html" target="_blank" rel="noopener">публичной офертой</a> и <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.</span>
       </label>
@@ -72,6 +78,9 @@
     title:'Оформлення замовлення — SL-CLAW', crumbT:'тарифи', crumbC:'оформлення', h1:'Оформлення замовлення',
     emaillbl:'Email <i>для доступу та чека</i>',
     emailhint:'На нього прийде доступ до репозиторію бота і чек про оплату.',
+    phonelbl:'Телефон <i>для звʼязку</i>',
+    phonehint:'Менеджер звʼяжеться за потреби та допоможе із запуском.',
+    errPhone:'Вкажіть телефон для звʼязку.',
     agree:'Я погоджуюсь з <a href="oferta.html" target="_blank" rel="noopener">публічною офертою</a> та <a href="privacy.html" target="_blank" rel="noopener">політикою конфіденційності</a>.',
     pay:'Сплатити карткою →', payGo:'Перехід до оплати…',
     secure:'🔒 Оплата картками Visa / Mastercard через Monobank. Дані картки вводяться на стороні банку — ми їх не отримуємо.',
@@ -84,6 +93,9 @@
     title:'Оформление заказа — SL-CLAW', crumbT:'тарифы', crumbC:'оформление', h1:'Оформление заказа',
     emaillbl:'Email <i>для доступа и чека</i>',
     emailhint:'На него придёт доступ к репозиторию бота и чек об оплате.',
+    phonelbl:'Телефон <i>для связи</i>',
+    phonehint:'Менеджер свяжется при необходимости и поможет с запуском.',
+    errPhone:'Укажите телефон для связи.',
     agree:'Я согласен с <a href="oferta.html" target="_blank" rel="noopener">публичной офертой</a> и <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.',
     pay:'Оплатить картой →', payGo:'Переход к оплате…',
     secure:'🔒 Оплата картами Visa / Mastercard через Monobank. Данные карты вводятся на стороне банка — мы их не получаем.',
@@ -98,6 +110,7 @@
   function setHTML(id,v){ var e=document.getElementById(id); if(e) e.innerHTML=v; }
   setHTML('cocrumbT',TX.crumbT); setHTML('cocrumbC',TX.crumbC); setHTML('cohead',TX.h1);
   setHTML('emaillbl',TX.emaillbl); setHTML('emailhint',TX.emailhint); setHTML('agreetxt',TX.agree);
+  setHTML('phonelbl',TX.phonelbl); setHTML('phonehint',TX.phonehint);
   setHTML('pay',TX.pay); setHTML('cogeo',TX.geo); setHTML('coimpl',TX.impl);
   setHTML('cosecure', TX.secure + '<span class="pay-badges" id="cobadges"></span>');
 
@@ -155,7 +168,13 @@
     var email = (document.getElementById('email').value||'').trim();
     var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if(!ok){ showErr(TX.errEmail); document.getElementById('email').focus(); return; }
+    var phone = (document.getElementById('phone').value||'').trim();
+    if(phone.replace(/[^0-9]/g,'').length < 7){ showErr(TX.errPhone); document.getElementById('phone').focus(); return; }
     if(!document.getElementById('agree').checked){ showErr(TX.errAgree); return; }
+    // лид → CRM «It цифра» (через бэкенд pay /lead, который форвардит в CRM)
+    try { fetch('https://pay.sl-claw.tech/lead', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email:email, phone:phone, niche:refNiche, tier:tier, price:String(priceNow), lang:LANG, source:'checkout', url:location.href }),
+      keepalive:true }).catch(function(){}); } catch(e){}
     // FB InitiateCheckout (Pixel + CAPI) перед редіректом на оплату
     var icValue = parseFloat(String(priceNow).replace(/[^0-9.]/g,'')) || 0;
     if (typeof window.slclawTrack === 'function') {
@@ -166,7 +185,8 @@
     }
     var url = 'https://pay.sl-claw.tech/create?tier='+encodeURIComponent(tier)
             + '&niche='+encodeURIComponent(refNiche)
-            + '&email='+encodeURIComponent(email);
+            + '&email='+encodeURIComponent(email)
+            + '&phone='+encodeURIComponent(phone);
     // проброс атрибуції щоб Monobank-webhook міг віддати Purchase у FB
     if (typeof window.slclawPayParams === 'function') {
       var extra = window.slclawPayParams();

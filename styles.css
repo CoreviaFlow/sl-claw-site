@@ -187,7 +187,8 @@ section{padding:64px 0}
 @media(max-width:900px){
   .g3,.g4,.cards{grid-template-columns:1fr 1fr}
   .np-grid{grid-template-columns:1fr;gap:28px}
-  .nav nav{display:none}
+  .nav .row{flex-wrap:wrap;row-gap:10px}
+  .nav nav{order:3;width:100%;margin-left:0;gap:18px;font-size:.86rem;flex-wrap:wrap}
 }
 @media(max-width:600px){
   .g3,.g4,.cards{grid-template-columns:1fr}
@@ -352,3 +353,32 @@ section{padding:64px 0}
 .legal td,.legal th{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
 .legal th{background:var(--bg-soft);font-weight:600}
 .legal .geo-warn{border:1px solid #f3c9cc;background:#fdf3f3;color:#b4232a;border-radius:10px;padding:12px 16px;font-size:.9rem;margin:16px 0}
+.g2{grid-template-columns:repeat(2,1fr)}
+
+/* ── мобильная адаптация (последний приоритет) ─────────────────── */
+@media(max-width:900px){
+  .nav nav{margin-left:0 !important;order:3;width:100%;display:flex;gap:18px;font-size:.86rem;flex-wrap:wrap}
+}
+@media(max-width:600px){
+  .wrap{padding-left:16px;padding-right:16px}
+  h1{font-size:1.7rem;line-height:1.2}
+  .h2{font-size:1.5rem}
+  .hero{padding:46px 0 34px}
+  .nav nav{gap:14px;font-size:.82rem}
+  .term pre{font-size:.72rem;overflow-x:auto}
+  .grid.g2[style]{grid-template-columns:1fr !important}
+  .cards[style*="repeat(3"]{grid-template-columns:1fr !important}
+  .np-head h1{font-size:1.55rem}
+  .legal{padding:24px 0}
+  .legal h1{font-size:1.5rem}
+  .legal table{display:block;overflow-x:auto}
+  .checkout h1{font-size:1.5rem}
+  .cta{flex-direction:column;align-items:stretch}
+  .cta .btn{width:100%;justify-content:center}
+  .demo-static .dm{max-width:100%}
+  .stat .sv{font-size:1.05rem}
+}
+@media(max-width:380px){
+  .nav nav{gap:11px;font-size:.78rem}
+  h1{font-size:1.45rem}
+}
