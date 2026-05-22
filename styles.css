@@ -244,6 +244,7 @@ section{padding:64px 0}
 .np-price .now{font-size:1.5rem;font-weight:800;color:var(--ink)}
 .np-price .small{font-size:.74rem;color:var(--ink-faint);font-family:var(--mono)}
 .np-price .usd{font-size:.8rem;color:var(--ink-faint);font-family:var(--mono);margin-left:8px}
+.tier-sub{display:block;font-size:.74rem;font-weight:500;color:var(--ink-faint);font-family:var(--mono);margin-top:3px}
 .cta .usd{color:var(--ink-faint);font-weight:500;font-size:.82rem;margin-left:6px}
 
 /* ── богатый футер (эквайринг-соответствие) ───────────────────── */
