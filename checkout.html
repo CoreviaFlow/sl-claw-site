@@ -27,7 +27,7 @@
 </div></header>
 
 <section class="wrap"><div class="checkout">
-  <div class="crumb"><a href="pricing.html">тарифы</a> / <span>оформление</span></div>
+  <div class="crumb"><a href="pricing.html" id="cocrumbT">тарифы</a> / <span id="cocrumbC">оформление</span></div>
   <h1 id="cohead">Оформление заказа</h1>
 
   <div class="co-grid">
@@ -35,23 +35,23 @@
 
     <div class="co-form">
       <label class="co-field">
-        <span class="co-lbl">Email <i>для доступа и чека</i></span>
+        <span class="co-lbl" id="emaillbl">Email <i>для доступа и чека</i></span>
         <input type="email" id="email" placeholder="you@company.com" autocomplete="email" inputmode="email">
         <small id="emailhint">На него придёт доступ к репозиторию бота и чек об оплате.</small>
       </label>
 
       <label class="co-agree"><input type="checkbox" id="agree">
-        <span>Я согласен с <a href="oferta.html" target="_blank" rel="noopener">публичной офертой</a> и <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.</span>
+        <span id="agreetxt">Я согласен с <a href="oferta.html" target="_blank" rel="noopener">публичной офертой</a> и <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.</span>
       </label>
 
       <button class="btn btn-primary co-pay" id="pay">Оплатить картой →</button>
       <div id="coerr" class="co-err" style="display:none"></div>
 
-      <div class="co-secure">
+      <div class="co-secure" id="cosecure">
         🔒 Оплата картами Visa / Mastercard через Monobank. Данные карты вводятся на стороне банка — мы их не получаем.
         <span class="pay-badges" id="cobadges"></span>
       </div>
-      <div class="co-secure" style="margin-top:8px">⛔ Услуги недоступны для резидентов рф и рб.</div>
+      <div class="co-secure" id="cogeo" style="margin-top:8px">⛔ Услуги недоступны для резидентов рф и рб.</div>
     </div>
   </div>
 </div></section>
@@ -62,14 +62,52 @@
 <script src="i18n.js"></script>
 <script>
 (function(){
+  var LANG = window.LANG || 'ru';
+  var uk = LANG === 'uk';
+
+  // ── Двуязычные строки checkout (RU/UK) ──
+  var TX = uk ? {
+    title:'Оформлення замовлення — SL-CLAW', crumbT:'тарифи', crumbC:'оформлення', h1:'Оформлення замовлення',
+    emaillbl:'Email <i>для доступу та чека</i>',
+    emailhint:'На нього прийде доступ до репозиторію бота і чек про оплату.',
+    agree:'Я погоджуюсь з <a href="oferta.html" target="_blank" rel="noopener">публічною офертою</a> та <a href="privacy.html" target="_blank" rel="noopener">політикою конфіденційності</a>.',
+    pay:'Сплатити карткою →', payGo:'Перехід до оплати…',
+    secure:'🔒 Оплата картками Visa / Mastercard через Monobank. Дані картки вводяться на стороні банку — ми їх не отримуємо.',
+    geo:'⛔ Послуги недоступні для резидентів рф та рб.',
+    order:'замовлення', nodisc:'Без знижки', sale:'За акцією', price:'Ціна', typeLbl:'Тип', typeVal:'разовий платіж · бот назавжди',
+    save:'Економія', prodPrefix:'AI-продавець: ',
+    errEmail:'Введіть коректний email — на нього прийде доступ і чек.', errAgree:'Підтвердіть згоду з офертою та політикою конфіденційності.'
+  } : {
+    title:'Оформление заказа — SL-CLAW', crumbT:'тарифы', crumbC:'оформление', h1:'Оформление заказа',
+    emaillbl:'Email <i>для доступа и чека</i>',
+    emailhint:'На него придёт доступ к репозиторию бота и чек об оплате.',
+    agree:'Я согласен с <a href="oferta.html" target="_blank" rel="noopener">публичной офертой</a> и <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.',
+    pay:'Оплатить картой →', payGo:'Переход к оплате…',
+    secure:'🔒 Оплата картами Visa / Mastercard через Monobank. Данные карты вводятся на стороне банка — мы их не получаем.',
+    geo:'⛔ Услуги недоступны для резидентов рф и рб.',
+    order:'заказ', nodisc:'Без скидки', sale:'По акции', price:'Цена', typeLbl:'Тип', typeVal:'разовый платёж · бот навсегда',
+    save:'Экономия', prodPrefix:'AI-продавец: ',
+    errEmail:'Введите корректный email — на него придёт доступ и чек.', errAgree:'Подтвердите согласие с офертой и политикой конфиденциальности.'
+  };
+
+  document.title = TX.title;
+  function setHTML(id,v){ var e=document.getElementById(id); if(e) e.innerHTML=v; }
+  setHTML('cocrumbT',TX.crumbT); setHTML('cocrumbC',TX.crumbC); setHTML('cohead',TX.h1);
+  setHTML('emaillbl',TX.emaillbl); setHTML('emailhint',TX.emailhint); setHTML('agreetxt',TX.agree);
+  setHTML('pay',TX.pay); setHTML('cogeo',TX.geo);
+  setHTML('cosecure', TX.secure + '<span class="pay-badges" id="cobadges"></span>');
+
   var P = new URLSearchParams(location.search);
   var tier = (P.get('tier')||'Std');
-  // нормализация тарифа → ключ PROMO (Lite/Std/Pro)
   var TK = {lite:'Lite',std:'Std',standard:'Std',pro:'Pro',core:'Lite','core-study':'Std','core-study-pro':'Pro'};
   tier = TK[tier.toLowerCase()] || (['Lite','Std','Pro'].indexOf(tier)>=0?tier:'Std');
   var nicheSlug = (P.get('niche')||'').toLowerCase();
 
-  var TIER_NAME = {
+  var TIER_NAME = uk ? {
+    Lite:{t:'Core', s:'рушій-продавець «baby» 👶', inc:'ядро + персона, живий діалог у всіх каналах'},
+    Std :{t:'Core + Study', s:'зі школою продажів 🎓', inc:'+ методологія продажів (SPIN, MEDDPICC, заперечення)'},
+    Pro :{t:'Core + Study + Professional', s:'експерт ніші 🧠', inc:'+ професійна експертиза ніші (ринок, цифри, угоди)'}
+  } : {
     Lite:{t:'Core', s:'движок-продавец «baby» 👶', inc:'ядро + персона, живой диалог во всех каналах'},
     Std :{t:'Core + Study', s:'со школой продаж 🎓', inc:'+ методология продаж (SPIN, MEDDPICC, возражения)'},
     Pro :{t:'Core + Study + Professional', s:'эксперт ниши 🧠', inc:'+ профессиональная экспертиза ниши (рынок, цифры, сделки)'}
@@ -77,11 +115,10 @@
   var pr = (window.PROMO && window.PROMO.prices[tier]) || {price:''};
   var onSale = !!(pr.sale && window.promoActive && window.promoActive());
 
-  // имя продукта: ниша (если есть) или тариф
   var prodTitle, prodSub, refNiche;
   var n = nicheSlug && window.NICHES ? window.NICHES.niches.find(function(x){return x.slug===nicheSlug;}) : null;
   if (n){
-    prodTitle = 'AI-продавец: ' + (typeof trN==='function'?trN(n,'name'):n.name);
+    prodTitle = TX.prodPrefix + (typeof trN==='function'?trN(n,'name'):n.name);
     prodSub = TIER_NAME[tier].t + ' · ' + TIER_NAME[tier].s;
     refNiche = n.slug;
   } else {
@@ -93,15 +130,16 @@
   var priceNow = onSale ? pr.sale : pr.price;
   document.getElementById('summary').innerHTML =
     '<div class="co-prod">'+
-      '<div class="co-tag">заказ</div>'+
+      '<div class="co-tag">'+TX.order+'</div>'+
       '<div class="co-name">'+prodTitle+'</div>'+
       '<div class="co-sub">'+prodSub+'</div>'+
       '<div class="co-inc">'+TIER_NAME[tier].inc+'</div>'+
     '</div>'+
     '<div class="co-pricebox">'+
-      (onSale?'<div class="co-pl"><span>Без скидки</span><s>'+pr.price+'</s></div>':'')+
-      '<div class="co-pl big"><span>'+(onSale?'По акции −'+pr.off+'%':'Цена')+'</span><b>'+priceNow+'</b></div>'+
-      '<div class="co-pl muted"><span>Тип</span><span>разовый платёж · бот навсегда</span></div>'+
+      (onSale?'<div class="co-pl"><span>'+TX.nodisc+'</span><s>'+pr.price+'</s></div>':'')+
+      '<div class="co-pl big"><span>'+(onSale?(TX.sale+' −'+pr.off+'%'):TX.price)+'</span><b>'+priceNow+'</b></div>'+
+      (onSale?'<div class="co-pl save"><span>'+TX.save+'</span><b>−'+pr.off+'%</b></div>':'')+
+      '<div class="co-pl muted"><span>'+TX.typeLbl+'</span><span>'+TX.typeVal+'</span></div>'+
     '</div>';
 
   document.getElementById('cobadges').innerHTML =
@@ -112,12 +150,12 @@
   document.getElementById('pay').onclick = function(){
     var email = (document.getElementById('email').value||'').trim();
     var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if(!ok){ showErr('Введите корректный email — на него придёт доступ и чек.'); document.getElementById('email').focus(); return; }
-    if(!document.getElementById('agree').checked){ showErr('Подтвердите согласие с офертой и политикой конфиденциальности.'); return; }
+    if(!ok){ showErr(TX.errEmail); document.getElementById('email').focus(); return; }
+    if(!document.getElementById('agree').checked){ showErr(TX.errAgree); return; }
     var url = 'https://pay.sl-claw.tech/create?tier='+encodeURIComponent(tier)
             + '&niche='+encodeURIComponent(refNiche)
             + '&email='+encodeURIComponent(email);
-    document.getElementById('pay').textContent = 'Переход к оплате…';
+    document.getElementById('pay').textContent = TX.payGo;
     document.getElementById('pay').disabled = true;
     location.href = url;
   };
