@@ -224,7 +224,7 @@ ${jsonld(n, v, f, u)}
       <h2>${t.does}</h2>
       <p class="muted" style="margin:-6px 0 14px;font-size:.92rem">${t.fullseller}</p>
       <ul class="does">${f.does.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>
-      <div class="promo-note" style="margin:4px 0 2px">🧠 ${t.feed}</div>
+      <div class="promo-note" style="margin:4px 0 2px">${t.feed}</div>
       ${f.objections.length?`<h2>${t.handles}</h2><div class="chips-row">${f.objections.map(o=>`<span class="chipx">${esc(o)}</span>`).join('')}</div>`:''}
       ${f.knows.length?`<h2>${t.knows}</h2><div class="chips-row">${f.knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div>`:''}
 
@@ -275,7 +275,7 @@ function footerHTML(lang){
     <div class="fcol"><div class="fc-h">${t.dh}</div><a href="/oferta.html">${t.oferta}</a><a href="/privacy.html">${t.privacy}</a><a href="/payment-refund.html">${t.pay}</a><a href="/contacts.html">${t.contacts}</a></div>
     <div class="fcol"><div class="fc-h">${t.ch}</div><a href="mailto:${LEGAL.email}">${LEGAL.email}</a><div class="fc-sub mono">${LEGAL.entity}</div></div>
   </div>
-  <div class="wrap foot-bottom mono"><span>© 2026 ${LEGAL.entity}</span><span class="geo-note">⛔ ${t.geo}</span></div></footer>`;
+  <div class="wrap foot-bottom mono"><span>© 2026 ${LEGAL.entity}</span><span class="geo-note">${t.geo}</span></div></footer>`;
 }
 
 // ── генерация ──
