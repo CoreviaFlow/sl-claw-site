@@ -178,15 +178,21 @@ section{padding:64px 0}
 .lang-switch button.on{background:var(--ink);color:#fff}
 
 /* демо-телефон (страница ниши) */
-.phone{width:100%;max-width:330px;margin:0 auto;background:#0e1116;border-radius:36px;padding:10px;box-shadow:0 18px 50px rgba(10,13,16,.28)}
-.phone-screen{border-radius:27px;overflow:hidden;background:#dde5ee;font-family:var(--sans)}
-.phone-top{background:#6b7f96;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:9px 18px 4px;font-size:.78rem;font-weight:700}
-.phone-head{background:#6b7f96;color:#fff;display:flex;align-items:center;gap:10px;padding:4px 14px 12px}
-.phone-head .pa{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex:0 0 auto}
-.phone-head .pn{font-weight:700;font-size:.9rem;line-height:1.2}
-.phone-head .ps{font-size:.72rem;opacity:.85}
-.phone-head .pc{margin-left:auto;opacity:.9}
-.phone-msgs{padding:14px 12px;display:flex;flex-direction:column;gap:9px;min-height:300px}
+.phone{width:100%;max-width:328px;margin:0 auto;border-radius:54px;padding:3px;background:linear-gradient(180deg,#52525b,#3f3f46 55%,#27272a);box-shadow:0 30px 70px -15px rgba(0,0,0,.5)}
+.phone-bezel{background:#000;border-radius:52px;padding:9px}
+.phone-screen{position:relative;border-radius:43px;overflow:hidden;background:#fff;font-family:var(--sans)}
+.phone-island{position:absolute;left:50%;transform:translateX(-50%);top:10px;width:86px;height:26px;background:#000;border-radius:99px;z-index:20}
+.phone-top{position:relative;z-index:10;background:#527da3;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:12px 24px 5px;font-size:13px;font-weight:600}
+.phone-top svg{height:12px;width:auto}
+.phone-top .ic{display:inline-flex;align-items:center;gap:6px}
+.phone-head{background:#527da3;color:#fff;display:flex;align-items:center;gap:10px;padding:3px 12px 11px}
+.phone-head>svg{width:20px;height:20px;flex:0 0 auto;opacity:.92}
+.phone-head .pa{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:.85rem;flex:0 0 auto}
+.phone-head .pn{font-weight:600;font-size:.86rem;line-height:1.2}
+.phone-head .ps{font-size:.7rem;opacity:.85}
+.phone-home{background:#fff;display:flex;justify-content:center;padding:5px 0 9px}
+.phone-home i{width:120px;height:5px;border-radius:99px;background:#0b0d10;opacity:.8;display:block}
+.phone-msgs{height:358px;overflow:hidden;padding:14px 10px;display:flex;flex-direction:column;gap:5px;background-color:#cdd9e3;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='%23ffffff' fill-opacity='0.16'><circle cx='10' cy='12' r='3'/><rect x='54' y='22' width='8' height='8' rx='2'/><circle cx='70' cy='58' r='4'/><circle cx='42' cy='66' r='2.5'/><path d='M14 48l6 6-6 6' stroke='%23ffffff' stroke-opacity='0.16' stroke-width='2' fill='none'/></g></svg>");background-repeat:repeat}
 .pm-row{display:flex;gap:7px;align-items:flex-end;max-width:88%}
 .pm-row.bot{align-self:flex-start}
 .pm-row.them{align-self:flex-end;flex-direction:row-reverse}
@@ -195,7 +201,9 @@ section{padding:64px 0}
 .pm-row.bot .pm{background:#fff;border-bottom-left-radius:4px}
 .pm-row.them .pm{background:#d7f7c4;border-bottom-right-radius:4px}
 .pm .t{display:block;text-align:right;font-size:.62rem;color:#7a8694;margin-top:3px}
-.phone-input{background:#fff;color:#9aa3ad;font-size:.84rem;padding:11px 16px;border-top:1px solid #cfd8e2}
+.phone-input{background:#fff;display:flex;align-items:center;gap:9px;padding:9px 14px;border-top:1px solid #e2e8f0;color:#94a3b8;font-size:.85rem}
+.phone-input svg{width:19px;height:19px;flex:0 0 auto}
+.phone-input .ph{flex:1}
 /* живая анимация чата */
 .pm-row.anim{opacity:0;transform:translateY(10px) scale(.98);transition:opacity .3s ease, transform .3s cubic-bezier(.2,.8,.2,1)}
 .pm-row.anim.show{opacity:1;transform:none}
