@@ -196,6 +196,7 @@ ${alts}
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 <link rel="stylesheet" href="/styles.css">
+<script src="/analytics.js" defer></script>
 ${jsonld(n, v, f, u)}
 </head>
 <body>
