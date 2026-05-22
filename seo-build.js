@@ -9,7 +9,7 @@ const D = JSON.parse(fs.readFileSync(path.join(ROOT, 'niches.json'), 'utf8'));
 const BASE = 'https://sl-claw.tech';
 
 // Цены (зеркало window.PROMO в i18n.js): скидка только на Pro
-const PRICES = { Lite:{price:'$249'}, Std:{price:'$499'}, Pro:{price:'$999', sale:'$449', off:55} };
+const PRICES = { Lite:{price:'$249'}, Std:{price:'$449'}, Pro:{price:'$999', sale:'$499', off:50} };
 const PROMO_ON = Date.now() < new Date('2026-06-10T23:59:59+03:00').getTime();
 
 const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');

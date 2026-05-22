@@ -9,8 +9,8 @@
     deadline: '2026-06-10T23:59:59+03:00',  // ⚑ дедлайн акции (скидка только на Pro)
     prices: {
       Lite: { price:'$249' },                       // Core — без скидки
-      Std:  { price:'$499' },                        // Core + Study — без скидки
-      Pro:  { price:'$999', sale:'$449', off:55 }    // Professional — −55% (только на него), покупка через выбор ниши
+      Std:  { price:'$449' },                        // Core + Study — без скидки
+      Pro:  { price:'$999', sale:'$499', off:50 }    // Professional — −50% (только на него), покупка через выбор ниши
     }
   };
   window.promoActive = function () { return Date.now() < new Date(window.PROMO.deadline).getTime(); };
@@ -63,7 +63,7 @@
     'cat.all':       {ru:'Все',             uk:'Усі'},
     'cat.empty':     {ru:'// ничего не найдено', uk:'// нічого не знайдено'},
     'promo.title':   {ru:'Открытие маркетплейса AI-продавцов', uk:'Відкриття маркетплейсу AI-продавців'},
-    'promo.off':     {ru:'−55% на Professional', uk:'−55% на Professional'},
+    'promo.off':     {ru:'−50% на Professional', uk:'−50% на Professional'},
     'promo.left':    {ru:'до конца акции',   uk:'до кінця акції'},
     'promo.cta':     {ru:'Забрать со скидкой →', uk:'Забрати зі знижкою →'},
     'promo.note':    {ru:'Акция в честь открытия маркетплейса. Цена −50% на Professional фиксируется при оплате до конца акции.', uk:'Акція на честь відкриття маркетплейсу. Ціна −50% на Professional фіксується при оплаті до кінця акції.'},
