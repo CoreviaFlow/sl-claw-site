@@ -142,6 +142,8 @@ section{padding:64px 0}
 .foot-site .logo{color:var(--ink)}
 
 .count{font-family:var(--mono);font-size:.82rem;color:var(--ink-faint);margin-left:6px}
+.catcount{font-family:var(--mono);font-size:.9rem;color:var(--ink-soft);margin:0 0 18px}
+.catcount b{color:var(--accent-ink);font-weight:700;font-size:1.02rem}
 @media(max-width:900px){
   .g3,.g4,.cards{grid-template-columns:1fr 1fr}
   .np-grid{grid-template-columns:1fr;gap:28px}

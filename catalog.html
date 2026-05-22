@@ -33,6 +33,7 @@
 
 <section style="padding:8px 0 72px"><div class="wrap">
   <div class="toolbar" id="filters"></div>
+  <div class="catcount" id="catcount"></div>
   <div class="cards" id="cards"></div>
   <p id="empty" class="muted mono" style="display:none;padding:40px 0" data-i18n="cat.empty">// ничего не найдено</p>
 </div></section>
@@ -72,6 +73,15 @@
       <div class="foot"><span class="cta"><b class="gl">${T('niche.target')}</b>${trN(n,'cta')} →</span><span class="sector">${n.sector}</span></div>
     </a>`;
   }
+  const total = D.niches.length;
+  const FORMS = LANG==='uk' ? ['ніша','ніші','ніш'] : ['ниша','ниши','ниш'];
+  function plural(n){ const a=n%10,b=n%100; return (a===1&&b!==11)?FORMS[0]:((a>=2&&a<=4&&(b<10||b>=20))?FORMS[1]:FORMS[2]); }
+  function setCount(shown){
+    const el=document.getElementById('catcount');
+    el.innerHTML = (shown===total)
+      ? (LANG==='uk'?'У каталозі ':'В каталоге ')+'<b>'+total+'</b> '+plural(total)
+      : 'Показано <b>'+shown+'</b> '+(LANG==='uk'?'із ':'из ')+total+' '+plural(total);
+  }
   function render(){
     const list = D.niches.filter(n=>{
       const okA = active==='all' || n.archetype===active;
@@ -79,6 +89,7 @@
       const okQ = !q || hay.includes(q);
       return okA && okQ;
     });
+    setCount(list.length);
     document.getElementById('cards').innerHTML = list.map(card).join('');
     document.getElementById('empty').style.display = list.length? 'none':'block';
   }
