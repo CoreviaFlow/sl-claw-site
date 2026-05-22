@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SL-CLAW — AI-продавец под твою нишу</title>
+<meta name="description" content="Готовый AI-продавец под вашу нишу. Скачали репозиторий — развернули за час — он продаёт. Без разработчиков и подрядчиков.">
+<link rel="canonical" href="https://sl-claw.tech/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SL-CLAW — AI-продавец под твою нишу">
+<meta property="og:description" content="Купил готового бота под свою нишу → развернул за час → он продаёт. Без разработчиков.">
+<meta property="og:url" content="https://sl-claw.tech/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav"><div class="wrap row">
+  <a class="logo" href="index.html">SL<b>_</b>CLAW</a>
+  <nav>
+    <a href="catalog.html">Каталог ниш</a>
+    <a href="#how">Как это работает</a>
+    <a href="#archetypes">Типы ботов</a>
+    <a href="catalog.html" class="mono" style="color:var(--accent-ink)">→ Витрина</a>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <span class="kicker">// готовые AI-продавцы по нишам</span>
+  <h1>AI-продавец под твою нишу.<br>Купил → развернул за час → он продаёт.</h1>
+  <p class="lead">Готовый репозиторий с кодом и короткой видео-инструкцией. Без разработчиков, без подрядчиков, без абонентки агентству. Ты только вписываешь свою компанию.</p>
+  <div class="cta">
+    <a class="btn btn-primary" href="catalog.html">Открыть каталог ниш →</a>
+    <a class="btn btn-ghost" href="#how">Как разворачивается</a>
+  </div>
+  <div class="term">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <pre><span class="d"># 3 шага до работающего бота</span>
+<span class="c">$</span> git clone github.com/coreviaflow/sl-claw-&lt;ниша&gt;
+<span class="c">$</span> cp .env.example .env   <span class="d"># вписать ключ lux-promo</span>
+<span class="c">$</span> docker compose up -d   <span class="d"># бот в проде ✓</span></pre>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="eyebrow">// процесс</div>
+  <h2 class="h2">Как это работает</h2>
+  <p class="sub">Никакого кода руками. Всё, что нужно — выбрать нишу и вписать данные своей компании.</p>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>Выбираешь нишу</h3><p>В каталоге — готовые боты по отраслям. У каждого уже есть «диплом продавца» и экспертиза отрасли.</p></div>
+    <div class="card"><div class="n">02</div><h3>Вписываешь свою компанию</h3><p>Меняешь шаблон на свои данные: услуги, цены, тон. Бот становится твоим продавцом.</p></div>
+    <div class="card"><div class="n">03</div><h3>Разворачиваешь за час</h3><p>Одна команда — и бот работает в Telegram, на сайте, в WhatsApp. Платишь только за работу ИИ (lux-promo).</p></div>
+  </div>
+</div></section>
+
+<section id="archetypes" style="background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
+  <div class="eyebrow">// типы ботов</div>
+  <h2 class="h2">Четыре типа под любой бизнес</h2>
+  <p class="sub">Одно ядро продаж — разные специальности. Под товар, под услугу, под B2B-экспертизу и даже под закупки.</p>
+  <div class="grid g4">
+    <div class="card"><span class="tag product-sell">Продажа товара</span><h3 style="margin-top:12px">Товар</h3><p>Подбор под задачу, характеристики, закрытие на покупку/осмотр. Спецтехника, авто, мебель, стройматериалы…</p></div>
+    <div class="card"><span class="tag b2c-service">Услуга людям</span><h3 style="margin-top:12px">Услуга</h3><p>Подбор и запись. Салоны, клиники, фитнес, школы, рестораны, туризм…</p></div>
+    <div class="card"><span class="tag b2b-services">B2B-экспертиза</span><h3 style="margin-top:12px">Консалтинг</h3><p>Консультативная продажа, закрытие на диагностику/аудит. Кайдзен, ISO, HR, маркетинг…</p></div>
+    <div class="card"><span class="tag procurement">Закупщик</span><h3 style="margin-top:12px">Закупки</h3><p>Бот со стороны покупателя: ищет поставщиков, собирает КП, торгуется за условия.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">// витрина</div>
+  <h2 class="h2">Популярные ниши <span class="count" id="total"></span></h2>
+  <p class="sub">Каждая ниша — готовый репозиторий и <b>полноценный продавец</b>: ведёт диалог, снимает возражения, доводит до сделки. Зелёным — целевое действие закрытия.</p>
+  <div class="cards" id="featured"></div>
+  <div style="margin-top:28px"><a class="btn btn-accent" href="catalog.html">Смотреть все ниши →</a></div>
+</div></section>
+
+<footer class="foot-site"><div class="wrap row">
+  <div><span class="logo">SL<b>_</b>CLAW</span> · COREVIA FLOW</div>
+  <div class="mono">AI-продавцы под нишу · UK / RU</div>
+</div></footer>
+
+<script src="niches.js"></script>
+<script>
+  const D = window.NICHES;
+  document.getElementById('total').textContent = '['+D.niches.length+']';
+  const pick = ['spectech','realestate-resale','beauty-salon','lean-kaizen','restaurant-delivery','procure-construction'];
+  const featured = pick.map(s=>D.niches.find(n=>n.slug===s)).filter(Boolean);
+  document.getElementById('featured').innerHTML = featured.map(card).join('');
+  function card(n){
+    return `<a class="ncard" href="niche.html?slug=${n.slug}">
+      <div class="top"><span class="slug">${n.slug}</span><span class="tag ${n.archetype}">${D.archetypes[n.archetype]}</span></div>
+      <h3>${n.name}</h3>
+      <p class="tl">${n.tagline}</p>
+      <div class="cap">диалог → квалификация → возражения → <b>сделка</b></div>
+      <div class="foot"><span class="cta"><b class="gl">возможная цель</b>${n.cta} →</span><span class="sector">${n.sector}</span></div>
+    </a>`;
+  }
+</script>
+</body>
+</html>

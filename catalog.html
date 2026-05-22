@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Каталог ниш — SL-CLAW</title>
+<meta name="description" content="Каталог готовых AI-продавцов по нишам: товар, услуги, B2B-экспертиза, закупки.">
+<link rel="canonical" href="https://sl-claw.tech/catalog.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Каталог ниш — SL-CLAW">
+<meta property="og:description" content="32 готовых AI-продавца по отраслям: товар, услуги, B2B-экспертиза, закупки.">
+<meta property="og:url" content="https://sl-claw.tech/catalog.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav"><div class="wrap row">
+  <a class="logo" href="index.html">SL<b>_</b>CLAW</a>
+  <nav>
+    <a href="catalog.html" style="color:var(--accent-ink)">Каталог ниш</a>
+    <a href="index.html#how">Как это работает</a>
+    <a href="index.html#archetypes">Типы ботов</a>
+  </nav>
+</div></header>
+
+<section style="padding:48px 0 8px"><div class="wrap">
+  <div class="eyebrow">// витрина</div>
+  <h1 class="h2" style="font-size:2.1rem">Каталог ниш <span class="count" id="total"></span></h1>
+  <p class="sub">Каждый — <b>полноценный AI-продавец</b>: ведёт диалог, квалифицирует, снимает возражения и доводит до сделки 24/7. Зелёным внизу карточки — целевое действие, которым бот <b>закрывает</b> (а не единственное, что он умеет).</p>
+</div></section>
+
+<section style="padding:8px 0 72px"><div class="wrap">
+  <div class="toolbar" id="filters"></div>
+  <div class="cards" id="cards"></div>
+  <p id="empty" class="muted mono" style="display:none;padding:40px 0">// ничего не найдено</p>
+</div></section>
+
+<footer class="foot-site"><div class="wrap row">
+  <div><span class="logo">SL<b>_</b>CLAW</span> · COREVIA FLOW</div>
+  <div class="mono">AI-продавцы под нишу · UK / RU</div>
+</div></footer>
+
+<script src="niches.js"></script>
+<script>
+  const D = window.NICHES, A = D.archetypes;
+  let active = 'all', q = '';
+  document.getElementById('total').textContent = '['+D.niches.length+']';
+
+  const chips = [['all','Все']].concat(Object.entries(A));
+  document.getElementById('filters').innerHTML =
+    chips.map(([k,v])=>`<span class="chip ${k==='all'?'active':''}" data-k="${k}">${v}</span>`).join('')
+    + `<input class="search" id="q" placeholder="поиск: авто, клиника, ISO…">`;
+
+  document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+    active=c.dataset.k;
+    document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));
+    render();
+  });
+  document.getElementById('q').oninput = e=>{ q=e.target.value.toLowerCase().trim(); render(); };
+
+  function card(n){
+    return `<a class="ncard" href="niche.html?slug=${n.slug}">
+      <div class="top"><span class="slug">${n.slug}</span><span class="tag ${n.archetype}">${A[n.archetype]}</span></div>
+      <h3>${n.name}</h3>
+      <p class="tl">${n.tagline}</p>
+      <div class="cap">диалог → квалификация → возражения → <b>сделка</b></div>
+      <div class="foot"><span class="cta"><b class="gl">возможная цель</b>${n.cta} →</span><span class="sector">${n.sector}</span></div>
+    </a>`;
+  }
+  function render(){
+    const list = D.niches.filter(n=>{
+      const okA = active==='all' || n.archetype===active;
+      const okQ = !q || (n.name+n.slug+n.sector+n.tagline).toLowerCase().includes(q);
+      return okA && okQ;
+    });
+    document.getElementById('cards').innerHTML = list.map(card).join('');
+    document.getElementById('empty').style.display = list.length? 'none':'block';
+  }
+  render();
+</script>
+</body>
+</html>
