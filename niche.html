@@ -88,6 +88,7 @@
           <h2>${T('niche.does')}</h2>
           <p class="muted" style="margin:-6px 0 14px;font-size:.92rem">${T('niche.fullseller')}</p>
           <ul class="does">${does.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>
+          <div class="promo-note" style="margin:4px 0 2px">🧠 ${T('niche.feed')}</div>
 
           ${objs.length?`<h2>${T('niche.handles')}</h2><div class="chips-row">${objs.map(o=>`<span class="chipx">${esc(o)}</span>`).join('')}</div>`:''}
           ${knows.length?`<h2>${T('niche.knows')}</h2><div class="chips-row">${knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div>`:''}
