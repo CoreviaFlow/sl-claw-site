@@ -1,12 +1,12 @@
-// SL-CLAW analytics — FB Pixel + CAPI mirror + auto-події.
+// SL-CLAW analytics — FB Pixel + CAPI mirror + auto-події + GA4.
 // Підключений на всіх сторінках (n/*, asia/*, index, catalog, pricing, checkout).
-// Pixel: 1485718672417519 (CoreviaFlow). CAPI proxy: events.coreviaflow.space.
+// Pixel: 1485718672417519 (CoreviaFlow). CAPI proxy: events.coreviaflow.space. GA4: G-ZTB9NLZPXL.
 (function () {
   'use strict';
 
   var PIXEL_ID = '1485718672417519';
   var CAPI_URL = 'https://events.coreviaflow.space/v1/track';
-  var GA4_ID = 'G-XXXXXXXXXX'; // optional — поки плейсхолдер, GA не грузиться
+  var GA4_ID = 'G-ZTB9NLZPXL'; // GA4 Measurement ID (sl-claw.tech)
 
   // ---------- helpers ----------
   function uuid() {
@@ -76,8 +76,21 @@
     var opts = { eventID: eventId };
     if (window.fbq) fbq('track', eventName, customData || {}, opts);
     toCapi(eventName, eventId, customData, userData);
+    // GA4 mirror
+    if (window.gtag) { try { gtag('event', eventName, customData || {}); } catch (e) {} }
     return eventId;
   };
+
+  // ---------- GA4 ----------
+  if (GA4_ID && GA4_ID.indexOf('G-') === 0 && GA4_ID !== 'G-XXXXXXXXXX') {
+    var ga = document.createElement('script');
+    ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+    document.head.appendChild(ga);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', GA4_ID, { anonymize_ip: true });
+  }
 
   // ---------- auto PageView ----------
   window.slclawTrack('PageView');
@@ -85,11 +98,11 @@
   // ---------- auto ViewContent на niche-сторінках ----------
   (function () {
     var path = location.pathname;
-    var isNiche = /\/(n|asia)\//.test(path);
+    var isNiche = /\/(n|asia|ua)\//.test(path);
     var ogTypeEl = document.querySelector('meta[property="og:type"]');
     var ogType = ogTypeEl ? ogTypeEl.content : '';
     if (isNiche || ogType === 'product') {
-      var slug = (path.match(/\/(?:n|asia)\/([^\/]+)/) || [])[1] || '';
+      var slug = (path.match(/\/(?:n|asia|ua)\/([^\/]+)/) || [])[1] || '';
       window.slclawTrack('ViewContent', {
         content_type: 'product',
         content_ids: [slug],
@@ -99,8 +112,6 @@
   })();
 
   // ---------- проброс атрибуції на pay.sl-claw.tech ----------
-  // checkout будує URL https://pay.sl-claw.tech/create?... — додаємо fbp/fbc/fbclid
-  // щоб server-side Purchase (Monobank webhook) міг атрибувати на FB-рекламу.
   window.slclawPayParams = function () {
     var p = [];
     var fbp = getFbp(); if (fbp) p.push('fbp=' + encodeURIComponent(fbp));
@@ -108,7 +119,6 @@
     var fbclid = storedFbclid(); if (fbclid) p.push('fbclid=' + encodeURIComponent(fbclid));
     return p.join('&');
   };
-  // Авто-доповнення будь-яких <a href*="pay.sl-claw.tech/create"> (на випадок статичних кнопок)
   function hookPayLinks() {
     document.querySelectorAll('a[href*="pay.sl-claw.tech/create"]').forEach(function (a) {
       if (a.__slcHooked) return; a.__slcHooked = true;
@@ -122,15 +132,4 @@
   }
   hookPayLinks();
   if (document.body) new MutationObserver(hookPayLinks).observe(document.body, { childList: true, subtree: true });
-
-  // ---------- optional GA4 ----------
-  if (GA4_ID && GA4_ID.indexOf('G-') === 0 && GA4_ID !== 'G-XXXXXXXXXX') {
-    var s = document.createElement('script');
-    s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
-    document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { dataLayer.push(arguments); };
-    gtag('js', new Date());
-    gtag('config', GA4_ID, { anonymize_ip: true });
-  }
 })();
