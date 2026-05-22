@@ -1,0 +1,15 @@
+name: Deploy to Coolify
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Coolify redeploy
+        run: |
+          curl -fsS -X POST \
+            "https://deploy-pro.coreviaflow.space/api/v1/deploy?uuid=d8p5bshpekutxt15d6w5ee4y&force=true" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}"
+          echo "Deploy triggered."
