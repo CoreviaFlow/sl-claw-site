@@ -106,6 +106,21 @@ section{padding:64px 0}
 .ncard .cta .gl{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);font-weight:500}
 .ncard .foot{align-items:flex-end}
 .ncard .sector{font-size:.78rem;color:var(--ink-faint)}
+.ncard-body{display:flex;flex-direction:column;flex:1;text-decoration:none;color:inherit}
+.ncard-buy{width:100%;justify-content:center;margin-top:13px}
+.co-pick-note{font-size:.78rem;color:var(--ink-faint);margin-top:8px;line-height:1.45}
+
+/* ── каналы продаж ────────────────────────────────────────────── */
+.channels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
+@media(max-width:760px){.channels{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.channels{grid-template-columns:1fr}}
+.ch{border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;background:#fff;display:flex;flex-direction:column;gap:5px}
+.ch-h{font-weight:700;font-size:1.02rem}
+.ch-d{color:var(--ink-soft);font-size:.86rem;flex:1}
+.ch-lvl{font-family:var(--mono);font-size:.72rem;padding:3px 9px;border-radius:999px;align-self:flex-start;margin-top:6px;border:1px solid var(--line-strong)}
+.ch-lvl.l1{background:#ecfdf5;border-color:#a7f3d0;color:#047857}
+.ch-lvl.l2{background:#fffbeb;border-color:#fde68a;color:#b45309}
+.ch-lvl.l3{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
 
 /* niche page */
 .crumb{font-family:var(--mono);font-size:.82rem;color:var(--ink-faint);padding:24px 0 0}
