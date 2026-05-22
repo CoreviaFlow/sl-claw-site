@@ -18,23 +18,23 @@
 <header class="nav"><div class="wrap row">
   <a class="logo" href="index.html">SL<b>_</b>CLAW</a>
   <nav>
-    <a href="catalog.html" style="color:var(--accent-ink)">Каталог ниш</a>
-    <a href="pricing.html">Тарифы</a>
-    <a href="index.html#how">Как это работает</a>
-    <a href="https://token.lux-promo.com" target="_blank" rel="noopener">Кабинет ↗</a>
+    <a href="catalog.html" style="color:var(--accent-ink)" data-i18n="nav.catalog">Каталог ниш</a>
+    <a href="pricing.html" data-i18n="nav.pricing">Тарифы</a>
+    <a href="index.html#how" data-i18n="nav.how">Как это работает</a>
+    <a href="https://token.lux-promo.com" target="_blank" rel="noopener" data-i18n="nav.cabinet">Кабинет ↗</a>
   </nav>
 </div></header>
 
 <section style="padding:48px 0 8px"><div class="wrap">
   <div class="eyebrow">// витрина</div>
-  <h1 class="h2" style="font-size:2.1rem">Каталог ниш <span class="count" id="total"></span></h1>
-  <p class="sub">Каждый — <b>полноценный AI-продавец</b>: ведёт диалог, квалифицирует, снимает возражения и доводит до сделки 24/7. Зелёным внизу карточки — целевое действие, которым бот <b>закрывает</b> (а не единственное, что он умеет).</p>
+  <h1 class="h2" style="font-size:2.1rem"><span data-i18n="cat.h1">Каталог ниш</span> <span class="count" id="total"></span></h1>
+  <p class="sub" data-i18n="cat.sub">Каждый — <b>полноценный AI-продавец</b>: ведёт диалог, квалифицирует, снимает возражения и доводит до сделки 24/7. Зелёным внизу карточки — целевое действие, которым бот <b>закрывает</b> (а не единственное, что он умеет).</p>
 </div></section>
 
 <section style="padding:8px 0 72px"><div class="wrap">
   <div class="toolbar" id="filters"></div>
   <div class="cards" id="cards"></div>
-  <p id="empty" class="muted mono" style="display:none;padding:40px 0">// ничего не найдено</p>
+  <p id="empty" class="muted mono" style="display:none;padding:40px 0" data-i18n="cat.empty">// ничего не найдено</p>
 </div></section>
 
 <footer class="foot-site"><div class="wrap row">
@@ -43,16 +43,17 @@
 </div></footer>
 
 <script src="niches.js"></script>
+<script src="i18n.js"></script>
 <script src="search.js"></script>
 <script>
-  const D = window.NICHES, A = D.archetypes;
+  const D = window.NICHES;
   let active = 'all', q = '';
   document.getElementById('total').textContent = '['+D.niches.length+']';
 
-  const chips = [['all','Все']].concat(Object.entries(A));
+  const chips = [['all', T('cat.all')]].concat(Object.keys(D.archetypes).map(k=>[k, archLabel(k)]));
   document.getElementById('filters').innerHTML =
     chips.map(([k,v])=>`<span class="chip ${k==='all'?'active':''}" data-k="${k}">${v}</span>`).join('')
-    + `<input class="search" id="q" placeholder="поиск: авто, клиника, ISO…">`;
+    + `<input class="search" id="q" placeholder="${T('search.ph')}">`;
 
   document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
     active=c.dataset.k;
@@ -62,18 +63,20 @@
   document.getElementById('q').oninput = e=>{ q=e.target.value.toLowerCase().trim(); render(); };
 
   function card(n){
+    const cap = LANG==='uk' ? 'діалог → кваліфікація → заперечення → <b>угода</b>' : 'диалог → квалификация → возражения → <b>сделка</b>';
     return `<a class="ncard" href="niche.html?slug=${n.slug}">
-      <div class="top"><span class="slug">${n.slug}</span><span class="tag ${n.archetype}">${A[n.archetype]}</span></div>
-      <h3>${n.name}</h3>
-      <p class="tl">${n.tagline}</p>
-      <div class="cap">диалог → квалификация → возражения → <b>сделка</b></div>
-      <div class="foot"><span class="cta"><b class="gl">возможная цель</b>${n.cta} →</span><span class="sector">${n.sector}</span></div>
+      <div class="top"><span class="slug">${n.slug}</span><span class="tag ${n.archetype}">${archLabel(n.archetype)}</span></div>
+      <h3>${trN(n,'name')}</h3>
+      <p class="tl">${trN(n,'tagline')}</p>
+      <div class="cap">${cap}</div>
+      <div class="foot"><span class="cta"><b class="gl">${T('niche.target')}</b>${trN(n,'cta')} →</span><span class="sector">${n.sector}</span></div>
     </a>`;
   }
   function render(){
     const list = D.niches.filter(n=>{
       const okA = active==='all' || n.archetype===active;
-      const okQ = !q || (n.name+n.slug+n.sector+n.tagline).toLowerCase().includes(q);
+      const hay = (n.name+n.slug+n.sector+n.tagline+(n.uk?(n.uk.name+n.uk.tagline):'')).toLowerCase();
+      const okQ = !q || hay.includes(q);
       return okA && okQ;
     });
     document.getElementById('cards').innerHTML = list.map(card).join('');

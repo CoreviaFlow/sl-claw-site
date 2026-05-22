@@ -18,10 +18,10 @@
 <header class="nav"><div class="wrap row">
   <a class="logo" href="index.html">SL<b>_</b>CLAW</a>
   <nav>
-    <a href="catalog.html">Каталог ниш</a>
-    <a href="pricing.html">Тарифы</a>
-    <a href="index.html#how">Как это работает</a>
-    <a href="https://token.lux-promo.com" target="_blank" rel="noopener">Кабинет ↗</a>
+    <a href="catalog.html" data-i18n="nav.catalog">Каталог ниш</a>
+    <a href="pricing.html" data-i18n="nav.pricing">Тарифы</a>
+    <a href="index.html#how" data-i18n="nav.how">Как это работает</a>
+    <a href="https://token.lux-promo.com" target="_blank" rel="noopener" data-i18n="nav.cabinet">Кабинет ↗</a>
   </nav>
 </div></header>
 
@@ -33,66 +33,82 @@
 </div></footer>
 
 <script src="niches.js"></script>
+<script src="i18n.js"></script>
 <script src="search.js"></script>
 <script>
-  const D = window.NICHES, A = D.archetypes;
+  const D = window.NICHES;
   const slug = new URLSearchParams(location.search).get('slug');
   const n = D.niches.find(x=>x.slug===slug);
   const page = document.getElementById('page');
+  const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
   if(!n){
-    page.innerHTML = `<section class="wrap" style="padding:80px 0"><h1 class="h2">Ниша не найдена</h1>
-      <p class="sub">Проверь ссылку или вернись в <a href="catalog.html" style="color:var(--accent-ink)">каталог</a>.</p></section>`;
+    page.innerHTML = `<section class="wrap" style="padding:80px 0"><h1 class="h2">${LANG==='uk'?'Нішу не знайдено':'Ниша не найдена'}</h1>
+      <p class="sub"><a href="catalog.html" style="color:var(--accent-ink)">${LANG==='uk'?'← у каталог':'← в каталог'}</a></p></section>`;
   } else {
-    document.getElementById('ttl').textContent = `AI-продавец: ${n.name} — SL-CLAW`;
-    document.getElementById('desc').setAttribute('content', n.tagline);
+    const name = trN(n,'name'), tagline = trN(n,'tagline'), cta = trN(n,'cta');
+    const does = trN(n,'does'), demo = trDemo(n), sel = T('demo.seller');
+    const title = `AI-${sel}: ${name} — SL-CLAW`;
+    document.getElementById('ttl').textContent = title;
+    document.getElementById('desc').setAttribute('content', tagline);
     const url = `https://sl-claw.tech/niche.html?slug=${n.slug}`;
     document.getElementById('canon').href = url;
     document.getElementById('ogu').setAttribute('content', url);
-    document.getElementById('ogt').setAttribute('content', `AI-продавец: ${n.name} — SL-CLAW`);
-    document.getElementById('ogd').setAttribute('content', n.tagline);
+    document.getElementById('ogt').setAttribute('content', title);
+    document.getElementById('ogd').setAttribute('content', tagline);
+
+    const pipe = LANG==='uk'
+      ? 'діалог → кваліфікація → зняття заперечень → <b style="color:var(--accent-ink)">угода</b> · 24/7 в усіх каналах'
+      : 'диалог → квалификация → снятие возражений → <b style="color:var(--accent-ink)">сделка</b> · 24/7 во всех каналах';
+
     page.innerHTML = `
     <div class="wrap">
-      <div class="crumb"><a href="catalog.html">каталог</a> / <span>${n.slug}</span></div>
+      <div class="crumb"><a href="catalog.html">${LANG==='uk'?'каталог':'каталог'}</a> / <span>${n.slug}</span></div>
       <div class="np-head">
-        <span class="tag ${n.archetype}">${A[n.archetype]}</span>
-        <h1>AI-продавец: ${n.name}</h1>
-        <p class="lead">${n.tagline}</p>
-        <p class="mono" style="color:var(--ink-faint);font-size:.82rem;margin-top:14px">диалог → квалификация → снятие возражений → <b style="color:var(--accent-ink)">сделка</b> · 24/7 во всех каналах</p>
+        <span class="tag ${n.archetype}">${archLabel(n.archetype)}</span>
+        <h1>AI-${sel}: ${esc(name)}</h1>
+        <p class="lead">${esc(tagline)}</p>
+        <p class="mono" style="color:var(--ink-faint);font-size:.82rem;margin-top:14px">${pipe}</p>
       </div>
       <div class="np-grid">
         <div class="main">
-          <h2>Что умеет бот в этой нише</h2>
-          <p class="muted" style="margin:-6px 0 14px;font-size:.92rem">Это полноценный продавец, а не приёмщик заявок: ведёт диалог, квалифицирует и доводит до сделки.</p>
-          <ul class="does">${n.does.map(d=>`<li>${d}</li>`).join('')}</ul>
+          <h2>${T('niche.does')}</h2>
+          <p class="muted" style="margin:-6px 0 14px;font-size:.92rem">${T('niche.fullseller')}</p>
+          <ul class="does">${does.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>
 
-          <h2>Живой пример диалога</h2>
-          <div class="chat">
-            <div class="hd"><span class="dot"></span> demo · ${n.name}</div>
-            <div class="body">
-              <div class="msg them">${n.demo.them}</div>
-              <div class="msg bot">${n.demo.bot}</div>
+          <h2>${T('niche.demo')}</h2>
+          <div class="phone"><div class="phone-screen">
+            <div class="phone-top"><span>9:41</span><span class="mono" style="font-size:.7rem;letter-spacing:1px">••••  ▾  ▰</span></div>
+            <div class="phone-head">
+              <span class="pa">A</span>
+              <div><div class="pn">Anna · AI-${sel} ${esc(name)}</div><div class="ps">${T('demo.online')}</div></div>
+              <span class="pc">📞</span>
             </div>
-            <div class="foot"><button class="btn btn-ghost" disabled title="появится после запуска платформы">▶ Попробовать вживую (скоро)</button></div>
-          </div>
+            <div class="phone-msgs">
+              <div class="pm-row bot"><span class="pm-ava">A</span><div class="pm">${esc(T('demo.greet'))}<span class="t">14:34</span></div></div>
+              <div class="pm-row them"><div class="pm">${esc(demo.them)}<span class="t">14:35 ✓✓</span></div></div>
+              <div class="pm-row bot"><span class="pm-ava">A</span><div class="pm">${esc(demo.bot)}<span class="t">14:36</span></div></div>
+            </div>
+            <div class="phone-input">✎ ${T('demo.input')}</div>
+          </div></div>
 
-          <h2 style="margin-top:32px">Цифры рынка ниши</h2>
-          <div class="stat-note">// сюда подставляются реальные данные рынка с источниками (объём, ср. чек, конверсия) — этап SEO/GEO-генерации. Без выдуманных цифр.</div>
+          <h2 style="margin-top:32px">${T('niche.market')}</h2>
+          <div class="stat-note">${T('niche.marketnote')}</div>
         </div>
 
         <aside class="side">
           <div class="box">
             <div class="muted mono" style="font-size:.78rem">тариф</div>
             <div class="price">${n.tier}</div>
-            <div class="row2"><span>Тип</span><span>${A[n.archetype]}</span></div>
-            <div class="row2"><span>Отрасль</span><span>${n.sector}</span></div>
-            <div class="row2"><span>Возможная цель</span><span>${n.cta}</span></div>
-            <div class="row2"><span>Репозиторий</span><span class="mono">sl-claw-${n.slug}</span></div>
-            <a class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px" href="pricing.html">Получить бота</a>
-            <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:8px" disabled>Demo (скоро)</button>
+            <div class="row2"><span>${T('niche.type')}</span><span>${archLabel(n.archetype)}</span></div>
+            <div class="row2"><span>${T('niche.sector')}</span><span>${esc(n.sector)}</span></div>
+            <div class="row2"><span>${T('niche.target')}</span><span>${esc(cta)}</span></div>
+            <div class="row2"><span>${T('niche.repo')}</span><span class="mono">sl-claw-${n.slug}</span></div>
+            <a class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px" href="pricing.html">${T('cta.getbot')}</a>
+            <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:8px" disabled>${T('niche.demosoon')}</button>
           </div>
           <div class="box">
-            <div class="muted mono" style="font-size:.78rem">развернуть за час</div>
+            <div class="muted mono" style="font-size:.78rem">${T('niche.deploy')}</div>
             <div class="deploy"><span class="c">$</span> git clone …/sl-claw-${n.slug}
 <span class="c">$</span> cp .env.example .env
 <span class="c">$</span> docker compose up -d</div>

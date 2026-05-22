@@ -19,20 +19,20 @@
 <header class="nav"><div class="wrap row">
   <a class="logo" href="index.html">SL<b>_</b>CLAW</a>
   <nav>
-    <a href="catalog.html">Каталог ниш</a>
-    <a href="pricing.html">Тарифы</a>
-    <a href="#how">Как это работает</a>
-    <a href="https://token.lux-promo.com" target="_blank" rel="noopener">Кабинет ↗</a>
+    <a href="catalog.html" data-i18n="nav.catalog">Каталог ниш</a>
+    <a href="pricing.html" data-i18n="nav.pricing">Тарифы</a>
+    <a href="#how" data-i18n="nav.how">Как это работает</a>
+    <a href="https://token.lux-promo.com" target="_blank" rel="noopener" data-i18n="nav.cabinet">Кабинет ↗</a>
   </nav>
 </div></header>
 
 <section class="hero"><div class="wrap">
   <span class="kicker">// готовые AI-продавцы по нишам</span>
-  <h1>AI-продавец под твою нишу.<br>Купил → развернул за час → он продаёт.</h1>
-  <p class="lead">Готовый репозиторий с кодом и короткой видео-инструкцией. Без разработчиков, без подрядчиков, без абонентки агентству. Ты только вписываешь свою компанию.</p>
+  <h1 data-i18n="hero.h1">AI-продавец под твою нишу.<br>Купил → развернул за час → он продаёт.</h1>
+  <p class="lead" data-i18n="hero.lead">Готовый репозиторий с кодом и короткой видео-инструкцией. Без разработчиков, без подрядчиков, без абонентки агентству. Ты только вписываешь свою компанию.</p>
   <div class="cta">
-    <a class="btn btn-primary" href="catalog.html">Открыть каталог ниш →</a>
-    <a class="btn btn-ghost" href="#how">Как разворачивается</a>
+    <a class="btn btn-primary" href="catalog.html" data-i18n="hero.cta1">Открыть каталог ниш →</a>
+    <a class="btn btn-ghost" href="#how" data-i18n="hero.cta2">Как разворачивается</a>
   </div>
   <div class="term">
     <div class="bar"><i></i><i></i><i></i></div>
@@ -67,10 +67,10 @@
 
 <section><div class="wrap">
   <div class="eyebrow">// витрина</div>
-  <h2 class="h2">Популярные ниши <span class="count" id="total"></span></h2>
-  <p class="sub">Каждая ниша — готовый репозиторий и <b>полноценный продавец</b>: ведёт диалог, снимает возражения, доводит до сделки. Зелёным — целевое действие закрытия.</p>
+  <h2 class="h2"><span data-i18n="home.popular">Популярные ниши</span> <span class="count" id="total"></span></h2>
+  <p class="sub" data-i18n="home.popularsub">Каждая ниша — готовый репозиторий и <b>полноценный продавец</b>: ведёт диалог, снимает возражения, доводит до сделки. Зелёным — целевое действие закрытия.</p>
   <div class="cards" id="featured"></div>
-  <div style="margin-top:28px"><a class="btn btn-accent" href="catalog.html">Смотреть все ниши →</a></div>
+  <div style="margin-top:28px"><a class="btn btn-accent" href="catalog.html" data-i18n="home.allbtn">Смотреть все ниши →</a></div>
 </div></section>
 
 <footer class="foot-site"><div class="wrap row">
@@ -79,6 +79,7 @@
 </div></footer>
 
 <script src="niches.js"></script>
+<script src="i18n.js"></script>
 <script src="search.js"></script>
 <script>
   const D = window.NICHES;
@@ -87,12 +88,13 @@
   const featured = pick.map(s=>D.niches.find(n=>n.slug===s)).filter(Boolean);
   document.getElementById('featured').innerHTML = featured.map(card).join('');
   function card(n){
+    const cap = LANG==='uk' ? 'діалог → кваліфікація → заперечення → <b>угода</b>' : 'диалог → квалификация → возражения → <b>сделка</b>';
     return `<a class="ncard" href="niche.html?slug=${n.slug}">
-      <div class="top"><span class="slug">${n.slug}</span><span class="tag ${n.archetype}">${D.archetypes[n.archetype]}</span></div>
-      <h3>${n.name}</h3>
-      <p class="tl">${n.tagline}</p>
-      <div class="cap">диалог → квалификация → возражения → <b>сделка</b></div>
-      <div class="foot"><span class="cta"><b class="gl">возможная цель</b>${n.cta} →</span><span class="sector">${n.sector}</span></div>
+      <div class="top"><span class="slug">${n.slug}</span><span class="tag ${n.archetype}">${archLabel(n.archetype)}</span></div>
+      <h3>${trN(n,'name')}</h3>
+      <p class="tl">${trN(n,'tagline')}</p>
+      <div class="cap">${cap}</div>
+      <div class="foot"><span class="cta"><b class="gl">${T('niche.target')}</b>${trN(n,'cta')} →</span><span class="sector">${n.sector}</span></div>
     </a>`;
   }
 </script>
