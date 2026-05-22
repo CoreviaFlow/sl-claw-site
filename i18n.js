@@ -16,6 +16,16 @@
   };
   window.promoActive = function () { return Date.now() < new Date(window.PROMO.deadline).getTime(); };
 
+  // ── Юр-реквизиты (одно место правды; футер и юр-страницы читают отсюда) ──
+  // ⚑ ЗАМЕНИТЬ плейсхолдеры на реальные данные мерчанта (см. data-legal в юр-страницах).
+  window.LEGAL = {
+    entity:  'ФОП ... (вкажіть повне ПІБ)',        // юр.особа-продавець
+    edrpou:  '3420600578',                          // ЄДРПОУ/РНОКПП мерчанта Reboot
+    email:   'support@sl-claw.tech',                // ⚑ підтвердити
+    phone:   '+380 (00) 000-00-00',                 // ⚑ вказати
+    address: 'Україна (вкажіть юридичну адресу)'    // ⚑ вказати
+  };
+
   var UI = {
     'nav.catalog':   {ru:'Каталог ниш',     uk:'Каталог ніш'},
     'nav.pricing':   {ru:'Тарифы',          uk:'Тарифи'},
@@ -98,5 +108,62 @@
       cd.innerHTML='· '+window.T('promo.left')+': <b>'+fmtLeft(left)+'</b>'; }
     tick(); setInterval(tick, 30000);
   }
-  document.addEventListener('DOMContentLoaded', function(){ apply(); toggle(); injectPromo(); });
+  var VISA_SVG = '<svg class="pay-ic" viewBox="0 0 48 30" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visa"><rect width="47" height="29" x="0.5" y="0.5" rx="4" fill="#fff" stroke="#e6e8ec"/><text x="24" y="20" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-style="italic" font-size="12" letter-spacing="0.5" fill="#1A1F71">VISA</text></svg>';
+  var MC_SVG = '<svg class="pay-ic" viewBox="0 0 48 30" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mastercard"><rect width="47" height="29" x="0.5" y="0.5" rx="4" fill="#fff" stroke="#e6e8ec"/><circle cx="20" cy="15" r="7.5" fill="#EB001B"/><circle cx="28" cy="15" r="7.5" fill="#F79E1B"/><path d="M24 9.7a7.5 7.5 0 010 10.6 7.5 7.5 0 010-10.6z" fill="#FF5F00"/></svg>';
+
+  function renderFooter(){
+    var f = document.querySelector('footer.foot-site'); if(!f) return;
+    var uk = window.LANG==='uk', L = window.LEGAL;
+    var t = uk ? {
+      tag:'AI-продавці під нішу', accept:'Приймаємо до оплати',
+      mh:'Маркетплейс', cat:'Каталог ніш', price:'Тарифи', how:'Як це працює', cab:'Кабінет ↗',
+      dh:'Документи', oferta:'Публічна оферта', privacy:'Політика конфіденційності', pay:'Оплата, доставка та повернення', contacts:'Контакти та реквізити',
+      ch:'Контакти', edr:'ЄДРПОУ/РНОКПП: ', geo:'Послуги недоступні для резидентів рф та рб'
+    } : {
+      tag:'AI-продавцы под нишу', accept:'Принимаем к оплате',
+      mh:'Маркетплейс', cat:'Каталог ниш', price:'Тарифы', how:'Как это работает', cab:'Кабинет ↗',
+      dh:'Документы', oferta:'Публичная оферта', privacy:'Политика конфиденциальности', pay:'Оплата, доставка и возврат', contacts:'Контакты и реквизиты',
+      ch:'Контакты', edr:'ЕГРПОУ/ИНН: ', geo:'Услуги недоступны для резидентов рф и рб'
+    };
+    var telHref = 'tel:'+L.phone.replace(/[^+0-9]/g,'');
+    f.innerHTML =
+      '<div class="wrap foot-grid">'+
+        '<div class="fcol fcol-brand">'+
+          '<span class="logo">SL<b>_</b>CLAW</span>'+
+          '<p class="fc-sub mono">'+t.tag+' · COREVIA FLOW</p>'+
+          '<div class="fc-sub mono">'+t.accept+':</div>'+
+          '<div class="pay-badges">'+VISA_SVG+MC_SVG+'</div>'+
+        '</div>'+
+        '<div class="fcol">'+
+          '<div class="fc-h">'+t.mh+'</div>'+
+          '<a href="catalog.html">'+t.cat+'</a>'+
+          '<a href="pricing.html">'+t.price+'</a>'+
+          '<a href="index.html#how">'+t.how+'</a>'+
+          '<a href="https://app.sl-claw.tech" target="_blank" rel="noopener">'+t.cab+'</a>'+
+        '</div>'+
+        '<div class="fcol">'+
+          '<div class="fc-h">'+t.dh+'</div>'+
+          '<a href="oferta.html">'+t.oferta+'</a>'+
+          '<a href="privacy.html">'+t.privacy+'</a>'+
+          '<a href="payment-refund.html">'+t.pay+'</a>'+
+          '<a href="contacts.html">'+t.contacts+'</a>'+
+        '</div>'+
+        '<div class="fcol">'+
+          '<div class="fc-h">'+t.ch+'</div>'+
+          '<a href="mailto:'+L.email+'">'+L.email+'</a>'+
+          '<a href="'+telHref+'">'+L.phone+'</a>'+
+          '<div class="fc-sub mono">'+L.entity+'<br>'+t.edr+L.edrpou+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="wrap foot-bottom mono">'+
+        '<span>© 2026 '+L.entity+'</span>'+
+        '<span class="geo-note">⛔ '+t.geo+'</span>'+
+      '</div>';
+  }
+  function fillLegal(){
+    if(!window.LEGAL) return;
+    var els = document.querySelectorAll('[data-legal]');
+    for (var i=0;i<els.length;i++){ var k=els[i].getAttribute('data-legal'); if(window.LEGAL[k]!=null) els[i].textContent=window.LEGAL[k]; }
+  }
+  document.addEventListener('DOMContentLoaded', function(){ apply(); toggle(); injectPromo(); renderFooter(); fillLegal(); });
 })();

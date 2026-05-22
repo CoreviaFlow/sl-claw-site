@@ -59,7 +59,7 @@
     const promoOn = window.promoActive && window.promoActive();
     const once = LANG==='uk' ? 'одноразово' : 'разово';
     const priceHtml = pr
-      ? `<div class="np-price"><span class="now">${promoOn?pr.now:pr.old}</span>${promoOn?`<span class="old">${pr.old}</span><span class="promo-badge">−55%</span>`:''}<div class="small">${n.tier} · ${once}</div></div>`
+      ? `<div class="np-price"><span class="now">${promoOn?pr.nowUah:pr.oldUah} ₴</span>${promoOn?`<span class="old">${pr.oldUah} ₴</span><span class="promo-badge">−55%</span>`:''}<span class="usd">≈ ${promoOn?pr.now:pr.old}</span><div class="small">${n.tier} · ${once}</div></div>`
       : `<div class="price">${n.tier}</div>`;
     const title = `AI-${sel}: ${name} — SL-CLAW`;
     document.getElementById('ttl').textContent = title;
