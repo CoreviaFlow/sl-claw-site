@@ -44,7 +44,7 @@ const UI = {
        fullseller:'Это полноценный продавец, а не приёмщик заявок: ведёт диалог, квалифицирует и доводит до сделки.',
        feed:'В комплекте — навыки продаж и экспертиза этой ниши. Свои товары, цены и данные о компании ты добавляешь сам и дальше обогащаешь.',
        handles:'Снимает возражения', knows:'Что бот знает в нише', demo:'Живой пример диалога',
-       market:'Цифры рынка ниши', online:'в сети', getbot:'Получить бота', blog:'Полезные материалы',
+       market:'Цифры рынка ниши', online:'в сети', getbot:'Получить бота', askconsult:'Спросить у консультанта', blog:'Полезные материалы',
        blogsub:'Статьи по автоматизации продаж в нише — обновляются регулярно.',
        deploy:'развернуть за час', pipe:'диалог → квалификация → снятие возражений → сделка · 24/7 во всех каналах',
        once:'разово', sale:'цена со скидкой', price:'цена',
@@ -54,7 +54,7 @@ const UI = {
        fullseller:'Це повноцінний продавець, а не приймальник заявок: веде діалог, кваліфікує та доводить до угоди.',
        feed:'У комплекті — навички продажів та експертиза цієї ніші. Свої товари, ціни та дані про компанію ти додаєш сам і далі збагачуєш.',
        handles:'Знімає заперечення', knows:'Що бот знає в ніші', demo:'Живий приклад діалогу',
-       market:'Цифри ринку ніші', online:'у мережі', getbot:'Отримати бота', blog:'Корисні матеріали',
+       market:'Цифри ринку ніші', online:'у мережі', getbot:'Отримати бота', askconsult:'Запитати у консультанта', blog:'Корисні матеріали',
        blogsub:'Статті з автоматизації продажів у ніші — оновлюються регулярно.',
        deploy:'розгорнути за годину', pipe:'діалог → кваліфікація → зняття заперечень → угода · 24/7 в усіх каналах',
        once:'одноразово', sale:'ціна зі знижкою', price:'ціна',
@@ -197,6 +197,7 @@ ${alts}
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 <link rel="stylesheet" href="/styles.css">
 <script src="/analytics.js" defer></script>
+<script src="/daryna-widget.js" defer></script>
 ${jsonld(n, v, f, u)}
 </head>
 <body>
@@ -208,7 +209,6 @@ ${jsonld(n, v, f, u)}
     <a href="/#how">${t.how}</a>
     <a href="https://app.sl-claw.tech" target="_blank" rel="noopener">${t.cabinet}</a>
   </nav>
-  <div class="geo-switch">${langSwitch}</div>
 </div></header>
 
 <section class="wrap"><div class="np-wrap">
@@ -245,6 +245,7 @@ ${jsonld(n, v, f, u)}
         <div class="row2"><span>${v.lang==='uk'?'Галузь':'Отрасль'}</span><span>${esc(n.sector)}</span></div>
         <div class="row2"><span>${v.lang==='uk'?'Можлива ціль':'Возможная цель'}</span><span>${esc(f.cta)}</span></div>
         <a class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px" href="/checkout.html?niche=${n.slug}&tier=${n.tier}">${t.getbot}</a>
+        <button type="button" class="btn-ask" onclick="var b=document.querySelector('.dw-btn');if(b){b.click()}" style="width:100%;justify-content:center;margin-top:8px;background:none;border:0;color:#0b0f19;font:600 .82rem/1.2 inherit;cursor:pointer;padding:8px;text-decoration:underline;text-underline-offset:3px;opacity:.75">${t.askconsult}</button>
       </div>
       <div class="box">
         <div class="muted mono" style="font-size:.78rem">${t.deploy}</div>

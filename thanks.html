@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Спасибо за оплату — SL-CLAW</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
+<link rel="icon" href="favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="stylesheet" href="styles.css">
+<script src="/analytics.js" defer></script>
+</head>
+<body>
+<header class="nav"><div class="wrap row">
+  <a class="logo" href="index.html">SL<b>_</b>CLAW</a>
+  <nav>
+    <a href="catalog.html" data-i18n="nav.catalog">Каталог ниш</a>
+    <a href="pricing.html" data-i18n="nav.pricing">Тарифы</a>
+    <a href="index.html#how" data-i18n="nav.how">Как это работает</a>
+    <a href="https://app.sl-claw.tech" target="_blank" rel="noopener" data-i18n="nav.cabinet">Кабинет ↗</a>
+  </nav>
+</div></header>
+
+<section class="wrap" style="max-width:640px;margin:64px auto;text-align:center">
+  <div style="font-size:64px;line-height:1;margin-bottom:16px">✅</div>
+  <h1 style="font-size:2rem;margin:0 0 12px" data-i18n="thanks.h1">Оплата принята. Спасибо!</h1>
+  <p class="lead" style="color:#475569;font-size:1.05rem;margin:0 auto 28px;max-width:520px" data-i18n="thanks.sub">
+    Мы уже готовим доступ. В течение нескольких минут пришлём на вашу почту ссылку на репозиторий бота и токен SL-CLAW. Проверьте входящие (и «Промоакции»/«Спам»).
+  </p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <a class="btn btn-primary" href="https://app.sl-claw.tech" target="_blank" rel="noopener" data-i18n="thanks.cabinet">Перейти в кабинет →</a>
+    <a class="btn btn-ghost" href="catalog.html" data-i18n="thanks.catalog">← В каталог ниш</a>
+  </div>
+  <p style="color:#94a3b8;font-size:.85rem;margin-top:28px" data-i18n="thanks.support">
+    Вопросы? Напишите на support@sl-claw.tech или консультанту в чате внизу.
+  </p>
+</section>
+
+<script src="/i18n.js"></script>
+<script src="/daryna-widget.js" defer></script>
+<script>
+(function () {
+  // i18n словник для цієї сторінки (доповнює глобальний)
+  try {
+    var L = (window.LANG === 'uk') ? 'uk' : 'ru';
+    var TXT = {
+      'thanks.h1':      {ru:'Оплата принята. Спасибо!', uk:'Оплату прийнято. Дякуємо!'},
+      'thanks.sub':     {ru:'Мы уже готовим доступ. В течение нескольких минут пришлём на вашу почту ссылку на репозиторий бота и токен SL-CLAW. Проверьте входящие (и «Промоакции»/«Спам»).',
+                         uk:'Ми вже готуємо доступ. Протягом кількох хвилин надішлемо на вашу пошту посилання на репозиторій бота та токен SL-CLAW. Перевірте вхідні (і «Промоакції»/«Спам»).'},
+      'thanks.cabinet': {ru:'Перейти в кабинет →', uk:'Перейти в кабінет →'},
+      'thanks.catalog': {ru:'← В каталог ниш', uk:'← До каталогу ніш'},
+      'thanks.support': {ru:'Вопросы? Напишите на support@sl-claw.tech или консультанту в чате внизу.',
+                         uk:'Питання? Напишіть на support@sl-claw.tech або консультанту в чаті внизу.'},
+    };
+    document.querySelectorAll('[data-i18n^="thanks."]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n'); if (TXT[k]) el.textContent = TXT[k][L] || TXT[k].ru;
+    });
+  } catch (e) {}
+
+  // --- Purchase conversion (Pixel + CAPI, дедуп з server-side webhook через event_id) ---
+  function getCookie(n){ var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]+)')); return m?decodeURIComponent(m[1]):''; }
+  function clearCookie(n){ document.cookie = n+'=; Max-Age=0; Domain=.sl-claw.tech; Path=/'; }
+  function fire() {
+    var inv = getCookie('slc_inv');
+    var val = parseFloat(getCookie('slc_val')) || 0;
+    if (!inv) return; // нема invoice → нема що рахувати (пряме відвідування)
+    if (typeof window.slclawTrack === 'function') {
+      window.slclawTrack('Purchase',
+        { value: val, currency: 'UAH', content_type: 'product', order_id: inv },
+        {}, 'purchase_' + inv);     // фіксований event_id = дедуп з webhook
+    }
+    // прибрати щоб refresh не задвоїв
+    clearCookie('slc_inv'); clearCookie('slc_val');
+  }
+  // analytics.js грузиться defer — чекаємо доки slclawTrack зʼявиться
+  var tries = 0;
+  (function wait(){ if (window.slclawTrack || tries > 40) return fire(); tries++; setTimeout(wait, 100); })();
+})();
+</script>
+</body>
+</html>

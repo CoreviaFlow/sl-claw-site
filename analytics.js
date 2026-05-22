@@ -71,8 +71,8 @@
   }
 
   // Універсальний трекер: Pixel + CAPI з одним event_id (дедуплікація).
-  window.slclawTrack = function (eventName, customData, userData) {
-    var eventId = uuid();
+  window.slclawTrack = function (eventName, customData, userData, eventIdOverride) {
+    var eventId = eventIdOverride || uuid();
     var opts = { eventID: eventId };
     if (window.fbq) fbq('track', eventName, customData || {}, opts);
     toCapi(eventName, eventId, customData, userData);
