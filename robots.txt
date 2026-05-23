@@ -3,5 +3,31 @@ Allow: /
 Disallow: /checkout.html
 Disallow: /mobile-prototype.html
 
+# AI-краулеры (поиск и ассистенты) — явно разрешаем доступ и цитирование
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
 Sitemap: https://sl-claw.tech/sitemap.xml
 Sitemap: https://sl-claw.tech/sitemap-blog.xml
+Sitemap: https://sl-claw.tech/llms-full.txt

@@ -233,6 +233,7 @@ ${alts}
 <script src="/analytics.js" defer></script>
 <script src="/daryna-widget.js" defer></script>
 <script src="/phone-demo.js" defer></script>
+<script src="/mobile-bar.js" defer></script>
 ${jsonld(n, v, f, u)}
 </head>
 <body>
