@@ -24,6 +24,18 @@ const VARIANTS = [
 ];
 const urlFor = (v, slug) => `${BASE}/${v.dir}/${slug}/`;
 
+// Блог-посты живут только в гео ru → /n/, uk → /ua/ (заполняет publish.js).
+const DIR = lang => (lang === 'uk' ? 'ua' : 'n');
+// posts-plan.json — живые статусы публикаций. На самой первой сборке файла ещё нет.
+let PLAN = {};
+try { PLAN = (JSON.parse(fs.readFileSync(path.join(ROOT, 'posts-plan.json'), 'utf8')).niches) || {}; } catch (e) {}
+// Только РЕАЛЬНО опубликованные посты ниши на этом языке, свежие сверху.
+function publishedPosts(slug, lang){
+  const np = PLAN[slug]; if(!np) return [];
+  return (np.posts || []).filter(p => p.status === 'published' && p.lang === lang && p.slug)
+    .sort((a, b) => (b.publishedAt || b.publish).localeCompare(a.publishedAt || a.publish));
+}
+
 // поля под язык
 function F(n, lang){
   const u = lang==='uk' && n.uk ? n.uk : null;
@@ -47,6 +59,7 @@ const UI = {
        handles:'Снимает возражения', knows:'Что бот знает в нише', demo:'Живой пример диалога',
        market:'Цифры рынка ниши', online:'в сети', getbot:'Получить бота', askconsult:'Спросить у консультанта', blog:'Полезные материалы',
        blogsub:'Статьи по автоматизации продаж в нише — обновляются регулярно.',
+       blogsoon:'Первые материалы скоро — публикуем по мере готовности.',
        deploy:'развернуть за час', pipe:'диалог → квалификация → снятие возражений → сделка · 24/7 во всех каналах',
        once:'разово', sale:'цена со скидкой', price:'цена',
        crumbHome:'Главная', crumbCat:'Каталог' },
@@ -57,6 +70,7 @@ const UI = {
        handles:'Знімає заперечення', knows:'Що бот знає в ніші', demo:'Живий приклад діалогу',
        market:'Цифри ринку ніші', online:'у мережі', getbot:'Отримати бота', askconsult:'Запитати у консультанта', blog:'Корисні матеріали',
        blogsub:'Статті з автоматизації продажів у ніші — оновлюються регулярно.',
+       blogsoon:'Перші матеріали незабаром — публікуємо в міру готовності.',
        deploy:'розгорнути за годину', pipe:'діалог → кваліфікація → зняття заперечень → угода · 24/7 в усіх каналах',
        once:'одноразово', sale:'ціна зі знижкою', price:'ціна',
        crumbHome:'Головна', crumbCat:'Каталог' },
@@ -168,7 +182,14 @@ function page(n, v){
   // демо
   const greet = v.lang==='uk'?'Вітаю! Я Анна, AI-продавець. Чим допоможу?':'Здравствуйте! Я Анна, AI-продавец. Чем помогу?';
   const msgs = [['bot',greet],['them',f.demo.them],['bot',f.demo.bot]].filter(m=>m[1]);
-  const posts = postTitles(f.name, v.lang).slice(0, 14);
+  // Блок «Полезные материалы»: только реально опубликованные статьи (ссылками).
+  // Если публикаций ещё нет — пустой список с пометкой «скоро». Разметка совместима
+  // с regex в publish.js → дрип-публикатор будет наполнять её при выходе постов.
+  const pubPosts = publishedPosts(n.slug, v.lang).slice(0, 12);
+  const blogBlock = pubPosts.length
+    ? `<ul class="blog-list">${pubPosts.map(p=>`<li><a href="/${DIR(v.lang)}/${n.slug}/blog/${p.slug}/">${esc(p.title)}</a></li>`).join('')}</ul>`
+      + `<p style="margin-top:8px"><a href="/${DIR(v.lang)}/${n.slug}/blog/" class="mono" style="font-size:.85rem">${v.lang==='uk'?'Усі матеріали →':'Все материалы →'}</a></p>`
+    : `<ul class="blog-list"><li class="muted">${t.blogsoon}</li></ul>`;
   const langSwitch = VARIANTS.map(x=>`<a href="${urlFor(x,n.slug)}"${x.key===v.key?' class="on"':''}>${x.hl}</a>`).join('');
 
   return `<!doctype html>
@@ -236,7 +257,7 @@ ${jsonld(n, v, f, u)}
 
       <h2>${t.blog}</h2>
       <p class="muted" style="margin:-6px 0 12px;font-size:.9rem">${t.blogsub}</p>
-      <ul class="blog-list">${posts.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>
+      ${blogBlock}
     </div>
 
     <aside class="side">

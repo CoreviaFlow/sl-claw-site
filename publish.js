@@ -675,20 +675,22 @@ ${footerHTML('ru')}
 }
 
 // ── обновление блока «Полезные материалы» на странице ниши ──
-function updateNicheHubBlogList(n, lang, posts){
-  const dir = path.join(ROOT, DIR(lang), n.slug);
-  const file = path.join(dir, 'index.html');
+function writeHubBlogList(dirName, n, lang, repl){
+  const file = path.join(ROOT, dirName, n.slug, 'index.html');
   if(!fs.existsSync(file)) return;
   let html = fs.readFileSync(file,'utf8');
-  const top = posts.slice(0,12);
-  const blogHref = blogIndexUrl(n.slug,lang).replace(BASE,'');
-  const all = lang==='uk'?'Усі матеріали →':'Все материалы →';
-  const repl = top.length
-    ? `<ul class="blog-list">${top.map(p=>`<li><a href="${postUrl(n.slug,lang,p.slug).replace(BASE,'')}">${esc(p.title)}</a></li>`).join('')}</ul><p style="margin-top:8px"><a href="${blogHref}" class="mono" style="font-size:.85rem">${all}</a></p>`
-    : null;
-  if(!repl) return;
   const re = /<ul class="blog-list">[\s\S]*?<\/ul>(?:\s*<p style="margin-top:8px">[\s\S]*?<\/p>)?/;
   if(re.test(html)){ html = html.replace(re, repl); fs.writeFileSync(file, html); }
+}
+function updateNicheHubBlogList(n, lang, posts){
+  const top = posts.slice(0,12);
+  if(!top.length) return;
+  const blogHref = blogIndexUrl(n.slug,lang).replace(BASE,'');
+  const all = lang==='uk'?'Усі матеріали →':'Все материалы →';
+  const repl = `<ul class="blog-list">${top.map(p=>`<li><a href="${postUrl(n.slug,lang,p.slug).replace(BASE,'')}">${esc(p.title)}</a></li>`).join('')}</ul><p style="margin-top:8px"><a href="${blogHref}" class="mono" style="font-size:.85rem">${all}</a></p>`;
+  writeHubBlogList(DIR(lang), n, lang, repl);
+  // гео-вариант ru-KZ (/asia/) делит ru-посты с /n/ — держим его в синхроне
+  if(lang === 'ru') writeHubBlogList('asia', n, lang, repl);
 }
 
 // ── главный прогон ──
