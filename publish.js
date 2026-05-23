@@ -18,6 +18,7 @@ const ROOT = __dirname;
 const BASE = 'https://sl-claw.tech';
 const D = JSON.parse(fs.readFileSync(path.join(ROOT, 'niches.json'), 'utf8'));
 const { phoneHTML } = require('./phone-demo-render.js'); // демо-диалог в телефоне (Telegram-стиль)
+const { coverSVG } = require('./cover-svg.js'); // SVG-обложка поста (картинка в теле + Google Images)
 const PLAN_PATH = path.join(ROOT, 'posts-plan.json');
 const plan = JSON.parse(fs.readFileSync(PLAN_PATH, 'utf8'));
 
@@ -367,7 +368,7 @@ function themeContent(idx, f, lang, r){
       `Запуск ${seller} для «${N}» не требует команды разработки. Базовая установка укладывается примерно в час по инструкции.`,
       `Запуск ${seller} для «${N}» не потребує команди розробки. Базове встановлення вкладається приблизно в годину за інструкцією.`)],
     sections:[
-      {h2:T(lang,'Шаги установки','Кроки встановлення'), html:`<div class="deploy"><span class="c">$</span> git clone …/sl-claw-${'<niche>'}
+      {h2:T(lang,'Шаги установки','Кроки встановлення'), html:`<div class="deploy"><span class="d">${T(lang,'# доступ к боту — после оплаты','# доступ до бота — після оплати')}</span>
 <span class="c">$</span> cp .env.example .env
 <span class="c">$</span> docker compose up -d</div>`},
       {h2:T(lang,'После запуска','Після запуску'), html:OL([
@@ -614,6 +615,7 @@ ${ld}
   <nav class="crumb" aria-label="breadcrumb"><a href="/">${t.home}</a> / <a href="/catalog.html">${t.cat}</a> / <a href="${nicheUrl(n.slug,lang)}">${N}</a> / <a href="${blogIndexUrl(n.slug,lang)}">${t.blog}</a></nav>
   <h1>${esc(post.title)}</h1>
   <div class="post-meta mono">${prettyDate} · ${mins} ${t.min} · ${author}</div>
+  <img class="cover" src="cover.svg" width="1200" height="630" alt="${esc(post.title)}" loading="lazy">
   <div class="post-body">
 ${body}
 ${relHtml}
@@ -769,6 +771,12 @@ for(const slug in plan.niches){
         const altUrl = oByTheme[themeIdx]!=null ? postUrl(slug, oLang, oByTheme[themeIdx]) : '';
         const dir = path.join(ROOT, DIR(lang), slug, 'blog', post.slug);
         fs.mkdirSync(dir,{recursive:true});
+        const al = (lang==='uk' ? (D.archetypes_uk||{}) : (D.archetypes||{}))[n.archetype] || n.archetype;
+        fs.writeFileSync(path.join(dir,'cover.svg'), coverSVG({
+          eyebrow: lang==='uk' ? '// блог · автоматизація продажів' : '// блог · автоматизация продаж',
+          title: post.title, sub: f.name, archLabel: al, archetype: n.archetype,
+          term: 'docker compose up -d',
+        }));
         fs.writeFileSync(path.join(dir,'index.html'), renderArticle(n, lang, post, themeIdx, pretty(post.publishedAt||post.publish,lang), related, altUrl));
       }
     }

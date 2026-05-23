@@ -130,13 +130,12 @@
             <div class="row2"><span>${T('niche.type')}</span><span>${archLabel(n.archetype)}</span></div>
             <div class="row2"><span>${T('niche.sector')}</span><span>${esc(n.sector)}</span></div>
             <div class="row2"><span>${T('niche.target')}</span><span>${esc(cta)}</span></div>
-            <div class="row2"><span>${T('niche.repo')}</span><span class="mono">sl-claw-${n.slug}</span></div>
             <a class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px" href="checkout.html?niche=${n.slug}&tier=${n.tier}">${T('cta.getbot')}</a>
             <button type="button" class="btn-ask" onclick="var b=document.querySelector('.dw-btn');if(b){b.click()}" style="width:100%;justify-content:center;margin-top:8px;background:none;border:0;color:#0b0f19;font:600 .82rem/1.2 inherit;cursor:pointer;padding:8px;text-decoration:underline;text-underline-offset:3px;opacity:.75">${T('cta.askconsult')}</button>
           </div>
           <div class="box">
             <div class="muted mono" style="font-size:.78rem">${T('niche.deploy')}</div>
-            <div class="deploy"><span class="c">$</span> git clone …/sl-claw-${n.slug}
+            <div class="deploy"><span class="d"># доступ к боту — после оплаты</span>
 <span class="c">$</span> cp .env.example .env
 <span class="c">$</span> docker compose up -d</div>
           </div>

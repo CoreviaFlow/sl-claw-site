@@ -444,3 +444,5 @@ section{padding:64px 0}
 .trust-list li{position:relative;padding-left:20px;font-size:.82rem;color:var(--ink-soft);line-height:1.4}
 .trust-list li::before{content:"\2713";position:absolute;left:0;color:#16a34a;font-weight:700}
 .trust-list a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+/* SVG-обложка (ниша/пост) — картинка в теле, без CLS (aspect-ratio + width/height) */
+.cover{display:block;width:100%;height:auto;aspect-ratio:1200/630;border:1px solid var(--line);border-radius:12px;margin:0 0 20px;background:var(--bg-soft)}

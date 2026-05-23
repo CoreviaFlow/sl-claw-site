@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+<rect width="1200" height="630" fill="#ffffff"/>
+<rect x="0" y="0" width="10" height="630" fill="#10b981"/>
+<rect x="1" y="1" width="1198" height="628" fill="none" stroke="#e6e8ec" stroke-width="2"/>
+<text x="72" y="98" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" font-size="30" fill="#0b0d10" letter-spacing="-1">SL<tspan fill="#047857">_</tspan>CLAW</text>
+<g transform="translate(937,76)">
+  <rect rx="999" ry="999" width="191" height="34" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="95.5" y="23" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" fill="#1d4ed8">Продажа товара</text>
+</g>
+<text x="72" y="166" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="20" fill="#8a93a0" letter-spacing="1">// AI-продавец под нишу</text>
+<text x="72" y="251.5" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-weight="800" font-size="70" fill="#0b0d10" letter-spacing="-1.5">Коммерческая</text><text x="72" y="328.5" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-weight="800" font-size="70" fill="#0b0d10" letter-spacing="-1.5">недвижимость</text>
+<text x="72" y="382.5" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-weight="400" font-size="25" fill="#5b6470">Подбирает помещение под бизнес-задачу, ведёт на</text><text x="72" y="416.5" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-weight="400" font-size="25" fill="#5b6470">просмотр.</text>
+<g transform="translate(72,526)">
+  <rect rx="12" ry="12" width="430" height="56" fill="#0e1116"/>
+  <text x="20" y="36" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="20"><tspan fill="#5be39a">$</tspan><tspan fill="#d7e0ea"> docker compose up -d</tspan></text>
+</g>
+<text x="1128" y="564" text-anchor="end" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" font-size="22" fill="#0b0d10">sl-claw.tech</text>
+<text x="1128" y="590" text-anchor="end" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="17" fill="#8a93a0">AI-продавец · продаёт в переписке 24/7</text>
+</svg>

@@ -8,6 +8,7 @@ const ROOT = __dirname;
 const D = JSON.parse(fs.readFileSync(path.join(ROOT, 'niches.json'), 'utf8'));
 const { repace } = require('./schedule-posts.js'); // мягкий разгон расписания
 const { phoneHTML } = require('./phone-demo-render.js'); // демо-диалог в телефоне (Telegram-стиль)
+const { coverSVG } = require('./cover-svg.js'); // SVG-обложка ниши (картинка в теле + Google Images)
 const BASE = 'https://sl-claw.tech';
 
 // Цены (зеркало window.PROMO в i18n.js): скидка только на Pro
@@ -257,6 +258,7 @@ ${jsonld(n, v, f, u)}
   </div>
   <div class="np-grid">
     <div class="main">
+      <img class="cover" src="cover.svg" width="1200" height="630" alt="AI-${sel} для «${esc(f.name)}» — ${esc(f.tagline)}" loading="lazy">
       <h2>${t.does}</h2>
       <p class="muted" style="margin:-6px 0 14px;font-size:.92rem">${t.fullseller}</p>
       <ul class="does">${f.does.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>
@@ -293,7 +295,7 @@ ${jsonld(n, v, f, u)}
       </div>
       <div class="box">
         <div class="muted mono" style="font-size:.78rem">${t.deploy}</div>
-        <div class="deploy"><span class="c">$</span> git clone …/sl-claw-${n.slug}
+        <div class="deploy"><span class="d"># доступ к боту — после оплаты</span>
 <span class="c">$</span> cp .env.example .env
 <span class="c">$</span> docker compose up -d</div>
       </div>
@@ -366,6 +368,12 @@ for(const n of D.niches){
   for(const v of VARIANTS){
     const dir = path.join(ROOT, v.dir, n.slug);
     fs.mkdirSync(dir, {recursive:true});
+    const fc = F(n, v.lang);
+    fs.writeFileSync(path.join(dir,'cover.svg'), coverSVG({
+      eyebrow: v.lang==='uk' ? '// AI-продавець під нішу' : '// AI-продавец под нишу',
+      title: fc.name, sub: fc.tagline,
+      archLabel: archLabel(n.archetype, v.lang), archetype: n.archetype,
+    }));
     const html = page(n,v);
     fs.writeFileSync(path.join(dir,'index.html'), html);
     cnt++;
