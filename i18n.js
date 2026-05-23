@@ -3,8 +3,8 @@
   window.LANG = (localStorage.getItem('sl_lang') === 'uk') ? 'uk' : 'ru';
   try { document.documentElement.lang = window.LANG; } catch (e) {}
 
-  // аналитика (GA4) — единый файл, грузится на всех страницах
-  try { var _a=document.createElement('script'); _a.src='/analytics.js'; _a.defer=true; document.head.appendChild(_a); } catch(e){}
+  // аналитика (GA4/Pixel) — грузим один раз; если тег уже в исходнике страницы, НЕ дублируем
+  try { if(!document.querySelector('script[src*="analytics.js"]')){ var _a=document.createElement('script'); _a.src='/analytics.js'; _a.defer=true; document.head.appendChild(_a); } } catch(e){}
 
   // ── Промо «Открытие маркетплейса»: скидка только на Professional до дедлайна ──
   // Скидка действует ТОЛЬКО на тариф Pro (Professional). Меняй здесь — подхватят витрина, страница ниши и checkout.
