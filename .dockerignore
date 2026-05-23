@@ -1,4 +1,22 @@
+# Не класть в рантайм-образ ничего, кроме статики, нужной для отдачи.
+# Сборочные скрипты, данные и CI не нужны в вебруте (и не должны быть доступны извне).
 .git
+.github
+.gstack
+.gitignore
 Dockerfile
 .dockerignore
 README.md
+*.md
+# build-only Node-скрипты (CI запускает их из репозитория, не из контейнера)
+seo-build.js
+publish.js
+schedule-posts.js
+phone-demo-render.js
+# исходные данные (рантайм использует niches.js, а не .json)
+niches.json
+posts-plan.json
+# бэкапы/мусор
+*.bak
+*.backup
+*.tmp
