@@ -341,18 +341,38 @@ function footerHTML(lang){
 function fmtDate(d){ return d.toISOString().slice(0,10); }
 function rng(seed){ let h=1779033703^seed.length; for(let i=0;i<seed.length;i++){ h=Math.imul(h^seed.charCodeAt(i),3432918353); h=h<<13|h>>>19; }
   return function(){ h=Math.imul(h^h>>>16,2246822507); h=Math.imul(h^h>>>13,3266489909); h^=h>>>16; return (h>>>0)/4294967296; }; }
-function schedule(titlesRu, titlesUk, seed){
-  const r = rng(seed);
-  const items = titlesRu.map(t=>({title:t,lang:'ru'})).concat(titlesUk.map(t=>({title:t,lang:'uk'})));
-  for(let i=items.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [items[i],items[j]]=[items[j],items[i]]; } // хаотичный порядок
-  let d = new Date('2026-05-23T09:00:00+03:00');
-  d.setDate(d.getDate() + Math.floor(r()*14)); // стартовый разброс ниши 0–13 дн
-  return items.map(it=>{
-    const gap = 1 + Math.floor(r()*3); // 1–3 дня (≈ через день, хаотично)
-    const hour = 8 + Math.floor(r()*11);
-    d = new Date(d.getTime() + gap*86400000); d.setHours(hour, Math.floor(r()*60));
-    return { title: it.title, lang: it.lang, publish: fmtDate(d), publishAt: d.toISOString(), status:'planned' };
-  });
+// Заготовка постов ниши: ru[i] и uk[i] — одна тема (поле theme=i). Даты ставит pairRamp.
+function schedule(titlesRu, titlesUk){
+  const posts = [];
+  titlesRu.forEach((t,i)=>posts.push({ title:t, lang:'ru', theme:i, status:'planned' }));
+  titlesUk.forEach((t,i)=>posts.push({ title:t, lang:'uk', theme:i, status:'planned' }));
+  return posts;
+}
+// Раскладывает план ПАРАМИ: ru[i] и uk[i] одной темы → один день, разное время суток
+// (ru в одну cron-волну, uk в другую → hreflang ru↔uk работает сразу). Мягкий разгон по парам.
+function pairRamp(plan){
+  const h32 = s => { let h=2166136261>>>0; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; };
+  const p2 = x => String(x).padStart(2,'0');
+  const units = [];
+  for(const slug in plan.niches){
+    const byTheme = {};
+    for(const p of plan.niches[slug].posts){ (byTheme[p.theme] = byTheme[p.theme]||{})[p.lang] = p; }
+    for(const idx in byTheme){ const g = byTheme[idx];
+      units.push(g.ru&&g.uk ? {slug,idx:+idx,ru:g.ru,uk:g.uk} : {slug,idx:+idx,one:g.ru||g.uk}); }
+  }
+  units.sort((a,b)=>h32(a.slug+'|'+a.idx) - h32(b.slug+'|'+b.idx));
+  let d = new Date('2026-05-26T00:00:00Z'), dayIdx=0, used=0, count=0;
+  const cap = i => Math.min(17, 3 + Math.floor(i/2));   // пар/день: 3 → +1 каждые 2 дня → потолок 17
+  const setT = (p,date,hh,mm) => { p.publish=date; p.publishAt=date+'T'+p2(hh)+':'+p2(mm)+':00Z'; delete p.theme; };
+  for(const u of units){
+    if(used>=cap(dayIdx)){ d=new Date(d.getTime()+86400000); dayIdx++; used=0; }
+    const date=d.toISOString().slice(0,10), h=h32(u.slug+'|'+u.idx);
+    const hourA=7+(h%8), hourB=16+((h>>>3)%7), mA=h%60, mB=(h>>>5)%60;  // ранняя и поздняя волна
+    if(u.ru&&u.uk){ if(h&1){ setT(u.ru,date,hourA,mA); setT(u.uk,date,hourB,mB); } else { setT(u.uk,date,hourA,mA); setT(u.ru,date,hourB,mB); } count+=2; }
+    else { setT(u.one,date,(h&1)?hourA:hourB,mA); count++; }
+    used++;
+  }
+  return { count, days:dayIdx+1, start:'2026-05-26' };
 }
 
 let cnt=0;
@@ -413,9 +433,9 @@ const planFile = path.join(ROOT,'posts-plan.json');
 if(fs.existsSync(planFile)){
   console.log('posts-plan.json существует — пропускаю (живой план). Для разгона: node schedule-posts.js');
 } else {
-  const sch = repace(postsPlan, {});            // мягкий разгон: 5/день → +1 каждые 2 дня → потолок 35
-  postsPlan._meta.cadence = 'мягкий разгон: 5/день → +1 каждые 2 дня → потолок 35/день';
-  console.log('расписание: planned', sch.count, 'за', sch.days, 'дней, старт', sch.start);
+  const sch = pairRamp(postsPlan);              // пары ru+uk одной темы → один день, разное время
+  postsPlan._meta.cadence = 'пары ru+uk одной темы — в один день, разное время; разгон 3→17 пар/день';
+  console.log('расписание (пары):', sch.count, 'постов за', sch.days, 'дней, старт', sch.start);
   fs.writeFileSync(planFile, JSON.stringify(postsPlan,null,1));
 }
 console.log('страниц ниш сгенерировано:', cnt, '(', D.niches.length, 'ниш ×', VARIANTS.length, 'гео )');
