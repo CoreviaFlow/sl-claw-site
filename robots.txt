@@ -30,4 +30,3 @@ Allow: /
 
 Sitemap: https://sl-claw.tech/sitemap.xml
 Sitemap: https://sl-claw.tech/sitemap-blog.xml
-Sitemap: https://sl-claw.tech/llms-full.txt
