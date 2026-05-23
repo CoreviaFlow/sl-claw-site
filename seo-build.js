@@ -226,7 +226,7 @@ ${alts}
 <meta property="og:title" content="${esc(ttl)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${u}">
-<meta property="og:image" content="${BASE}/icon-512.png">
+<meta property="og:image" content="${BASE}/og.png">
 <meta property="og:site_name" content="SL-CLAW">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">

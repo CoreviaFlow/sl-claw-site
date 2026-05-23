@@ -71,7 +71,7 @@
     if (!inv) return; // нема invoice → нема що рахувати (пряме відвідування)
     if (typeof window.slclawTrack === 'function') {
       window.slclawTrack('Purchase',
-        { value: val, currency: 'UAH', content_type: 'product', order_id: inv },
+        { value: val, currency: 'USD', content_type: 'product', order_id: inv },
         {}, 'purchase_' + inv);     // фіксований event_id = дедуп з webhook
     }
     // прибрати щоб refresh не задвоїв
