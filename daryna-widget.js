@@ -16,7 +16,7 @@
   }[LANG];
 
   var WS_URL = "wss://daryna.coreviaflow.space/ws/";
-  var PRONOUNCE = { "SL-CLAW": "Эс-эл Кло", "SL CLAW": "Эс-эл Кло" };
+  var PRONOUNCE = { "SL-CLAW": "Эс-эл Кло", "SL CLAW": "Эс-эл Кло", "AI": "Эй-Ай", "ШІ": "Эй-Ай" };
   var uid = localStorage.getItem("daryna_uid") ||
     ("web-" + Math.random().toString(36).slice(2) + Date.now().toString(36));
   localStorage.setItem("daryna_uid", uid);
