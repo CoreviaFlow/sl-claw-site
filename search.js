@@ -45,7 +45,7 @@
             return '<a class="sr'+(i===0?' active':'')+'" href="'+(localStorage.getItem('sl_lang')==='uk'?'/ua/':'/n/')+n.slug+'/">' +
               '<span class="srn">'+nm(n)+'</span>' +
               '<span class="srt tag '+n.archetype+'">'+al(n)+'</span>' +
-              '<span class="srs">'+n.sector+'</span></a>';
+              '<span class="srs">'+(window.secT?window.secT(n.sector):n.sector)+'</span></a>';
           }).join('')
         : '<div class="sr-empty">'+L('cat.empty','// ничего не найдено')+'</div>';
     }

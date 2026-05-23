@@ -92,7 +92,7 @@
         <h3>${trN(n,'name')}</h3>
         <p class="tl">${trN(n,'tagline')}</p>
         <div class="cap">${cap}</div>
-        <div class="foot"><span class="cta"><b class="gl">${T('niche.target')}</b>${trN(n,'cta')} →</span><span class="sector">${n.sector}</span></div>
+        <div class="foot"><span class="cta"><b class="gl">${T('niche.target')}</b>${trN(n,'cta')} →</span><span class="sector">${secT(n.sector)}</span></div>
       </a>
       <a class="btn btn-primary ncard-buy" href="checkout.html?niche=${n.slug}&tier=${n.tier}">${T('cta.getbot')} →</a>
     </div>`;
