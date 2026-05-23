@@ -339,7 +339,7 @@ function schedule(titlesRu, titlesUk, seed){
     const gap = 1 + Math.floor(r()*3); // 1–3 дня (≈ через день, хаотично)
     const hour = 8 + Math.floor(r()*11);
     d = new Date(d.getTime() + gap*86400000); d.setHours(hour, Math.floor(r()*60));
-    return { title: it.title, lang: it.lang, publish: fmtDate(d), status:'planned' };
+    return { title: it.title, lang: it.lang, publish: fmtDate(d), publishAt: d.toISOString(), status:'planned' };
   });
 }
 

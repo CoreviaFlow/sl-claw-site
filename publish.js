@@ -22,7 +22,12 @@ const { coverSVG } = require('./cover-svg.js'); // SVG-обложка поста
 const PLAN_PATH = path.join(ROOT, 'posts-plan.json');
 const plan = JSON.parse(fs.readFileSync(PLAN_PATH, 'utf8'));
 
-const ASOF = (process.env.PUBLISH_AS_OF || new Date().toISOString().slice(0, 10));
+// «сейчас» в UTC ISO. Публикуем посты, у которых publishAt уже наступил → дрип растекается
+// по дню (cron гоняется несколько раз: ночь/день/вечер). PUBLISH_AS_OF может быть датой или datetime.
+const NOW = process.env.PUBLISH_AS_OF
+  ? (process.env.PUBLISH_AS_OF.length <= 10 ? process.env.PUBLISH_AS_OF + 'T23:59:59Z' : process.env.PUBLISH_AS_OF)
+  : new Date().toISOString();
+const ASOF = NOW.slice(0, 10); // для логов/совместимости
 const LIMIT = process.env.PUBLISH_LIMIT ? parseInt(process.env.PUBLISH_LIMIT, 10) : Infinity;
 const REBUILD = process.env.PUBLISH_REBUILD === '1'; // перерендерить ВСЕ опубликованные статьи (при смене шаблона/CSS)
 const CSSV = 'v=3'; // версия для cache-busting статических ассетов
@@ -725,7 +730,8 @@ for(const slug in plan.niches){
   const n = niceBySlug[slug]; if(!n) continue;
   for(const post of plan.niches[slug].posts){
     if(post.status === 'published') continue;
-    if(post.publish > ASOF) continue;
+    const due = post.publishAt || (post.publish + 'T23:59:59Z'); // нет времени → конец дня
+    if(due > NOW) continue;
     if(published >= LIMIT) break outer;
     const lang = post.lang;
     const f = F(n, lang);
