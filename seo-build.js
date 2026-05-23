@@ -311,7 +311,7 @@ ${jsonld(n, v, f, u)}
       </div>
       <div class="box">
         <div class="muted mono" style="font-size:.78rem">${t.deploy}</div>
-        <div class="deploy"><span class="d"># доступ к боту — после оплаты</span>
+        <div class="deploy"><span class="d">${v.lang==='uk'?'# доступ до бота — після оплати':'# доступ к боту — после оплаты'}</span>
 <span class="c">$</span> cp .env.example .env
 <span class="c">$</span> docker compose up -d</div>
       </div>
