@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = __dirname;
 const D = JSON.parse(fs.readFileSync(path.join(ROOT, 'niches.json'), 'utf8'));
+const { repace } = require('./schedule-posts.js'); // мягкий разгон расписания
 const BASE = 'https://sl-claw.tech';
 
 // Цены (зеркало window.PROMO в i18n.js): скидка только на Pro
@@ -22,6 +23,18 @@ const VARIANTS = [
   { key:'asia', dir:'asia', lang:'ru', hl:'ru-KZ', geoWord:'в Казахстане, Узбекистане и Азии', geoTitle:'в Казахстане и Узбекистане' },
 ];
 const urlFor = (v, slug) => `${BASE}/${v.dir}/${slug}/`;
+
+// Блог-посты живут только в гео ru → /n/, uk → /ua/ (заполняет publish.js).
+const DIR = lang => (lang === 'uk' ? 'ua' : 'n');
+// posts-plan.json — живые статусы публикаций. На самой первой сборке файла ещё нет.
+let PLAN = {};
+try { PLAN = (JSON.parse(fs.readFileSync(path.join(ROOT, 'posts-plan.json'), 'utf8')).niches) || {}; } catch (e) {}
+// Только РЕАЛЬНО опубликованные посты ниши на этом языке, свежие сверху.
+function publishedPosts(slug, lang){
+  const np = PLAN[slug]; if(!np) return [];
+  return (np.posts || []).filter(p => p.status === 'published' && p.lang === lang && p.slug)
+    .sort((a, b) => (b.publishedAt || b.publish).localeCompare(a.publishedAt || a.publish));
+}
 
 // поля под язык
 function F(n, lang){
@@ -46,6 +59,7 @@ const UI = {
        handles:'Снимает возражения', knows:'Что бот знает в нише', demo:'Живой пример диалога',
        market:'Цифры рынка ниши', online:'в сети', getbot:'Получить бота', askconsult:'Спросить у консультанта', blog:'Полезные материалы',
        blogsub:'Статьи по автоматизации продаж в нише — обновляются регулярно.',
+       blogsoon:'Первые материалы скоро — публикуем по мере готовности.',
        deploy:'развернуть за час', pipe:'диалог → квалификация → снятие возражений → сделка · 24/7 во всех каналах',
        once:'разово', sale:'цена со скидкой', price:'цена',
        crumbHome:'Главная', crumbCat:'Каталог' },
@@ -56,6 +70,7 @@ const UI = {
        handles:'Знімає заперечення', knows:'Що бот знає в ніші', demo:'Живий приклад діалогу',
        market:'Цифри ринку ніші', online:'у мережі', getbot:'Отримати бота', askconsult:'Запитати у консультанта', blog:'Корисні матеріали',
        blogsub:'Статті з автоматизації продажів у ніші — оновлюються регулярно.',
+       blogsoon:'Перші матеріали незабаром — публікуємо в міру готовності.',
        deploy:'розгорнути за годину', pipe:'діалог → кваліфікація → зняття заперечень → угода · 24/7 в усіх каналах',
        once:'одноразово', sale:'ціна зі знижкою', price:'ціна',
        crumbHome:'Головна', crumbCat:'Каталог' },
@@ -167,7 +182,14 @@ function page(n, v){
   // демо
   const greet = v.lang==='uk'?'Вітаю! Я Анна, AI-продавець. Чим допоможу?':'Здравствуйте! Я Анна, AI-продавец. Чем помогу?';
   const msgs = [['bot',greet],['them',f.demo.them],['bot',f.demo.bot]].filter(m=>m[1]);
-  const posts = postTitles(f.name, v.lang).slice(0, 14);
+  // Блок «Полезные материалы»: только реально опубликованные статьи (ссылками).
+  // Если публикаций ещё нет — пустой список с пометкой «скоро». Разметка совместима
+  // с regex в publish.js → дрип-публикатор будет наполнять её при выходе постов.
+  const pubPosts = publishedPosts(n.slug, v.lang).slice(0, 12);
+  const blogBlock = pubPosts.length
+    ? `<ul class="blog-list">${pubPosts.map(p=>`<li><a href="/${DIR(v.lang)}/${n.slug}/blog/${p.slug}/">${esc(p.title)}</a></li>`).join('')}</ul>`
+      + `<p style="margin-top:8px"><a href="/${DIR(v.lang)}/${n.slug}/blog/" class="mono" style="font-size:.85rem">${v.lang==='uk'?'Усі матеріали →':'Все материалы →'}</a></p>`
+    : `<ul class="blog-list"><li class="muted">${t.blogsoon}</li></ul>`;
   const langSwitch = VARIANTS.map(x=>`<a href="${urlFor(x,n.slug)}"${x.key===v.key?' class="on"':''}>${x.hl}</a>`).join('');
 
   return `<!doctype html>
@@ -195,7 +217,7 @@ ${alts}
 <link rel="icon" href="/favicon.ico?v=2" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?v=3">
 <script src="/analytics.js" defer></script>
 <script src="/daryna-widget.js" defer></script>
 ${jsonld(n, v, f, u)}
@@ -224,7 +246,7 @@ ${jsonld(n, v, f, u)}
       <h2>${t.does}</h2>
       <p class="muted" style="margin:-6px 0 14px;font-size:.92rem">${t.fullseller}</p>
       <ul class="does">${f.does.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>
-      <div class="promo-note" style="margin:4px 0 2px">🧠 ${t.feed}</div>
+      <div class="promo-note" style="margin:4px 0 2px">${t.feed}</div>
       ${f.objections.length?`<h2>${t.handles}</h2><div class="chips-row">${f.objections.map(o=>`<span class="chipx">${esc(o)}</span>`).join('')}</div>`:''}
       ${f.knows.length?`<h2>${t.knows}</h2><div class="chips-row">${f.knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div>`:''}
 
@@ -235,7 +257,7 @@ ${jsonld(n, v, f, u)}
 
       <h2>${t.blog}</h2>
       <p class="muted" style="margin:-6px 0 12px;font-size:.9rem">${t.blogsub}</p>
-      <ul class="blog-list">${posts.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>
+      ${blogBlock}
     </div>
 
     <aside class="side">
@@ -267,15 +289,15 @@ const MC='<svg class="pay-ic" viewBox="0 0 48 30" xmlns="http://www.w3.org/2000/
 const LEGAL={entity:'ТОВ «Корвія Флоу»', edrpou:'3420600578', email:'support@sl-claw.tech'};
 function footerHTML(lang){
   const uk=lang==='uk';
-  const t=uk?{tag:'AI-продавці під нішу',accept:'Приймаємо до оплати',mh:'Маркетплейс',cat:'Каталог ніш',price:'Тарифи',how:'Як це працює',cab:'Кабінет ↗',dh:'Документи',oferta:'Публічна оферта',privacy:'Політика конфіденційності',pay:'Оплата, доставка та повернення',contacts:'Контакти та реквізити',ch:'Контакти',edr:'ЄДРПОУ: ',geo:'Послуги недоступні для резидентів рф та рб'}
-    :{tag:'AI-продавцы под нишу',accept:'Принимаем к оплате',mh:'Маркетплейс',cat:'Каталог ниш',price:'Тарифы',how:'Как это работает',cab:'Кабинет ↗',dh:'Документы',oferta:'Публичная оферта',privacy:'Политика конфиденциальности',pay:'Оплата, доставка и возврат',contacts:'Контакты и реквизиты',ch:'Контакты',edr:'ЕГРПОУ: ',geo:'Услуги недоступны для резидентов рф и рб'};
+  const t=uk?{tag:'AI-продавці під нішу',accept:'Приймаємо до оплати',mh:'Маркетплейс',cat:'Каталог ніш',price:'Тарифи',how:'Як це працює',cab:'Кабінет ↗',blog:'Блог',dh:'Документи',oferta:'Публічна оферта',privacy:'Політика конфіденційності',pay:'Оплата, доставка та повернення',contacts:'Контакти та реквізити',ch:'Контакти',edr:'ЄДРПОУ: ',geo:'Послуги недоступні для резидентів рф та рб'}
+    :{tag:'AI-продавцы под нишу',accept:'Принимаем к оплате',mh:'Маркетплейс',cat:'Каталог ниш',price:'Тарифы',how:'Как это работает',cab:'Кабинет ↗',blog:'Блог',dh:'Документы',oferta:'Публичная оферта',privacy:'Политика конфиденциальности',pay:'Оплата, доставка и возврат',contacts:'Контакты и реквизиты',ch:'Контакты',edr:'ЕГРПОУ: ',geo:'Услуги недоступны для резидентов рф и рб'};
   return `<footer class="foot-site"><div class="wrap foot-grid">
     <div class="fcol fcol-brand"><span class="logo">SL<b>_</b>CLAW</span><p class="fc-sub mono">${t.tag} · COREVIA FLOW</p><div class="fc-sub mono">${t.accept}:</div><div class="pay-badges">${VISA}${MC}</div></div>
-    <div class="fcol"><div class="fc-h">${t.mh}</div><a href="/catalog.html">${t.cat}</a><a href="/pricing.html">${t.price}</a><a href="/#how">${t.how}</a><a href="https://app.sl-claw.tech" target="_blank" rel="noopener">${t.cab}</a></div>
+    <div class="fcol"><div class="fc-h">${t.mh}</div><a href="/catalog.html">${t.cat}</a><a href="/pricing.html">${t.price}</a><a href="/#how">${t.how}</a><a href="/blog/">${t.blog}</a><a href="https://app.sl-claw.tech" target="_blank" rel="noopener">${t.cab}</a></div>
     <div class="fcol"><div class="fc-h">${t.dh}</div><a href="/oferta.html">${t.oferta}</a><a href="/privacy.html">${t.privacy}</a><a href="/payment-refund.html">${t.pay}</a><a href="/contacts.html">${t.contacts}</a></div>
     <div class="fcol"><div class="fc-h">${t.ch}</div><a href="mailto:${LEGAL.email}">${LEGAL.email}</a><div class="fc-sub mono">${LEGAL.entity}</div></div>
   </div>
-  <div class="wrap foot-bottom mono"><span>© 2026 ${LEGAL.entity}</span><span class="geo-note">⛔ ${t.geo}</span></div></footer>`;
+  <div class="wrap foot-bottom mono"><span>© 2026 ${LEGAL.entity}</span><span class="geo-note">${t.geo}</span></div></footer>`;
 }
 
 // ── генерация ──
@@ -325,7 +347,17 @@ ${head}
 ${sitemap.join('\n')}
 </urlset>
 `);
-fs.writeFileSync(path.join(ROOT,'posts-plan.json'), JSON.stringify(postsPlan,null,1));
+// posts-plan.json — НЕ перезаписываем, если уже есть (там живые статусы published + расписание).
+// Расписанием управляют schedule-posts.js (разгон) и publish.js (публикация).
+const planFile = path.join(ROOT,'posts-plan.json');
+if(fs.existsSync(planFile)){
+  console.log('posts-plan.json существует — пропускаю (живой план). Для разгона: node schedule-posts.js');
+} else {
+  const sch = repace(postsPlan, {});            // мягкий разгон: 5/день → +1 каждые 2 дня → потолок 35
+  postsPlan._meta.cadence = 'мягкий разгон: 5/день → +1 каждые 2 дня → потолок 35/день';
+  console.log('расписание: planned', sch.count, 'за', sch.days, 'дней, старт', sch.start);
+  fs.writeFileSync(planFile, JSON.stringify(postsPlan,null,1));
+}
 console.log('страниц ниш сгенерировано:', cnt, '(', D.niches.length, 'ниш ×', VARIANTS.length, 'гео )');
 console.log('sitemap URL:', staticUrls.length + sitemap.length);
 console.log('posts-plan: 50 заголовков/нишу (', Object.keys(postsPlan).length, 'ниш )');

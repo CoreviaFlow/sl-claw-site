@@ -1,0 +1,52 @@
+name: Publish blog posts (drip)
+
+# Дрип-публикация SEO-постов: каждый день в 01:00 по Киеву.
+# 22:00 UTC = 01:00 EEST (лето). Зимой (EET) это будет 00:00 — допустимо.
+# Можно запустить вручную через "Run workflow" (workflow_dispatch).
+on:
+  schedule:
+    - cron: '0 22 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-posts
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Publish due posts
+        run: node publish.js
+
+      - name: Commit & push if changed
+        id: commit
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Нет изменений — публиковать нечего."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "sl-claw-bot"
+          git config user.email "no-reply@sl-claw.tech"
+          git add -A
+          git commit -m "chore(blog): дрип-публикация постов $(date -u +%Y-%m-%d)"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger Coolify redeploy
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          curl -fsS -X POST \
+            "https://deploy-pro.coreviaflow.space/api/v1/deploy?uuid=d8p5bshpekutxt15d6w5ee4y&force=true" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}"
+          echo "Deploy triggered."

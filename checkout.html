@@ -13,7 +13,7 @@
 <link rel="icon" href="favicon.ico?v=2" sizes="any">
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=3">
 <script src="/analytics.js" defer></script>
 </head>
 <body>
@@ -41,6 +41,12 @@
         <small id="emailhint">На него придёт доступ к репозиторию бота и чек об оплате.</small>
       </label>
 
+      <label class="co-field">
+        <span class="co-lbl" id="phonelbl">Телефон <i>для связи</i></span>
+        <input type="tel" id="phone" placeholder="+380 __ ___ __ __" autocomplete="tel" inputmode="tel">
+        <small id="phonehint">Менеджер свяжется при необходимости и поможет с запуском.</small>
+      </label>
+
       <label class="co-agree"><input type="checkbox" id="agree">
         <span id="agreetxt">Я согласен с <a href="oferta.html" target="_blank" rel="noopener">публичной офертой</a> и <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.</span>
       </label>
@@ -49,10 +55,10 @@
       <div id="coerr" class="co-err" style="display:none"></div>
 
       <div class="co-secure" id="cosecure">
-        🔒 Оплата картами Visa / Mastercard через Monobank. Данные карты вводятся на стороне банка — мы их не получаем.
+        Оплата картами Visa / Mastercard через Monobank. Данные карты вводятся на стороне банка — мы их не получаем.
         <span class="pay-badges" id="cobadges"></span>
       </div>
-      <div class="co-secure" id="cogeo" style="margin-top:8px">⛔ Услуги недоступны для резидентов рф и рб.</div>
+      <div class="co-secure" id="cogeo" style="margin-top:8px">Услуги недоступны для резидентов рф и рб.</div>
       <div id="coimpl" style="margin-top:16px;padding:14px 16px;border:1px solid #cdebd9;background:#f0faf4;border-radius:14px;font-size:13.5px;line-height:1.55;color:#0f5132"></div>
     </div>
   </div>
@@ -72,25 +78,31 @@
     title:'Оформлення замовлення — SL-CLAW', crumbT:'тарифи', crumbC:'оформлення', h1:'Оформлення замовлення',
     emaillbl:'Email <i>для доступу та чека</i>',
     emailhint:'На нього прийде доступ до репозиторію бота і чек про оплату.',
+    phonelbl:'Телефон <i>для звʼязку</i>',
+    phonehint:'Менеджер звʼяжеться за потреби та допоможе із запуском.',
+    errPhone:'Вкажіть телефон для звʼязку.',
     agree:'Я погоджуюсь з <a href="oferta.html" target="_blank" rel="noopener">публічною офертою</a> та <a href="privacy.html" target="_blank" rel="noopener">політикою конфіденційності</a>.',
     pay:'Сплатити карткою →', payGo:'Перехід до оплати…',
-    secure:'🔒 Оплата картками Visa / Mastercard через Monobank. Дані картки вводяться на стороні банку — ми їх не отримуємо.',
-    geo:'⛔ Послуги недоступні для резидентів рф та рб.',
+    secure:'Оплата картками Visa / Mastercard через Monobank. Дані картки вводяться на стороні банку — ми їх не отримуємо.',
+    geo:'Послуги недоступні для резидентів рф та рб.',
     order:'замовлення', nodisc:'Без знижки', sale:'За акцією', price:'Ціна', typeLbl:'Тип', typeVal:'разовий платіж · бот назавжди',
     save:'Економія', prodPrefix:'AI-продавець: ',
-    impl:'💼 <b>Потрібно більше?</b> Після оплати можна доплатити й замовити <b>індивідуальне впровадження «під ключ»</b> у ваш бізнес — налаштування під процеси, інтеграції та навчання команди. Вартість послуги — <b>від $2000</b>.',
+    impl:'<b>Потрібно більше?</b> Після оплати можна доплатити й замовити <b>індивідуальне впровадження «під ключ»</b> у ваш бізнес — налаштування під процеси, інтеграції та навчання команди. Вартість послуги — <b>від $2000</b>.',
     errEmail:'Введіть коректний email — на нього прийде доступ і чек.', errAgree:'Підтвердіть згоду з офертою та політикою конфіденційності.'
   } : {
     title:'Оформление заказа — SL-CLAW', crumbT:'тарифы', crumbC:'оформление', h1:'Оформление заказа',
     emaillbl:'Email <i>для доступа и чека</i>',
     emailhint:'На него придёт доступ к репозиторию бота и чек об оплате.',
+    phonelbl:'Телефон <i>для связи</i>',
+    phonehint:'Менеджер свяжется при необходимости и поможет с запуском.',
+    errPhone:'Укажите телефон для связи.',
     agree:'Я согласен с <a href="oferta.html" target="_blank" rel="noopener">публичной офертой</a> и <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.',
     pay:'Оплатить картой →', payGo:'Переход к оплате…',
-    secure:'🔒 Оплата картами Visa / Mastercard через Monobank. Данные карты вводятся на стороне банка — мы их не получаем.',
-    geo:'⛔ Услуги недоступны для резидентов рф и рб.',
+    secure:'Оплата картами Visa / Mastercard через Monobank. Данные карты вводятся на стороне банка — мы их не получаем.',
+    geo:'Услуги недоступны для резидентов рф и рб.',
     order:'заказ', nodisc:'Без скидки', sale:'По акции', price:'Цена', typeLbl:'Тип', typeVal:'разовый платёж · бот навсегда',
     save:'Экономия', prodPrefix:'AI-продавец: ',
-    impl:'💼 <b>Нужно больше?</b> После оплаты можно доплатить и заказать <b>индивидуальное внедрение «под ключ»</b> в ваш бизнес — настройка под процессы, интеграции и обучение команды. Стоимость услуги — <b>от $2000</b>.',
+    impl:'<b>Нужно больше?</b> После оплаты можно доплатить и заказать <b>индивидуальное внедрение «под ключ»</b> в ваш бизнес — настройка под процессы, интеграции и обучение команды. Стоимость услуги — <b>от $2000</b>.',
     errEmail:'Введите корректный email — на него придёт доступ и чек.', errAgree:'Подтвердите согласие с офертой и политикой конфиденциальности.'
   };
 
@@ -98,6 +110,7 @@
   function setHTML(id,v){ var e=document.getElementById(id); if(e) e.innerHTML=v; }
   setHTML('cocrumbT',TX.crumbT); setHTML('cocrumbC',TX.crumbC); setHTML('cohead',TX.h1);
   setHTML('emaillbl',TX.emaillbl); setHTML('emailhint',TX.emailhint); setHTML('agreetxt',TX.agree);
+  setHTML('phonelbl',TX.phonelbl); setHTML('phonehint',TX.phonehint);
   setHTML('pay',TX.pay); setHTML('cogeo',TX.geo); setHTML('coimpl',TX.impl);
   setHTML('cosecure', TX.secure + '<span class="pay-badges" id="cobadges"></span>');
 
@@ -108,13 +121,13 @@
   var nicheSlug = (P.get('niche')||'').toLowerCase();
 
   var TIER_NAME = uk ? {
-    Lite:{t:'Core', s:'рушій-продавець «baby» 👶', inc:'ядро + персона, живий діалог у всіх каналах'},
-    Std :{t:'Core + Study', s:'зі школою продажів 🎓', inc:'+ методологія продажів (SPIN, MEDDPICC, заперечення)'},
-    Pro :{t:'Core + Study + Professional', s:'експерт ніші 🧠', inc:'+ професійна експертиза ніші (ринок, цифри, угоди)'}
+    Lite:{t:'Core', s:'рушій-продавець «baby»', inc:'ядро + персона, живий діалог у всіх каналах'},
+    Std :{t:'Core + Study', s:'зі школою продажів', inc:'+ методологія продажів (SPIN, MEDDPICC, заперечення)'},
+    Pro :{t:'Core + Study + Professional', s:'експерт ніші', inc:'+ професійна експертиза ніші (ринок, цифри, угоди)'}
   } : {
-    Lite:{t:'Core', s:'движок-продавец «baby» 👶', inc:'ядро + персона, живой диалог во всех каналах'},
-    Std :{t:'Core + Study', s:'со школой продаж 🎓', inc:'+ методология продаж (SPIN, MEDDPICC, возражения)'},
-    Pro :{t:'Core + Study + Professional', s:'эксперт ниши 🧠', inc:'+ профессиональная экспертиза ниши (рынок, цифры, сделки)'}
+    Lite:{t:'Core', s:'движок-продавец «baby»', inc:'ядро + персона, живой диалог во всех каналах'},
+    Std :{t:'Core + Study', s:'со школой продаж', inc:'+ методология продаж (SPIN, MEDDPICC, возражения)'},
+    Pro :{t:'Core + Study + Professional', s:'эксперт ниши', inc:'+ профессиональная экспертиза ниши (рынок, цифры, сделки)'}
   };
   var pr = (window.PROMO && window.PROMO.prices[tier]) || {price:''};
   var onSale = !!(pr.sale && window.promoActive && window.promoActive());
@@ -155,7 +168,13 @@
     var email = (document.getElementById('email').value||'').trim();
     var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if(!ok){ showErr(TX.errEmail); document.getElementById('email').focus(); return; }
+    var phone = (document.getElementById('phone').value||'').trim();
+    if(phone.replace(/[^0-9]/g,'').length < 7){ showErr(TX.errPhone); document.getElementById('phone').focus(); return; }
     if(!document.getElementById('agree').checked){ showErr(TX.errAgree); return; }
+    // лид → CRM «It цифра» (через бэкенд pay /lead, который форвардит в CRM)
+    try { fetch('https://pay.sl-claw.tech/lead', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email:email, phone:phone, niche:refNiche, tier:tier, price:String(priceNow), lang:LANG, source:'checkout', url:location.href }),
+      keepalive:true }).catch(function(){}); } catch(e){}
     // FB InitiateCheckout (Pixel + CAPI) перед редіректом на оплату
     var icValue = parseFloat(String(priceNow).replace(/[^0-9.]/g,'')) || 0;
     if (typeof window.slclawTrack === 'function') {
@@ -166,7 +185,8 @@
     }
     var url = 'https://pay.sl-claw.tech/create?tier='+encodeURIComponent(tier)
             + '&niche='+encodeURIComponent(refNiche)
-            + '&email='+encodeURIComponent(email);
+            + '&email='+encodeURIComponent(email)
+            + '&phone='+encodeURIComponent(phone);
     // проброс атрибуції щоб Monobank-webhook міг віддати Purchase у FB
     if (typeof window.slclawPayParams === 'function') {
       var extra = window.slclawPayParams();
