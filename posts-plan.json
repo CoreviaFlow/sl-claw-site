@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "generated": "2026-05-22",
+  "generated": "2026-05-23",
   "per_niche": 50,
   "cadence": "каждую нишу — через день, хаотично (1–3 дня)",
   "rules": "Только настоящие цифры с источниками (Statista, Eurostat, Держстат, World Bank, NAR и т.п. — без РФ/Беларуси). Каждый текст уникальный, без плагиата. E-E-A-T.",
@@ -1844,7 +1844,9 @@
      "title": "Скільки коштує автоматизація продажів у «Вікна і двері»",
      "lang": "uk",
      "publish": "2026-05-25",
-     "status": "planned"
+     "status": "published",
+     "slug": "skilky-koshtuie-avtomatyzatsiia-prodazhiv-u",
+     "publishedAt": "2026-05-23T04:11:12.176Z"
     },
     {
      "title": "Чат-бот «Вікна і двері» у Telegram, WhatsApp і на сайті",
@@ -17094,7 +17096,9 @@
      "title": "Как бот квалифицирует клиента в нише «Коммерческий транспорт и грузовики»",
      "lang": "ru",
      "publish": "2026-05-24",
-     "status": "planned"
+     "status": "published",
+     "slug": "kak-bot-kvalyfytsyruet-klyenta-v-nyshe",
+     "publishedAt": "2026-05-23T04:11:12.177Z"
     },
     {
      "title": "Як автоматизувати продажі в ніші «Комерційний транспорт і вантажівки» — покроково",
@@ -17704,7 +17708,9 @@
      "title": "Розгорнути AI-продавця «Верстати з ЧПУ та металообробка» за годину: інструкція",
      "lang": "uk",
      "publish": "2026-05-25",
-     "status": "planned"
+     "status": "published",
+     "slug": "rozhornuty-ai-prodavtsia-za-hodynu-instruktsiia",
+     "publishedAt": "2026-05-23T04:11:12.180Z"
     },
     {
      "title": "Як бот кваліфікує клієнта в ніші «Верстати з ЧПУ та металообробка»",
@@ -25024,13 +25030,17 @@
      "title": "Автоворонка продаж для «Оборудование для салонов красоты»: схема",
      "lang": "ru",
      "publish": "2026-05-24",
-     "status": "planned"
+     "status": "published",
+     "slug": "avtovoronka-prodazh-dlia-skhema",
+     "publishedAt": "2026-05-23T04:11:12.180Z"
     },
     {
      "title": "Голосовой агент для «Оборудование для салонов красоты»: когда нужен апгрейд",
      "lang": "ru",
      "publish": "2026-05-25",
-     "status": "planned"
+     "status": "published",
+     "slug": "holosovoi-ahent-dlia-kohda-nuzhen-aphreid",
+     "publishedAt": "2026-05-23T04:11:12.180Z"
     },
     {
      "title": "Чат-бот для «Оборудование для салонов красоты»: сколько стоит и как внедрить",
@@ -25329,7 +25339,9 @@
      "title": "Как настроить бота под товары и цены в «Аренда жилья (долгосрочная)»",
      "lang": "ru",
      "publish": "2026-05-25",
-     "status": "planned"
+     "status": "published",
+     "slug": "kak-nastroyt-bota-pod-tovary-y-tseny-v",
+     "publishedAt": "2026-05-23T04:11:12.180Z"
     },
     {
      "title": "Как не терять заявки ночью в нише «Аренда жилья (долгосрочная)»",
@@ -27769,7 +27781,9 @@
      "title": "Чат-бот для «Інвестиції та брокерські послуги»: скільки коштує і як впровадити",
      "lang": "uk",
      "publish": "2026-05-25",
-     "status": "planned"
+     "status": "published",
+     "slug": "chat-bot-dlia-skilky-koshtuie-i-iak-vprovadyty",
+     "publishedAt": "2026-05-23T04:11:12.180Z"
     },
     {
      "title": "Как поднять конверсию из чата в нише «Инвестиции и брокерские услуги»",
@@ -29294,7 +29308,9 @@
      "title": "Как не терять заявки ночью в нише «Рекрутинг и подбор персонала»",
      "lang": "ru",
      "publish": "2026-05-24",
-     "status": "planned"
+     "status": "published",
+     "slug": "kak-ne-teriat-zaiavky-nochiu-v-nyshe",
+     "publishedAt": "2026-05-23T04:11:12.180Z"
     },
     {
      "title": "Обробка лідів у «Рекрутинг та підбір персоналу» без менеджера 24/7",
@@ -30514,7 +30530,9 @@
      "title": "Как автоматизировать продажи в нише «Финансовый консалтинг и CFO-as-a-service» — пошагово",
      "lang": "ru",
      "publish": "2026-05-25",
-     "status": "planned"
+     "status": "published",
+     "slug": "kak-avtomatyzyrovat-prodazhy-v-nyshe-poshahovo",
+     "publishedAt": "2026-05-23T04:11:12.181Z"
     },
     {
      "title": "ШІ-асистент для бізнесу «Фінансовий консалтинг та CFO-as-a-service»: можливості",
@@ -32344,13 +32362,17 @@
      "title": "Как обучить бота экспертизе ниши «Видеонаблюдение и охранные системы»",
      "lang": "ru",
      "publish": "2026-05-24",
-     "status": "planned"
+     "status": "published",
+     "slug": "kak-obuchyt-bota-ekspertyze-nyshy",
+     "publishedAt": "2026-05-23T04:11:12.181Z"
     },
     {
      "title": "Обробка лідів у «Відеоспостереження та охоронні системи» без менеджера 24/7",
      "lang": "uk",
      "publish": "2026-05-25",
-     "status": "planned"
+     "status": "published",
+     "slug": "obrobka-lidiv-u-bez-menedzhera-24-7",
+     "publishedAt": "2026-05-23T04:11:12.181Z"
     },
     {
      "title": "Чат-бот для «Відеоспостереження та охоронні системи»: скільки коштує і як впровадити",

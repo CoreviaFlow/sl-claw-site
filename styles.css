@@ -359,6 +359,35 @@ section{padding:64px 0}
 .legal .geo-warn{border:1px solid #f3c9cc;background:#fdf3f3;color:#b4232a;border-radius:10px;padding:12px 16px;font-size:.9rem;margin:16px 0}
 .g2{grid-template-columns:repeat(2,1fr)}
 
+/* ── статья блога ───────────────────────────────────────────────── */
+.post{max-width:760px;margin:0 auto;padding:8px 0 24px}
+.post h1{font-size:2rem;line-height:1.18;margin:14px 0 6px;letter-spacing:-.01em}
+.post-meta{color:var(--ink-faint);font-size:.78rem;margin:0 0 22px}
+.post-body{font-size:1.04rem;line-height:1.72;color:#23282f}
+.post-body h2{font-size:1.32rem;line-height:1.25;margin:30px 0 12px;letter-spacing:-.01em}
+.post-body p{margin:0 0 16px}
+.post-body ul,.post-body ol{margin:0 0 18px;padding-left:22px}
+.post-body li{margin:7px 0}
+.post-body .chips-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.post-body .stats{margin:6px 0 18px}
+.post-body .demo-static{margin:6px 0 18px}
+.post-body .deploy{margin:6px 0 18px}
+.faq{margin:6px 0 22px;display:flex;flex-direction:column;gap:8px}
+.faq details{border:1px solid var(--line);border-radius:10px;padding:12px 16px;background:var(--bg-soft)}
+.faq summary{cursor:pointer;font-weight:600;font-size:.98rem;color:var(--ink)}
+.faq details[open] summary{margin-bottom:8px}
+.faq details p{margin:0;color:var(--ink-soft);font-size:.95rem}
+.post-cta{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  border:1px solid var(--line-strong);border-radius:14px;padding:20px 22px;margin:26px 0 8px;background:var(--bg-soft)}
+.post-cta b{display:block;font-size:1.02rem;margin-bottom:3px}
+.post-cta span{color:var(--ink-soft);font-size:.9rem}
+.blog-list.big{columns:1;padding-left:0;list-style:none;margin:8px 0}
+.blog-list.big li{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  padding:13px 0;border-bottom:1px solid var(--line);font-size:1rem}
+.blog-list.big a{color:var(--ink);font-weight:500}
+.blog-list.big a:hover{color:#c2410c}
+.bl-date{color:var(--ink-faint);font-size:.76rem;white-space:nowrap;flex:none}
+
 /* ── мобильная адаптация (последний приоритет) ─────────────────── */
 @media(max-width:900px){
   .nav nav{margin-left:0 !important;order:3;width:100%;display:flex;gap:18px;font-size:.86rem;flex-wrap:wrap}
@@ -381,6 +410,12 @@ section{padding:64px 0}
   .cta .btn{width:100%;justify-content:center}
   .demo-static .dm{max-width:100%}
   .stat .sv{font-size:1.05rem}
+  .post h1{font-size:1.55rem}
+  .post-body{font-size:1rem}
+  .post-body h2{font-size:1.2rem}
+  .post-cta{flex-direction:column;align-items:stretch}
+  .post-cta .btn{width:100%;justify-content:center}
+  .blog-list.big li{flex-direction:column;gap:3px}
 }
 @media(max-width:380px){
   .nav nav{gap:11px;font-size:.78rem}
