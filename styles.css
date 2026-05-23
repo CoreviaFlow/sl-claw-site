@@ -417,6 +417,7 @@ section{padding:64px 0}
   .post-cta{flex-direction:column;align-items:stretch}
   .post-cta .btn{width:100%;justify-content:center}
   .blog-list.big li{flex-direction:column;gap:3px}
+  .dw-btn{display:none !important} /* плавающая кнопка консультации — скрыта на телефоне */
 }
 @media(max-width:380px){
   .nav nav{gap:11px;font-size:.78rem}
