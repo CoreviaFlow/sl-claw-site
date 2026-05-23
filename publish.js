@@ -27,6 +27,18 @@ const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g,
 const jset = o => JSON.stringify(o).replace(/</g, '\\u003c');
 const T = (lang, ru, uk) => (lang === 'uk' ? uk : ru);
 
+// ── IndexNow: мгновенное уведомление поисковиков (Bing/Seznam и др.; Google читает sitemap) ──
+const INDEXNOW_KEY = '7d5a9eb98bed8d9ad647a6505f983ab5';
+async function pingIndexNow(urls){
+  if (!urls.length || process.env.PUBLISH_PING === '0') return;
+  const uniq = [...new Set(urls)].slice(0, 9000);
+  const body = JSON.stringify({ host:'sl-claw.tech', key:INDEXNOW_KEY, keyLocation:`${BASE}/${INDEXNOW_KEY}.txt`, urlList:uniq });
+  try {
+    const res = await fetch('https://api.indexnow.org/indexnow', { method:'POST', headers:{'Content-Type':'application/json'}, body });
+    console.log('[indexnow]', res.status, '·', uniq.length, 'url(s)');
+  } catch(e){ console.log('[indexnow] пропущено:', e.message); }
+}
+
 // ── транслитерация для slug ──
 const TR = { а:'a',б:'b',в:'v',г:'h',ґ:'g',д:'d',е:'e',ё:'e',є:'ie',ж:'zh',з:'z',и:'y',і:'i',ї:'i',й:'i',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'kh',ц:'ts',ч:'ch',ш:'sh',щ:'shch',ъ:'',ы:'y',ь:'',э:'e',ю:'iu',я:'ia' };
 function slugify(s){
@@ -705,7 +717,8 @@ for(const slug in plan.niches){
   }
 }
 
-// 2) для затронутых ниш — собрать ВСЕ опубликованные посты (для индексов/related) и записать страницы
+// 2) собрать ВСЕ опубликованные посты; всегда перестраивать индексы/хабы (самолечение),
+//    статьи писать только новые (за этот прогон)
 const globalItems = [];
 for(const slug in plan.niches){
   const n = niceBySlug[slug]; if(!n) continue;
@@ -715,29 +728,26 @@ for(const slug in plan.niches){
     if(!pub.length) continue;
     // глоб.лента
     pub.forEach(p=>globalItems.push({...p, nslug:slug, niche:F(n,lang).name, lang}));
-    // если в нишу что-то добавили в этот прогон — пишем новые статьи + перестраиваем индекс + хаб
     const key = slug+'|'+lang;
+    // новые статьи этого прогона
     if(touchedNiches.has(key)){
-      const f = F(n, lang);
-      const titles = postTitles(f.name, lang);
       for(const {post,themeIdx} of newlyByNicheLang[key]){
         const related = pub.filter(p=>p.slug!==post.slug).slice(0,5);
         const dir = path.join(ROOT, DIR(lang), slug, 'blog', post.slug);
         fs.mkdirSync(dir,{recursive:true});
         fs.writeFileSync(path.join(dir,'index.html'), renderArticle(n, lang, post, themeIdx, pretty(post.publishedAt||post.publish,lang), related));
       }
-      // индекс блога ниши
-      const bdir = path.join(ROOT, DIR(lang), slug, 'blog');
-      fs.mkdirSync(bdir,{recursive:true});
-      fs.writeFileSync(path.join(bdir,'index.html'), renderNicheBlogIndex(n, lang, pub));
-      // блок на хабе ниши
-      updateNicheHubBlogList(n, lang, pub);
     }
+    // индекс блога ниши + блок на хабе — ВСЕГДА (восстанавливает связь, если seo-build сбросил хаб)
+    const bdir = path.join(ROOT, DIR(lang), slug, 'blog');
+    fs.mkdirSync(bdir,{recursive:true});
+    fs.writeFileSync(path.join(bdir,'index.html'), renderNicheBlogIndex(n, lang, pub));
+    updateNicheHubBlogList(n, lang, pub);
   }
 }
 
-// 3) глобальный /blog/ + sitemap-blog.xml + robots
-if(published>0){
+// 3) глобальный /blog/ + sitemap-blog.xml + robots — если есть хоть один опубликованный пост
+if(globalItems.length){
   globalItems.sort((a,b)=> (b.publishedAt||b.publish).localeCompare(a.publishedAt||a.publish));
   fs.mkdirSync(path.join(ROOT,'blog'),{recursive:true});
   fs.writeFileSync(path.join(ROOT,'blog','index.html'), renderGlobalBlog(globalItems));
@@ -761,8 +771,15 @@ ${urls.join('\n')}
   const rp = path.join(ROOT,'robots.txt');
   let robots = fs.existsSync(rp)?fs.readFileSync(rp,'utf8'):'User-agent: *\nAllow: /\n';
   if(!/sitemap-blog\.xml/i.test(robots)){ robots = robots.replace(/\s*$/,'') + `\nSitemap: ${BASE}/sitemap-blog.xml\n`; fs.writeFileSync(rp, robots); }
+}
 
+// план и IndexNow трогаем только если реально что-то опубликовали в этот прогон
+if(published>0){
   fs.writeFileSync(PLAN_PATH, JSON.stringify(plan,null,1));
+  const pingUrls = [`${BASE}/blog/`];
+  for(const key of touchedNiches){ const [slug,lang]=key.split('|'); pingUrls.push(blogIndexUrl(slug,lang)); pingUrls.push(nicheUrl(slug,lang)); }
+  for(const key in newlyByNicheLang){ const [slug,lang]=key.split('|'); for(const {post} of newlyByNicheLang[key]) pingUrls.push(postUrl(slug,lang,post.slug)); }
+  pingIndexNow(pingUrls);
 }
 
 console.log(`[publish] as-of ${ASOF}: опубликовано ${published} постов; затронуто ниш-языков ${touchedNiches.size}; всего в ленте ${globalItems.length}.`);

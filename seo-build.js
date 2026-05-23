@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = __dirname;
 const D = JSON.parse(fs.readFileSync(path.join(ROOT, 'niches.json'), 'utf8'));
+const { repace } = require('./schedule-posts.js'); // мягкий разгон расписания
 const BASE = 'https://sl-claw.tech';
 
 // Цены (зеркало window.PROMO в i18n.js): скидка только на Pro
@@ -325,7 +326,17 @@ ${head}
 ${sitemap.join('\n')}
 </urlset>
 `);
-fs.writeFileSync(path.join(ROOT,'posts-plan.json'), JSON.stringify(postsPlan,null,1));
+// posts-plan.json — НЕ перезаписываем, если уже есть (там живые статусы published + расписание).
+// Расписанием управляют schedule-posts.js (разгон) и publish.js (публикация).
+const planFile = path.join(ROOT,'posts-plan.json');
+if(fs.existsSync(planFile)){
+  console.log('posts-plan.json существует — пропускаю (живой план). Для разгона: node schedule-posts.js');
+} else {
+  const sch = repace(postsPlan, {});            // мягкий разгон: 5/день → +1 каждые 2 дня → потолок 35
+  postsPlan._meta.cadence = 'мягкий разгон: 5/день → +1 каждые 2 дня → потолок 35/день';
+  console.log('расписание: planned', sch.count, 'за', sch.days, 'дней, старт', sch.start);
+  fs.writeFileSync(planFile, JSON.stringify(postsPlan,null,1));
+}
 console.log('страниц ниш сгенерировано:', cnt, '(', D.niches.length, 'ниш ×', VARIANTS.length, 'гео )');
 console.log('sitemap URL:', staticUrls.length + sitemap.length);
 console.log('posts-plan: 50 заголовков/нишу (', Object.keys(postsPlan).length, 'ниш )');
