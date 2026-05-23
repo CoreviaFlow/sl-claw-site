@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Мобильный прототип — SL-CLAW (внутреннее)</title>
+<style>
+  :root{ --bg:#0e1116; --panel:#171b22; --line:#262c36; --ink:#e7ecf3; --soft:#9aa5b4; --accent:#10b981; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif}
+  .top{position:sticky;top:0;z-index:50;background:rgba(14,17,22,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px 18px}
+  .top h1{margin:0 0 2px;font-size:1.05rem;letter-spacing:-.01em}
+  .top p{margin:0;color:var(--soft);font-size:.82rem}
+  .panel{display:flex;flex-wrap:wrap;gap:18px 26px;align-items:flex-end;margin-top:14px}
+  .ctl{display:flex;flex-direction:column;gap:5px;min-width:160px}
+  .ctl label{font-size:.74rem;color:var(--soft);display:flex;justify-content:space-between;gap:10px}
+  .ctl label b{color:var(--accent);font-variant-numeric:tabular-nums}
+  .ctl input[type=range]{width:100%;accent-color:var(--accent)}
+  .ctl.chk{flex-direction:row;align-items:center;gap:8px;min-width:auto}
+  .ctl.chk input{width:16px;height:16px;accent-color:var(--accent)}
+  .acts{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:600 .78rem/1 inherit;padding:9px 13px;border-radius:8px;cursor:pointer}
+  .btn:hover{border-color:#3a424f}
+  .btn.acc{background:var(--accent);border-color:var(--accent);color:#04130d}
+  .pick{display:flex;gap:6px;flex-wrap:wrap}
+  .pick button{font-size:.72rem;padding:6px 10px;border:1px solid var(--line);background:var(--panel);color:var(--soft);border-radius:99px;cursor:pointer}
+  .pick button.on{background:#0f2a20;border-color:var(--accent);color:var(--accent)}
+
+  .stage{display:flex;gap:30px;padding:26px 24px 60px;overflow-x:auto;align-items:flex-start}
+  figure.device{margin:0;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:10px}
+  figcaption{font-size:.8rem;color:var(--soft);font-weight:600}
+  .frame{width:var(--dev-w,392px);background:linear-gradient(180deg,#3a3f47,#23262c);border-radius:46px;padding:10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
+  .frame .bezel{background:#000;border-radius:38px;padding:8px;position:relative}
+  .frame .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:24px;background:#000;border-radius:99px;z-index:5}
+  .frame iframe{display:block;width:100%;height:var(--dev-h,780px);border:0;border-radius:30px;background:#fff}
+  .hint{color:var(--soft);font-size:.78rem;padding:0 24px 30px;max-width:760px}
+  .cssout{position:fixed;inset:auto 16px 16px auto;width:min(440px,92vw);max-height:60vh;overflow:auto;background:#0b0e12;border:1px solid var(--line);border-radius:12px;padding:14px;display:none;z-index:80;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+  .cssout.show{display:block}
+  .cssout textarea{width:100%;height:200px;background:#070a0e;color:#9fe7c8;border:1px solid var(--line);border-radius:8px;font:12px/1.5 ui-monospace,Menlo,monospace;padding:10px;resize:vertical}
+  .cssout .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .cssout h3{margin:0;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>Мобильный прототип SL-CLAW <span style="color:var(--soft);font-weight:400">· внутренний, не индексируется</span></h1>
+  <p>Реальные страницы в рамке телефона. Крути ползунки — экраны меняются вживую. Нажми «Показать CSS» и пришли мне значения, я перенесу в боевой стиль.</p>
+  <div class="panel">
+    <div class="ctl"><label>Базовый шрифт <b id="v-font">15.5px</b></label><input type="range" id="font" min="13" max="18" step="0.5" value="15.5"></div>
+    <div class="ctl"><label>Поля по бокам <b id="v-pad">16px</b></label><input type="range" id="pad" min="8" max="28" step="1" value="16"></div>
+    <div class="ctl"><label>Заголовок H1 <b id="v-h1">1.7rem</b></label><input type="range" id="h1" min="1.3" max="2.4" step="0.05" value="1.7"></div>
+    <div class="ctl"><label>Заголовки H2 <b id="v-h2">1.32rem</b></label><input type="range" id="h2" min="1.1" max="1.8" step="0.02" value="1.32"></div>
+    <div class="ctl"><label>Радиус карточек <b id="v-rad">14px</b></label><input type="range" id="rad" min="6" max="26" step="1" value="14"></div>
+    <div class="ctl"><label>Скругление телефона-демо <b id="v-tg">43px</b></label><input type="range" id="tg" min="20" max="54" step="1" value="43"></div>
+    <div class="ctl chk"><input type="checkbox" id="btnfull" checked><label for="btnfull" style="color:var(--ink)">Кнопки на всю ширину</label></div>
+    <div class="acts">
+      <span class="pick" id="devpick">
+        <button data-w="360" data-h="740">360</button>
+        <button data-w="390" data-h="780" class="on">390</button>
+        <button data-w="430" data-h="850">430</button>
+      </span>
+      <button class="btn" id="reload">↻ Перезагрузить</button>
+      <button class="btn acc" id="showcss">Показать CSS</button>
+    </div>
+  </div>
+</div>
+
+<div class="stage" id="stage">
+  <figure class="device"><figcaption>Главная</figcaption><div class="frame"><div class="bezel"><span class="notch"></span><iframe data-src="/" loading="lazy"></iframe></div></div></figure>
+  <figure class="device"><figcaption>Страница ниши</figcaption><div class="frame"><div class="bezel"><span class="notch"></span><iframe data-src="/n/spectech/" loading="lazy"></iframe></div></div></figure>
+  <figure class="device"><figcaption>Статья блога</figcaption><div class="frame"><div class="bezel"><span class="notch"></span><iframe data-src="/n/fin-consulting/blog/kak-avtomatyzyrovat-prodazhy-v-nyshe-poshahovo/" loading="lazy"></iframe></div></div></figure>
+  <figure class="device"><figcaption>Лента блога</figcaption><div class="frame"><div class="bezel"><span class="notch"></span><iframe data-src="/blog/" loading="lazy"></iframe></div></div></figure>
+  <figure class="device"><figcaption>Каталог ниш</figcaption><div class="frame"><div class="bezel"><span class="notch"></span><iframe data-src="/catalog.html" loading="lazy"></iframe></div></div></figure>
+  <figure class="device"><figcaption>Оформление</figcaption><div class="frame"><div class="bezel"><span class="notch"></span><iframe data-src="/checkout.html?niche=spectech&tier=Pro" loading="lazy"></iframe></div></div></figure>
+</div>
+<p class="hint">Подсказка: страницы внутри — настоящие (живой сайт). Изменения ползунками применяются только к этому прототипу, на боевой сайт не попадают, пока я не перенесу. Прокрути ленту вбок — там 6 экранов.</p>
+
+<div class="cssout" id="cssout">
+  <div class="row"><h3>CSS-оверрайды (пришли мне это)</h3><button class="btn" id="copycss">Копировать</button></div>
+  <textarea id="csstext" readonly></textarea>
+</div>
+
+<script>
+(function(){
+  var iframes = [].slice.call(document.querySelectorAll('iframe'));
+  var state = { font:15.5, pad:16, h1:1.7, h2:1.32, rad:14, tg:43, btnfull:true, w:390, h:780 };
+
+  function loadFrames(){
+    var stage = document.getElementById('stage');
+    stage.style.setProperty('--dev-w', (state.w+2)+'px');
+    document.querySelectorAll('.frame').forEach(function(f){ f.style.setProperty('--dev-w', (state.w+2)+'px'); });
+    document.querySelectorAll('.frame iframe').forEach(function(f){ f.style.setProperty('--dev-h', state.h+'px'); });
+    iframes.forEach(function(f){ if(f.dataset.src){ f.src = f.dataset.src + (f.dataset.src.indexOf('?')>-1?'&':'?') + 'proto=1'; } });
+  }
+  document.querySelectorAll('.frame').forEach(function(f){ f.style.setProperty('--dev-w', (state.w+2)+'px'); });
+  document.querySelectorAll('.frame iframe').forEach(function(f){ f.style.setProperty('--dev-h', state.h+'px'); });
+
+  function overrideCss(){
+    var s = state, css = '';
+    css += 'body{font-size:'+s.font+'px !important}\n';
+    css += '.wrap{padding-left:'+s.pad+'px !important;padding-right:'+s.pad+'px !important}\n';
+    css += 'h1,.np-head h1,.post h1,.checkout h1,.legal h1{font-size:'+s.h1+'rem !important;line-height:1.18 !important}\n';
+    css += 'h2,.post-body h2,.np-grid h2{font-size:'+s.h2+'rem !important}\n';
+    css += '.box,.ncard,.post-cta,.faq details,.co-grid>*{border-radius:'+s.rad+'px !important}\n';
+    css += '.phone-screen{border-radius:'+s.tg+'px !important}.phone-bezel{border-radius:'+(s.tg+9)+'px !important}.phone{border-radius:'+(s.tg+11)+'px !important}\n';
+    if(s.btnfull){ css += '.btn-primary,.co-cta{width:100% !important;justify-content:center !important}\n'; }
+    return css;
+  }
+  function inject(doc){
+    if(!doc) return;
+    var st = doc.getElementById('proto-override');
+    if(!st){ st = doc.createElement('style'); st.id='proto-override'; (doc.head||doc.documentElement).appendChild(st); }
+    st.textContent = overrideCss();
+  }
+  function applyAll(){
+    iframes.forEach(function(f){ try{ inject(f.contentDocument); }catch(e){} });
+    document.getElementById('csstext').value = overrideCss();
+  }
+  iframes.forEach(function(f){ f.addEventListener('load', function(){ try{ inject(f.contentDocument); }catch(e){} }); });
+
+  function bindRange(id, key, unit, label){
+    var el = document.getElementById(id), out = document.getElementById('v-'+id);
+    el.addEventListener('input', function(){ state[key] = parseFloat(el.value); out.textContent = el.value+unit; applyAll(); });
+  }
+  bindRange('font','font','px'); bindRange('pad','pad','px'); bindRange('h1','h1','rem');
+  bindRange('h2','h2','rem'); bindRange('rad','rad','px'); bindRange('tg','tg','px');
+  document.getElementById('btnfull').addEventListener('change', function(e){ state.btnfull=e.target.checked; applyAll(); });
+
+  document.getElementById('devpick').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-w]'); if(!b) return;
+    document.querySelectorAll('#devpick button').forEach(function(x){x.classList.remove('on')}); b.classList.add('on');
+    state.w = +b.dataset.w; state.h = +b.dataset.h;
+    document.querySelectorAll('.frame').forEach(function(f){ f.style.setProperty('--dev-w', (state.w+2)+'px'); });
+    document.querySelectorAll('.frame iframe').forEach(function(f){ f.style.setProperty('--dev-h', state.h+'px'); });
+  });
+  document.getElementById('reload').addEventListener('click', loadFrames);
+  document.getElementById('showcss').addEventListener('click', function(){
+    document.getElementById('csstext').value = overrideCss();
+    document.getElementById('cssout').classList.toggle('show');
+  });
+  document.getElementById('copycss').addEventListener('click', function(){
+    var t=document.getElementById('csstext'); t.select(); try{document.execCommand('copy')}catch(e){}
+    this.textContent='Скопировано ✓'; var b=this; setTimeout(function(){b.textContent='Копировать'},1500);
+  });
+
+  loadFrames();
+})();
+</script>
+</body>
+</html>

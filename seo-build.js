@@ -47,6 +47,7 @@ function F(n, lang){
     does: (u? u.does : n.does) || [],
     demo: (u? u.demo : n.demo) || {them:'',bot:''},
     objections: d.objections||[], knows: d.knows||[], market: d.market||[],
+    enrich: (u? u.enrich : n.enrich) || null, // уник. контент ниши (анти-thin), может отсутствовать
   };
 }
 
@@ -60,6 +61,7 @@ const UI = {
        market:'Цифры рынка ниши', online:'в сети', getbot:'Получить бота', askconsult:'Спросить у консультанта', blog:'Полезные материалы',
        blogsub:'Статьи по автоматизации продаж в нише — обновляются регулярно.',
        blogsoon:'Первые материалы скоро — публикуем по мере готовности.',
+       faqh:'Частые вопросы', buyerh:'Кто покупает', mistakesh:'Типичные ошибки при внедрении', integh:'Интеграции в нише',
        deploy:'развернуть за час', pipe:'диалог → квалификация → снятие возражений → сделка · 24/7 во всех каналах',
        once:'разово', sale:'цена со скидкой', price:'цена',
        crumbHome:'Главная', crumbCat:'Каталог' },
@@ -71,6 +73,7 @@ const UI = {
        market:'Цифри ринку ніші', online:'у мережі', getbot:'Отримати бота', askconsult:'Запитати у консультанта', blog:'Корисні матеріали',
        blogsub:'Статті з автоматизації продажів у ніші — оновлюються регулярно.',
        blogsoon:'Перші матеріали незабаром — публікуємо в міру готовності.',
+       faqh:'Часті запитання', buyerh:'Хто купує', mistakesh:'Типові помилки при впровадженні', integh:'Інтеграції в ніші',
        deploy:'розгорнути за годину', pipe:'діалог → кваліфікація → зняття заперечень → угода · 24/7 в усіх каналах',
        once:'одноразово', sale:'ціна зі знижкою', price:'ціна',
        crumbHome:'Головна', crumbCat:'Каталог' },
@@ -137,6 +140,19 @@ function postTitles(name, lang){
   return lang==='uk' ? UK : RU;
 }
 
+// FAQ-вопросы ниши: единый источник для FAQPage-schema И видимого блока на странице.
+// Google требует, чтобы контент FAQ-разметки был виден на странице — поэтому одни и те же данные.
+function faqItems(f, lang){
+  return lang==='uk' ? [
+    [`Що вміє AI-продавець для «${f.name}»?`, f.tagline+' Веде діалог, кваліфікує, знімає заперечення та доводить до угоди 24/7.'],
+    [`Скільки коштує і як швидко впровадити?`, `Разова покупка готового бота, розгортається приблизно за годину за інструкцією. Оплата роботи ШІ — за фактом.`],
+    [`У яких каналах працює бот?`, `Telegram, віджет на сайт, WhatsApp, Instagram — один бот одразу в усіх текстових каналах.`],
+  ] : [
+    [`Что умеет AI-продавец для «${f.name}»?`, f.tagline+' Ведёт диалог, квалифицирует, снимает возражения и доводит до сделки 24/7.'],
+    [`Сколько стоит и как быстро внедрить?`, `Разовая покупка готового бота, разворачивается примерно за час по инструкции. Оплата работы ИИ — по факту.`],
+    [`В каких каналах работает бот?`, `Telegram, виджет на сайт, WhatsApp, Instagram — один бот сразу во всех текстовых каналах.`],
+  ];
+}
 function jsonld(n, v, f, u){
   const tier = PRICES[n.tier]||{price:'$249'};
   const price = (PROMO_ON && tier.sale ? tier.sale : tier.price).replace('$','');
@@ -148,17 +164,7 @@ function jsonld(n, v, f, u){
     {"@type":"ListItem",position:1,name:UI[v.lang].crumbHome,item:BASE+'/'},
     {"@type":"ListItem",position:2,name:UI[v.lang].crumbCat,item:BASE+'/catalog.html'},
     {"@type":"ListItem",position:3,name:f.name,item:u} ]};
-  const faqRU = [
-    [`Что умеет AI-продавец для «${f.name}»?`, f.tagline+' Ведёт диалог, квалифицирует, снимает возражения и доводит до сделки 24/7.'],
-    [`Сколько стоит и как быстро внедрить?`, `Разовая покупка готового бота, разворачивается примерно за час по инструкции. Оплата работы ИИ — по факту.`],
-    [`В каких каналах работает бот?`, `Telegram, виджет на сайт, WhatsApp, Instagram — один бот сразу во всех текстовых каналах.`],
-  ];
-  const faqUK = [
-    [`Що вміє AI-продавець для «${f.name}»?`, f.tagline+' Веде діалог, кваліфікує, знімає заперечення та доводить до угоди 24/7.'],
-    [`Скільки коштує і як швидко впровадити?`, `Разова покупка готового бота, розгортається приблизно за годину за інструкцією. Оплата роботи ШІ — за фактом.`],
-    [`У яких каналах працює бот?`, `Telegram, віджет на сайт, WhatsApp, Instagram — один бот одразу в усіх текстових каналах.`],
-  ];
-  const faqs = v.lang==='uk'?faqUK:faqRU;
+  const faqs = faqItems(f, v.lang);
   const faq = {"@context":"https://schema.org","@type":"FAQPage", mainEntity: faqs.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))};
   return [product,crumbs,faq].map(x=>`<script type="application/ld+json">${jset(x)}</script>`).join('\n');
 }
@@ -255,6 +261,13 @@ ${jsonld(n, v, f, u)}
       ${phoneHTML({ name:f.name, sel, lang:v.lang, them:f.demo.them, bot:f.demo.bot })}
 
       ${f.market.length?`<h2>${t.market}</h2><div class="stats">${f.market.map(m=>`<div class="stat"><div class="sv">${esc(m.value)}</div><div class="sl">${esc(m.label)}</div><div class="ss">${esc(m.source)}</div></div>`).join('')}</div>`:''}
+
+      ${f.enrich ? `<h2>${t.buyerh}</h2><p>${esc(f.enrich.buyer)}</p>`
+        + ((f.enrich.mistakes||[]).length?`<h2>${t.mistakesh}</h2><ul class="does">${f.enrich.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:'')
+        + ((f.enrich.integrations||[]).length?`<h2>${t.integh}</h2><ul class="does">${f.enrich.integrations.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`:'') : ''}
+
+      <h2>${t.faqh}</h2>
+      <div class="faq">${faqItems(f,v.lang).map(([q,a])=>`<details class="faq-item"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>
 
       <h2>${t.blog}</h2>
       <p class="muted" style="margin:-6px 0 12px;font-size:.9rem">${t.blogsub}</p>
