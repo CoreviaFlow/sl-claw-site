@@ -16,6 +16,7 @@
   }[LANG];
 
   var WS_URL = "wss://daryna.coreviaflow.space/ws/";
+  var PRONOUNCE = { "SL-CLAW": "Эс-эл Кло", "SL CLAW": "Эс-эл Кло" };
   var uid = localStorage.getItem("daryna_uid") ||
     ("web-" + Math.random().toString(36).slice(2) + Date.now().toString(36));
   localStorage.setItem("daryna_uid", uid);
@@ -71,6 +72,9 @@
   }
   function connect() {
     ws = new WebSocket(WS_URL + encodeURIComponent(uid));
+    ws.onopen = function () {
+      ws.send(JSON.stringify({ type: "init", greeting_shown: true, lang: LANG }));
+    };
     ws.onmessage = function (e) { typing(false);
       try { add((JSON.parse(e.data).text) || "", "bot"); } catch (_) { add(e.data, "bot"); } };
     ws.onclose = function () { typing(false); };
@@ -79,7 +83,7 @@
     var t = input.value.trim(); if (!t) return;
     add(t, "me"); input.value = ""; typing(true);
     if (!ws || ws.readyState > 1) connect();
-    var payload = JSON.stringify({ text: t, lang: LANG });
+    var payload = JSON.stringify({ text: t, lang: LANG, pronounce: PRONOUNCE });
     if (ws.readyState === 1) ws.send(payload);
     else ws.addEventListener("open", function () { ws.send(payload); }, { once: true });
   }
