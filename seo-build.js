@@ -238,7 +238,6 @@ ${alts}
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 <link rel="stylesheet" href="/styles.css?v=3">
 <script src="/analytics.js" defer></script>
-<script src="/daryna-widget.js" defer></script>
 <script src="/phone-demo.js" defer></script>
 <script src="/mobile-bar.js" defer></script>
 ${jsonld(n, v, f, u)}

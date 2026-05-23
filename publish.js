@@ -600,7 +600,7 @@ ${altUrl ? `<link rel="alternate" hreflang="${lang==='uk'?'uk-UA':'ru-UA'}" href
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 <link rel="stylesheet" href="/styles.css?${CSSV}">
 <script src="/analytics.js" defer></script>
-<script src="/daryna-widget.js" defer></script>
+
 <script src="/phone-demo.js" defer></script>
 <script src="/mobile-bar.js" defer></script>
 ${ld}
@@ -656,7 +656,7 @@ function renderNicheBlogIndex(n, lang, posts){
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2"><link rel="icon" href="/favicon.ico?v=2" sizes="any"><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
-<link rel="stylesheet" href="/styles.css?${CSSV}"><script src="/analytics.js" defer></script><script src="/daryna-widget.js" defer></script><script src="/mobile-bar.js" defer></script>
+<link rel="stylesheet" href="/styles.css?${CSSV}"><script src="/analytics.js" defer></script><script src="/mobile-bar.js" defer></script>
 </head>
 <body>
 <header class="nav"><div class="wrap row"><a class="logo" href="/">SL<b>_</b>CLAW</a><nav><a href="/catalog.html">${t.catalog}</a><a href="/pricing.html">${t.pricing}</a><a href="/#how">${t.how}</a><a href="https://app.sl-claw.tech" target="_blank" rel="noopener">${t.cabinet}</a></nav></div></header>
@@ -687,7 +687,7 @@ function renderGlobalBlog(items){
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2"><link rel="icon" href="/favicon.ico?v=2" sizes="any"><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
-<link rel="stylesheet" href="/styles.css?${CSSV}"><script src="/analytics.js" defer></script><script src="/daryna-widget.js" defer></script><script src="/mobile-bar.js" defer></script>
+<link rel="stylesheet" href="/styles.css?${CSSV}"><script src="/analytics.js" defer></script><script src="/mobile-bar.js" defer></script>
 </head>
 <body>
 <header class="nav"><div class="wrap row"><a class="logo" href="/">SL<b>_</b>CLAW</a><nav><a href="/catalog.html">Каталог ниш</a><a href="/pricing.html">Тарифы</a><a href="/#how">Как это работает</a><a href="https://app.sl-claw.tech" target="_blank" rel="noopener">Кабинет ↗</a></nav></div></header>
