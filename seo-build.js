@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 /* SEO/GEO build: статические страницы ниш в 3 гео-версиях + sitemap + posts-plan.
-   Гео: ru-UA (/n/<slug>/), uk-UA (/ua/<slug>/), ru-Азия (/asia/<slug>/, без РФ/BY).
+   Гео: ru-UA (/n/<slug>/), uk-UA (/ua/<slug>/). Только Украина, два языка. Другие страны — отдельные субдомены.
    Запуск: node seo-build.js   (читает niches.json, пишет статические папки + sitemap.xml + posts-plan.json) */
 const fs = require('fs');
 const path = require('path');
 const ROOT = __dirname;
 const D = JSON.parse(fs.readFileSync(path.join(ROOT, 'niches.json'), 'utf8'));
 const { repace } = require('./schedule-posts.js'); // мягкий разгон расписания
+const { phoneHTML } = require('./phone-demo-render.js'); // демо-диалог в телефоне (Telegram-стиль)
 const BASE = 'https://sl-claw.tech';
 
 // Цены (зеркало window.PROMO в i18n.js): скидка только на Pro
@@ -20,7 +21,6 @@ const jset = o => JSON.stringify(o).replace(/</g,'\\u003c');
 const VARIANTS = [
   { key:'ru',   dir:'n',    lang:'ru', hl:'ru-UA', geoWord:'в Украине',        geoTitle:'в Украине' },
   { key:'uk',   dir:'ua',   lang:'uk', hl:'uk-UA', geoWord:'в Україні',         geoTitle:'в Україні' },
-  { key:'asia', dir:'asia', lang:'ru', hl:'ru-KZ', geoWord:'в Казахстане, Узбекистане и Азии', geoTitle:'в Казахстане и Узбекистане' },
 ];
 const urlFor = (v, slug) => `${BASE}/${v.dir}/${slug}/`;
 
@@ -220,6 +220,7 @@ ${alts}
 <link rel="stylesheet" href="/styles.css?v=3">
 <script src="/analytics.js" defer></script>
 <script src="/daryna-widget.js" defer></script>
+<script src="/phone-demo.js" defer></script>
 ${jsonld(n, v, f, u)}
 </head>
 <body>
@@ -251,7 +252,7 @@ ${jsonld(n, v, f, u)}
       ${f.knows.length?`<h2>${t.knows}</h2><div class="chips-row">${f.knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div>`:''}
 
       <h2>${t.demo}</h2>
-      <div class="demo-static">${msgs.map(m=>`<div class="dm ${m[0]}"><b>${m[0]==='bot'?'Anna':(v.lang==='uk'?'Клієнт':'Клиент')}:</b> ${esc(m[1])}</div>`).join('')}</div>
+      ${phoneHTML({ name:f.name, sel, lang:v.lang, them:f.demo.them, bot:f.demo.bot })}
 
       ${f.market.length?`<h2>${t.market}</h2><div class="stats">${f.market.map(m=>`<div class="stat"><div class="sv">${esc(m.value)}</div><div class="sl">${esc(m.label)}</div><div class="ss">${esc(m.source)}</div></div>`).join('')}</div>`:''}
 
@@ -324,7 +325,7 @@ const today = new Date().toISOString().slice(0,10);
 const sitemap=[];
 const postsPlan={ _meta:{ generated:fmtDate(new Date()), per_niche:50, cadence:'каждую нишу — через день, хаотично (1–3 дня)',
   rules:'Только настоящие цифры с источниками (Statista, Eurostat, Держстат, World Bank, NAR и т.п. — без РФ/Беларуси). Каждый текст уникальный, без плагиата. E-E-A-T.',
-  geo:'RU и UK → Украина; RU → Азия (KZ/UZ и т.д.), без РФ/BY.' }, niches:{} };
+  geo:'Украина: RU (/n/) и UK (/ua/). Другие страны — отдельные субдомены.' }, niches:{} };
 for(const n of D.niches){
   postsPlan.niches[n.slug] = { niche:n.name, posts: schedule(postTitles(n.name,'ru'), postTitles((n.uk&&n.uk.name)||n.name,'uk'), n.slug) };
   const altBlock = VARIANTS.map(v=>`    <xhtml:link rel="alternate" hreflang="${v.hl}" href="${urlFor(v,n.slug)}"/>`).join('\n')

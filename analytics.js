@@ -1,6 +1,6 @@
 // SL-CLAW analytics — FB Pixel + CAPI mirror + auto-події + GA4.
-// Підключений на всіх сторінках (n/*, asia/*, index, catalog, pricing, checkout).
-// Pixel: 1303860444646281 (SL-CLAW Marketplace, окремий від courses). CAPI proxy: events.coreviaflow.space. GA4: G-ZTB9NLZPXL.
+// Підключений на всіх сторінках (n/*, ua/*, index, catalog, pricing, checkout).
+// Pixel: 1303860444646281. CAPI proxy: events.coreviaflow.space. GA4: G-ZTB9NLZPXL.
 (function () {
   'use strict';
 
@@ -54,7 +54,6 @@
       var payload = {
         event_name: eventName,
         event_id: eventId,
-        pixel_id: PIXEL_ID,            // multi-pixel: проксі віддасть на наш pixel
         event_source_url: location.href,
         action_source: 'website',
         fbp: getFbp() || undefined,
@@ -99,11 +98,11 @@
   // ---------- auto ViewContent на niche-сторінках ----------
   (function () {
     var path = location.pathname;
-    var isNiche = /\/(n|asia|ua)\//.test(path);
+    var isNiche = /\/(n|ua)\//.test(path);
     var ogTypeEl = document.querySelector('meta[property="og:type"]');
     var ogType = ogTypeEl ? ogTypeEl.content : '';
     if (isNiche || ogType === 'product') {
-      var slug = (path.match(/\/(?:n|asia|ua)\/([^\/]+)/) || [])[1] || '';
+      var slug = (path.match(/\/(?:n|ua)\/([^\/]+)/) || [])[1] || '';
       window.slclawTrack('ViewContent', {
         content_type: 'product',
         content_ids: [slug],

@@ -17,6 +17,7 @@ const path = require('path');
 const ROOT = __dirname;
 const BASE = 'https://sl-claw.tech';
 const D = JSON.parse(fs.readFileSync(path.join(ROOT, 'niches.json'), 'utf8'));
+const { phoneHTML } = require('./phone-demo-render.js'); // демо-диалог в телефоне (Telegram-стиль)
 const PLAN_PATH = path.join(ROOT, 'posts-plan.json');
 const plan = JSON.parse(fs.readFileSync(PLAN_PATH, 'utf8'));
 
@@ -472,11 +473,9 @@ function statsBlock(f, lang){
     P(`<span class="muted" style="font-size:.85rem">${T(lang,'Источники указаны под каждой цифрой. Мы приводим только проверяемые отраслевые данные.','Джерела вказані під кожною цифрою. Ми наводимо лише дані, що можна перевірити.')}</span>`);
 }
 function demoBlock(f, lang){
-  const greet = T(lang,'Здравствуйте! Я Анна, AI-продавец. Чем помогу?','Вітаю! Я Анна, AI-продавець. Чим допоможу?');
-  const msgs = [['bot',greet],['them',f.demo.them],['bot',f.demo.bot]].filter(m=>m[1]);
-  if(msgs.length<2) return '';
+  if(!f.demo || (!f.demo.them && !f.demo.bot)) return '';
   return H2(T(lang,'Как это выглядит в диалоге','Як це виглядає в діалозі')) +
-    `<div class="demo-static">${msgs.map(m=>`<div class="dm ${m[0]}"><b>${m[0]==='bot'?'Anna':T(lang,'Клиент','Клієнт')}:</b> ${esc(m[1])}</div>`).join('')}</div>`;
+    phoneHTML({ name:f.name, sel:T(lang,'продавец','продавець'), lang, them:f.demo.them, bot:f.demo.bot });
 }
 function faqBlock(f, lang){
   const N = esc(f.name);
@@ -579,6 +578,7 @@ function renderArticle(n, lang, post, themeIdx, prettyDate, related){
 <link rel="stylesheet" href="/styles.css?${CSSV}">
 <script src="/analytics.js" defer></script>
 <script src="/daryna-widget.js" defer></script>
+<script src="/phone-demo.js" defer></script>
 ${ld}
 </head>
 <body>
@@ -689,8 +689,6 @@ function updateNicheHubBlogList(n, lang, posts){
   const all = lang==='uk'?'Усі матеріали →':'Все материалы →';
   const repl = `<ul class="blog-list">${top.map(p=>`<li><a href="${postUrl(n.slug,lang,p.slug).replace(BASE,'')}">${esc(p.title)}</a></li>`).join('')}</ul><p style="margin-top:8px"><a href="${blogHref}" class="mono" style="font-size:.85rem">${all}</a></p>`;
   writeHubBlogList(DIR(lang), n, lang, repl);
-  // гео-вариант ru-KZ (/asia/) делит ru-посты с /n/ — держим его в синхроне
-  if(lang === 'ru') writeHubBlogList('asia', n, lang, repl);
 }
 
 // ── главный прогон ──
