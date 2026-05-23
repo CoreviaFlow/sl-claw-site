@@ -228,6 +228,7 @@
           '<a href="catalog.html">'+t.cat+'</a>'+
           '<a href="pricing.html">'+t.price+'</a>'+
           '<a href="index.html#how">'+t.how+'</a>'+
+          '<a href="/blog/">'+t.blog+'</a>'+
           '<a href="https://app.sl-claw.tech" target="_blank" rel="noopener">'+t.cab+'</a>'+
         '</div>'+
         '<div class="fcol">'+

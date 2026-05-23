@@ -196,7 +196,7 @@ ${alts}
 <link rel="icon" href="/favicon.ico?v=2" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?v=3">
 <script src="/analytics.js" defer></script>
 <script src="/daryna-widget.js" defer></script>
 ${jsonld(n, v, f, u)}
@@ -268,11 +268,11 @@ const MC='<svg class="pay-ic" viewBox="0 0 48 30" xmlns="http://www.w3.org/2000/
 const LEGAL={entity:'ТОВ «Корвія Флоу»', edrpou:'3420600578', email:'support@sl-claw.tech'};
 function footerHTML(lang){
   const uk=lang==='uk';
-  const t=uk?{tag:'AI-продавці під нішу',accept:'Приймаємо до оплати',mh:'Маркетплейс',cat:'Каталог ніш',price:'Тарифи',how:'Як це працює',cab:'Кабінет ↗',dh:'Документи',oferta:'Публічна оферта',privacy:'Політика конфіденційності',pay:'Оплата, доставка та повернення',contacts:'Контакти та реквізити',ch:'Контакти',edr:'ЄДРПОУ: ',geo:'Послуги недоступні для резидентів рф та рб'}
-    :{tag:'AI-продавцы под нишу',accept:'Принимаем к оплате',mh:'Маркетплейс',cat:'Каталог ниш',price:'Тарифы',how:'Как это работает',cab:'Кабинет ↗',dh:'Документы',oferta:'Публичная оферта',privacy:'Политика конфиденциальности',pay:'Оплата, доставка и возврат',contacts:'Контакты и реквизиты',ch:'Контакты',edr:'ЕГРПОУ: ',geo:'Услуги недоступны для резидентов рф и рб'};
+  const t=uk?{tag:'AI-продавці під нішу',accept:'Приймаємо до оплати',mh:'Маркетплейс',cat:'Каталог ніш',price:'Тарифи',how:'Як це працює',cab:'Кабінет ↗',blog:'Блог',dh:'Документи',oferta:'Публічна оферта',privacy:'Політика конфіденційності',pay:'Оплата, доставка та повернення',contacts:'Контакти та реквізити',ch:'Контакти',edr:'ЄДРПОУ: ',geo:'Послуги недоступні для резидентів рф та рб'}
+    :{tag:'AI-продавцы под нишу',accept:'Принимаем к оплате',mh:'Маркетплейс',cat:'Каталог ниш',price:'Тарифы',how:'Как это работает',cab:'Кабинет ↗',blog:'Блог',dh:'Документы',oferta:'Публичная оферта',privacy:'Политика конфиденциальности',pay:'Оплата, доставка и возврат',contacts:'Контакты и реквизиты',ch:'Контакты',edr:'ЕГРПОУ: ',geo:'Услуги недоступны для резидентов рф и рб'};
   return `<footer class="foot-site"><div class="wrap foot-grid">
     <div class="fcol fcol-brand"><span class="logo">SL<b>_</b>CLAW</span><p class="fc-sub mono">${t.tag} · COREVIA FLOW</p><div class="fc-sub mono">${t.accept}:</div><div class="pay-badges">${VISA}${MC}</div></div>
-    <div class="fcol"><div class="fc-h">${t.mh}</div><a href="/catalog.html">${t.cat}</a><a href="/pricing.html">${t.price}</a><a href="/#how">${t.how}</a><a href="https://app.sl-claw.tech" target="_blank" rel="noopener">${t.cab}</a></div>
+    <div class="fcol"><div class="fc-h">${t.mh}</div><a href="/catalog.html">${t.cat}</a><a href="/pricing.html">${t.price}</a><a href="/#how">${t.how}</a><a href="/blog/">${t.blog}</a><a href="https://app.sl-claw.tech" target="_blank" rel="noopener">${t.cab}</a></div>
     <div class="fcol"><div class="fc-h">${t.dh}</div><a href="/oferta.html">${t.oferta}</a><a href="/privacy.html">${t.privacy}</a><a href="/payment-refund.html">${t.pay}</a><a href="/contacts.html">${t.contacts}</a></div>
     <div class="fcol"><div class="fc-h">${t.ch}</div><a href="mailto:${LEGAL.email}">${LEGAL.email}</a><div class="fc-sub mono">${LEGAL.entity}</div></div>
   </div>
