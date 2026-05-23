@@ -1,10 +1,10 @@
 // SL-CLAW analytics — FB Pixel + CAPI mirror + auto-події + GA4.
 // Підключений на всіх сторінках (n/*, asia/*, index, catalog, pricing, checkout).
-// Pixel: 1485718672417519 (CoreviaFlow). CAPI proxy: events.coreviaflow.space. GA4: G-ZTB9NLZPXL.
+// Pixel: 1303860444646281. CAPI proxy: events.coreviaflow.space. GA4: G-ZTB9NLZPXL.
 (function () {
   'use strict';
 
-  var PIXEL_ID = '1485718672417519';
+  var PIXEL_ID = '1303860444646281';
   var CAPI_URL = 'https://events.coreviaflow.space/v1/track';
   var GA4_ID = 'G-ZTB9NLZPXL'; // GA4 Measurement ID (sl-claw.tech)
 

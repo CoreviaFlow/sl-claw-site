@@ -22,6 +22,8 @@ const plan = JSON.parse(fs.readFileSync(PLAN_PATH, 'utf8'));
 
 const ASOF = (process.env.PUBLISH_AS_OF || new Date().toISOString().slice(0, 10));
 const LIMIT = process.env.PUBLISH_LIMIT ? parseInt(process.env.PUBLISH_LIMIT, 10) : Infinity;
+const REBUILD = process.env.PUBLISH_REBUILD === '1'; // перерендерить ВСЕ опубликованные статьи (при смене шаблона/CSS)
+const CSSV = 'v=3'; // версия для cache-busting статических ассетов
 
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const jset = o => JSON.stringify(o).replace(/</g, '\\u003c');
@@ -574,7 +576,7 @@ function renderArticle(n, lang, post, themeIdx, prettyDate, related){
 <link rel="icon" href="/favicon.ico?v=2" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?${CSSV}">
 <script src="/analytics.js" defer></script>
 <script src="/daryna-widget.js" defer></script>
 ${ld}
@@ -628,7 +630,7 @@ function renderNicheBlogIndex(n, lang, posts){
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2"><link rel="icon" href="/favicon.ico?v=2" sizes="any"><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
-<link rel="stylesheet" href="/styles.css"><script src="/analytics.js" defer></script><script src="/daryna-widget.js" defer></script>
+<link rel="stylesheet" href="/styles.css?${CSSV}"><script src="/analytics.js" defer></script><script src="/daryna-widget.js" defer></script>
 </head>
 <body>
 <header class="nav"><div class="wrap row"><a class="logo" href="/">SL<b>_</b>CLAW</a><nav><a href="/catalog.html">${t.catalog}</a><a href="/pricing.html">${t.pricing}</a><a href="/#how">${t.how}</a><a href="https://app.sl-claw.tech" target="_blank" rel="noopener">${t.cabinet}</a></nav></div></header>
@@ -658,7 +660,7 @@ function renderGlobalBlog(items){
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2"><link rel="icon" href="/favicon.ico?v=2" sizes="any"><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
-<link rel="stylesheet" href="/styles.css"><script src="/analytics.js" defer></script><script src="/daryna-widget.js" defer></script>
+<link rel="stylesheet" href="/styles.css?${CSSV}"><script src="/analytics.js" defer></script><script src="/daryna-widget.js" defer></script>
 </head>
 <body>
 <header class="nav"><div class="wrap row"><a class="logo" href="/">SL<b>_</b>CLAW</a><nav><a href="/catalog.html">Каталог ниш</a><a href="/pricing.html">Тарифы</a><a href="/#how">Как это работает</a><a href="https://app.sl-claw.tech" target="_blank" rel="noopener">Кабинет ↗</a></nav></div></header>
@@ -729,9 +731,15 @@ for(const slug in plan.niches){
     // глоб.лента
     pub.forEach(p=>globalItems.push({...p, nslug:slug, niche:F(n,lang).name, lang}));
     const key = slug+'|'+lang;
-    // новые статьи этого прогона
-    if(touchedNiches.has(key)){
-      for(const {post,themeIdx} of newlyByNicheLang[key]){
+    // какие статьи писать: новые этого прогона + (при PUBLISH_REBUILD=1) все опубликованные
+    const writeSlugs = new Set();
+    if(touchedNiches.has(key)) for(const {post} of newlyByNicheLang[key]) writeSlugs.add(post.slug);
+    if(REBUILD) for(const p of pub) writeSlugs.add(p.slug);
+    if(writeSlugs.size){
+      const f = F(n, lang); const titles = postTitles(f.name, lang);
+      for(const post of pub){
+        if(!writeSlugs.has(post.slug)) continue;
+        let themeIdx = titles.indexOf(post.title); if(themeIdx<0) themeIdx = Math.floor(rng(post.title)()*25);
         const related = pub.filter(p=>p.slug!==post.slug).slice(0,5);
         const dir = path.join(ROOT, DIR(lang), slug, 'blog', post.slug);
         fs.mkdirSync(dir,{recursive:true});
