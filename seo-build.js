@@ -62,6 +62,7 @@ const UI = {
        blogsub:'Статьи по автоматизации продаж в нише — обновляются регулярно.',
        blogsoon:'Первые материалы скоро — публикуем по мере готовности.',
        faqh:'Частые вопросы', buyerh:'Кто покупает', mistakesh:'Типичные ошибки при внедрении', integh:'Интеграции в нише',
+       trust:['Разовая оплата — без абонентки','Оплата работы ИИ по факту','Условия возврата — в оферте','Разворачивается примерно за час'],
        deploy:'развернуть за час', pipe:'диалог → квалификация → снятие возражений → сделка · 24/7 во всех каналах',
        once:'разово', sale:'цена со скидкой', price:'цена',
        crumbHome:'Главная', crumbCat:'Каталог' },
@@ -74,6 +75,7 @@ const UI = {
        blogsub:'Статті з автоматизації продажів у ніші — оновлюються регулярно.',
        blogsoon:'Перші матеріали незабаром — публікуємо в міру готовності.',
        faqh:'Часті запитання', buyerh:'Хто купує', mistakesh:'Типові помилки при впровадженні', integh:'Інтеграції в ніші',
+       trust:['Разова оплата — без абонплати','Оплата роботи ШІ за фактом','Умови повернення — в оферті','Розгортається приблизно за годину'],
        deploy:'розгорнути за годину', pipe:'діалог → кваліфікація → зняття заперечень → угода · 24/7 в усіх каналах',
        once:'одноразово', sale:'ціна зі знижкою', price:'ціна',
        crumbHome:'Головна', crumbCat:'Каталог' },
@@ -158,8 +160,10 @@ function jsonld(n, v, f, u){
   const price = (PROMO_ON && tier.sale ? tier.sale : tier.price).replace('$','');
   const product = { "@context":"https://schema.org","@type":"Product",
     name:`AI-${UI[v.lang].seller}: ${f.name}`, description:f.tagline,
+    image:BASE+'/icon-512.png',
     brand:{"@type":"Brand",name:"SL-CLAW"}, category:n.sector,
-    offers:{"@type":"Offer", price:price, priceCurrency:"USD", availability:"https://schema.org/InStock", url:u} };
+    offers:{"@type":"Offer", price:price, priceCurrency:"USD", availability:"https://schema.org/InStock", url:u,
+      priceValidUntil:"2026-12-31", seller:{"@type":"Organization",name:"SL-CLAW"}} };
   const crumbs = { "@context":"https://schema.org","@type":"BreadcrumbList", itemListElement:[
     {"@type":"ListItem",position:1,name:UI[v.lang].crumbHome,item:BASE+'/'},
     {"@type":"ListItem",position:2,name:UI[v.lang].crumbCat,item:BASE+'/catalog.html'},
@@ -219,6 +223,7 @@ ${alts}
 <meta property="og:site_name" content="SL-CLAW">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2">
 <link rel="icon" href="/favicon.ico?v=2" sizes="any">
@@ -283,6 +288,7 @@ ${jsonld(n, v, f, u)}
         <div class="row2"><span>${v.lang==='uk'?'Можлива ціль':'Возможная цель'}</span><span>${esc(f.cta)}</span></div>
         <a class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px" href="/checkout.html?niche=${n.slug}&tier=${n.tier}">${t.getbot}</a>
         <button type="button" class="btn-ask" onclick="var b=document.querySelector('.dw-btn');if(b){b.click()}" style="width:100%;justify-content:center;margin-top:8px;background:none;border:0;color:#0b0f19;font:600 .82rem/1.2 inherit;cursor:pointer;padding:8px;text-decoration:underline;text-underline-offset:3px;opacity:.75">${t.askconsult}</button>
+        <ul class="trust-list"><li>${t.trust[0]}</li><li>${t.trust[1]}</li><li><a href="/payment-refund.html">${t.trust[2]}</a></li><li>${t.trust[3]}</li></ul>
       </div>
       <div class="box">
         <div class="muted mono" style="font-size:.78rem">${t.deploy}</div>
@@ -337,6 +343,18 @@ function schedule(titlesRu, titlesUk, seed){
 let cnt=0;
 const today = new Date().toISOString().slice(0,10);
 const sitemap=[];
+// lastmod по реальным изменениям: храним хэш контента → дату меняем только при изменении страницы
+const crypto = require('crypto');
+const LMPATH = path.join(ROOT, 'lastmod-cache.json');
+let LM = {}; try { LM = JSON.parse(fs.readFileSync(LMPATH, 'utf8')); } catch(e){}
+const LMnext = {};
+function lastmodFor(url, html){
+  const h = crypto.createHash('sha1').update(html || '').digest('hex');
+  const prev = LM[url];
+  const d = (prev && prev.h === h) ? prev.d : today;
+  LMnext[url] = { h, d };
+  return d;
+}
 const postsPlan={ _meta:{ generated:fmtDate(new Date()), per_niche:50, cadence:'каждую нишу — через день, хаотично (1–3 дня)',
   rules:'Только настоящие цифры с источниками (Statista, Eurostat, Держстат, World Bank, NAR и т.п. — без РФ/Беларуси). Каждый текст уникальный, без плагиата. E-E-A-T.',
   geo:'Украина: RU (/n/) и UK (/ua/). Другие страны — отдельные субдомены.' }, niches:{} };
@@ -347,14 +365,19 @@ for(const n of D.niches){
   for(const v of VARIANTS){
     const dir = path.join(ROOT, v.dir, n.slug);
     fs.mkdirSync(dir, {recursive:true});
-    fs.writeFileSync(path.join(dir,'index.html'), page(n,v));
+    const html = page(n,v);
+    fs.writeFileSync(path.join(dir,'index.html'), html);
     cnt++;
-    sitemap.push(`  <url><loc>${urlFor(v,n.slug)}</loc>\n    <lastmod>${today}</lastmod>\n${altBlock}\n  </url>`);
+    sitemap.push(`  <url><loc>${urlFor(v,n.slug)}</loc>\n    <lastmod>${lastmodFor(urlFor(v,n.slug), html)}</lastmod>\n${altBlock}\n  </url>`);
   }
 }
 // статические корневые страницы
 const staticUrls = ['/','/catalog.html','/pricing.html','/oferta.html','/privacy.html','/payment-refund.html','/contacts.html'];
-const head = staticUrls.map(p=>`  <url><loc>${BASE}${p}</loc><lastmod>${today}</lastmod><priority>${p==='/'?'1.0':'0.8'}</priority></url>`).join('\n');
+const head = staticUrls.map(p=>{
+  const fp = p==='/' ? 'index.html' : p.replace(/^\//,'');
+  let c=''; try{ c=fs.readFileSync(path.join(ROOT, fp),'utf8'); }catch(e){}
+  return `  <url><loc>${BASE}${p}</loc><lastmod>${lastmodFor(BASE+p, c)}</lastmod><priority>${p==='/'?'1.0':'0.8'}</priority></url>`;
+}).join('\n');
 fs.writeFileSync(path.join(ROOT,'sitemap.xml'),
 `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -362,6 +385,7 @@ ${head}
 ${sitemap.join('\n')}
 </urlset>
 `);
+fs.writeFileSync(LMPATH, JSON.stringify(LMnext));
 // posts-plan.json — НЕ перезаписываем, если уже есть (там живые статусы published + расписание).
 // Расписанием управляют schedule-posts.js (разгон) и publish.js (публикация).
 const planFile = path.join(ROOT,'posts-plan.json');

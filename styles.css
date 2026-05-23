@@ -423,3 +423,8 @@ section{padding:64px 0}
   .nav nav{gap:11px;font-size:.78rem}
   h1{font-size:1.45rem}
 }
+/* trust-bar в карточке цены на странице ниши */
+.trust-list{list-style:none;margin:14px 0 0;padding:12px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:7px}
+.trust-list li{position:relative;padding-left:20px;font-size:.82rem;color:var(--ink-soft);line-height:1.4}
+.trust-list li::before{content:"\2713";position:absolute;left:0;color:#16a34a;font-weight:700}
+.trust-list a{color:inherit;text-decoration:underline;text-underline-offset:2px}

@@ -68,6 +68,7 @@ function F(n, lang){
     demo: (u ? u.demo : n.demo) || { them:'', bot:'' },
     objections: d.objections || [], knows: d.knows || [], market: d.market || [],
     sector: n.sector,
+    enrich: (u ? u.enrich : n.enrich) || null,
   };
 }
 
@@ -472,6 +473,18 @@ function statsBlock(f, lang){
     `<div class="stats">${f.market.map(m=>`<div class="stat"><div class="sv">${esc(m.value)}</div><div class="sl">${esc(m.label)}</div><div class="ss">${esc(m.source)}</div></div>`).join('')}</div>` +
     P(`<span class="muted" style="font-size:.85rem">${T(lang,'Источники указаны под каждой цифрой. Мы приводим только проверяемые отраслевые данные.','Джерела вказані під кожною цифрою. Ми наводимо лише дані, що можна перевірити.')}</span>`);
 }
+// Уникальные нишевые секции (анти-thin); заменяют дубль «цифр рынка» с хаб-страницы.
+function enrichBlock(f, lang){
+  if(!f.enrich) return '';
+  const e=f.enrich; let out='';
+  if(e.mistakes && e.mistakes.length)
+    out += H2(T(lang, `Типичные ошибки при автоматизации в нише «${f.name}»`, `Типові помилки при автоматизації в ніші «${f.name}»`)) + UL(e.mistakes.map(esc));
+  if(e.integrations && e.integrations.length)
+    out += H2(T(lang, "С какими системами связать бота", "З якими системами зв'язати бота")) + UL(e.integrations.map(esc));
+  if(e.buyer)
+    out += H2(T(lang,'Кому это особенно важно','Кому це особливо важливо')) + P(esc(e.buyer));
+  return out;
+}
 function demoBlock(f, lang){
   if(!f.demo || (!f.demo.them && !f.demo.bot)) return '';
   return H2(T(lang,'Как это выглядит в диалоге','Як це виглядає в діалозі')) +
@@ -517,7 +530,7 @@ const postUrl = (slug, lang, ps) => `${BASE}/${DIR(lang)}/${slug}/blog/${ps}/`;
 function readMins(html){ const words=html.replace(/<[^>]+>/g,' ').split(/\s+/).filter(Boolean).length; return Math.max(2, Math.round(words/180)); }
 
 // ── рендер страницы статьи ──
-function renderArticle(n, lang, post, themeIdx, prettyDate, related){
+function renderArticle(n, lang, post, themeIdx, prettyDate, related, altUrl){
   const f = F(n, lang);
   const N = esc(f.name);
   const r = rng(post.slug + lang);
@@ -525,7 +538,7 @@ function renderArticle(n, lang, post, themeIdx, prettyDate, related){
   let body = tc.lead.map(P).join('\n');
   body += tc.sections.map(s => H2(s.h2) + s.html).join('\n')
             .replace('<niche>', n.slug); // подставить slug в команду git clone, если есть
-  body += statsBlock(f, lang) + demoBlock(f, lang) + faqBlock(f, lang) + ctaBlock(n, f, lang);
+  body += enrichBlock(f, lang) + demoBlock(f, lang) + faqBlock(f, lang) + ctaBlock(n, f, lang);
   const mins = readMins(body);
   const url = postUrl(n.slug, lang, post.slug);
   const desc = (post.title.replace(/«|»/g,'') + '. ' + f.tagline).slice(0,158);
@@ -560,6 +573,9 @@ function renderArticle(n, lang, post, themeIdx, prettyDate, related){
 <meta name="description" content="${esc(desc)}">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="${url}">
+${altUrl ? `<link rel="alternate" hreflang="${lang==='uk'?'uk-UA':'ru-UA'}" href="${url}">
+<link rel="alternate" hreflang="${lang==='uk'?'ru-UA':'uk-UA'}" href="${altUrl}">
+<link rel="alternate" hreflang="x-default" href="${lang==='uk'?altUrl:url}">` : ''}
 <meta property="og:type" content="article">
 <meta property="og:locale" content="${lang==='uk'?'uk_UA':'ru_UA'}">
 <meta property="og:title" content="${esc(post.title)}">
@@ -570,6 +586,7 @@ function renderArticle(n, lang, post, themeIdx, prettyDate, related){
 <meta property="article:published_time" content="${post.publishedAt||post.publish}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2">
 <link rel="icon" href="/favicon.ico?v=2" sizes="any">
@@ -628,6 +645,7 @@ function renderNicheBlogIndex(n, lang, posts){
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="${url}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2"><link rel="icon" href="/favicon.ico?v=2" sizes="any"><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 <link rel="stylesheet" href="/styles.css?${CSSV}"><script src="/analytics.js" defer></script><script src="/daryna-widget.js" defer></script>
@@ -658,6 +676,7 @@ function renderGlobalBlog(items){
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="${BASE}/blog/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2"><link rel="icon" href="/favicon.ico?v=2" sizes="any"><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 <link rel="stylesheet" href="/styles.css?${CSSV}"><script src="/analytics.js" defer></script><script src="/daryna-widget.js" defer></script>
@@ -737,13 +756,19 @@ for(const slug in plan.niches){
     if(REBUILD) for(const p of pub) writeSlugs.add(p.slug);
     if(writeSlugs.size){
       const f = F(n, lang); const titles = postTitles(f.name, lang);
+      // карта постов другого языка по теме → hreflang ru↔uk
+      const oLang = lang==='uk'?'ru':'uk';
+      const oTitles = postTitles(F(n,oLang).name, oLang);
+      const oByTheme = {};
+      for(const p of plan.niches[slug].posts){ if(p.status==='published'&&p.lang===oLang&&p.slug){ const ti=oTitles.indexOf(p.title); if(ti>=0) oByTheme[ti]=p.slug; } }
       for(const post of pub){
         if(!writeSlugs.has(post.slug)) continue;
         let themeIdx = titles.indexOf(post.title); if(themeIdx<0) themeIdx = Math.floor(rng(post.title)()*25);
         const related = pub.filter(p=>p.slug!==post.slug).slice(0,5);
+        const altUrl = oByTheme[themeIdx]!=null ? postUrl(slug, oLang, oByTheme[themeIdx]) : '';
         const dir = path.join(ROOT, DIR(lang), slug, 'blog', post.slug);
         fs.mkdirSync(dir,{recursive:true});
-        fs.writeFileSync(path.join(dir,'index.html'), renderArticle(n, lang, post, themeIdx, pretty(post.publishedAt||post.publish,lang), related));
+        fs.writeFileSync(path.join(dir,'index.html'), renderArticle(n, lang, post, themeIdx, pretty(post.publishedAt||post.publish,lang), related, altUrl));
       }
     }
     // индекс блога ниши + блок на хабе — ВСЕГДА (восстанавливает связь, если seo-build сбросил хаб)

@@ -9,6 +9,7 @@
 <link rel="canonical" href="https://sl-claw.tech/checkout.html">
 <meta name="robots" content="noindex,follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
 <link rel="icon" href="favicon.ico?v=2" sizes="any">
@@ -54,6 +55,7 @@
 
       <button class="btn btn-primary co-pay" id="pay">Оплатить картой →</button>
       <div id="coerr" class="co-err" style="display:none"></div>
+      <div class="co-secure" id="coguar" style="margin-top:10px"></div>
 
       <div class="co-secure" id="cosecure">
         Оплата картами Visa / Mastercard через Monobank. Данные карты вводятся на стороне банка — мы их не получаем.
@@ -88,6 +90,7 @@
     geo:'Послуги недоступні для резидентів рф та рб.',
     order:'замовлення', nodisc:'Без знижки', sale:'За акцією', price:'Ціна', typeLbl:'Тип', typeVal:'разовий платіж · бот назавжди',
     save:'Економія', prodPrefix:'AI-продавець: ',
+    guarantee:'Разова оплата — бот залишається у вас назавжди. Повернення та умови — у <a href="payment-refund.html" target="_blank" rel="noopener">розділі «Оплата та повернення»</a>.',
     impl:'<b>Потрібно більше?</b> Після оплати можна доплатити й замовити <b>індивідуальне впровадження «під ключ»</b> у ваш бізнес — налаштування під процеси, інтеграції та навчання команди. Вартість послуги — <b>від $2000</b>.',
     errEmail:'Введіть коректний email — на нього прийде доступ і чек.', errAgree:'Підтвердіть згоду з офертою та політикою конфіденційності.'
   } : {
@@ -103,6 +106,7 @@
     geo:'Услуги недоступны для резидентов рф и рб.',
     order:'заказ', nodisc:'Без скидки', sale:'По акции', price:'Цена', typeLbl:'Тип', typeVal:'разовый платёж · бот навсегда',
     save:'Экономия', prodPrefix:'AI-продавец: ',
+    guarantee:'Разовая оплата — бот остаётся у вас навсегда. Возврат и условия — в <a href="payment-refund.html" target="_blank" rel="noopener">разделе «Оплата и возврат»</a>.',
     impl:'<b>Нужно больше?</b> После оплаты можно доплатить и заказать <b>индивидуальное внедрение «под ключ»</b> в ваш бизнес — настройка под процессы, интеграции и обучение команды. Стоимость услуги — <b>от $2000</b>.',
     errEmail:'Введите корректный email — на него придёт доступ и чек.', errAgree:'Подтвердите согласие с офертой и политикой конфиденциальности.'
   };
@@ -112,7 +116,7 @@
   setHTML('cocrumbT',TX.crumbT); setHTML('cocrumbC',TX.crumbC); setHTML('cohead',TX.h1);
   setHTML('emaillbl',TX.emaillbl); setHTML('emailhint',TX.emailhint); setHTML('agreetxt',TX.agree);
   setHTML('phonelbl',TX.phonelbl); setHTML('phonehint',TX.phonehint);
-  setHTML('pay',TX.pay); setHTML('cogeo',TX.geo); setHTML('coimpl',TX.impl);
+  setHTML('pay',TX.pay); setHTML('cogeo',TX.geo); setHTML('coimpl',TX.impl); setHTML('coguar',TX.guarantee);
   setHTML('cosecure', TX.secure + '<span class="pay-badges" id="cobadges"></span>');
 
   var P = new URLSearchParams(location.search);
