@@ -292,7 +292,7 @@ ${jsonld(n, v, f, u)}
       ${f.market.length?`<h2>${t.market}</h2><div class="stats">${f.market.map(m=>`<div class="stat"><div class="sv">${esc(m.value)}</div><div class="sl">${esc(m.label)}</div><div class="ss">${esc(m.source)}</div></div>`).join('')}</div>`:''}
 
       ${f.enrich ? `<h2>${t.buyerh}</h2><p>${esc(f.enrich.buyer)}</p>`
-        + ((f.enrich.mistakes||[]).length?`<h2>${t.mistakesh} «${esc(f.name)}»</h2><ul class="does">${f.enrich.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:'')
+        + ((f.enrich.mistakes||[]).length?`<h2>${f.enrich.mode==='setup'?`${v.lang==='uk'?'Як налаштувати бота в ніші':'Как настроить бота в нише'} «${esc(f.name)}»${v.lang==='uk'?', щоб продавав':', чтобы продавал'}`:`${t.mistakesh} «${esc(f.name)}»`}</h2><ul class="does${f.enrich.mode==='setup'?' setup':''}">${f.enrich.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:'')
         + ((f.enrich.integrations||[]).length?`<h2>${t.integh}</h2><ul class="does">${f.enrich.integrations.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`:'') : ''}
 
       <h2>${t.faqh}</h2>
