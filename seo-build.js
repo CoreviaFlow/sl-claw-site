@@ -66,7 +66,7 @@ const UI = {
        market:'Цифры рынка ниши', online:'в сети', getbot:'Получить бота', askconsult:'Спросить у консультанта', blog:'Полезные материалы',
        blogsub:'Статьи по автоматизации продаж в нише — обновляются регулярно.',
        blogsoon:'Первые материалы скоро — публикуем по мере готовности.',
-       faqh:'Частые вопросы', buyerh:'Кто покупает', mistakesh:'Где обычно теряют продажи в нише', integh:'Интеграции в нише',
+       faqh:'Частые вопросы', buyerh:'Кому будет эффективно?', mistakesh:'Где обычно теряют продажи в нише', integh:'Интеграции в нише',
        trust:['Разовая оплата — без абонентки','Оплата работы ИИ по факту','Условия возврата — в оферте','Разворачивается примерно за час'],
        closerh:'Доводит сделку до денег — и не бросает',
        closerlead:'Это не автоответчик «приняли заявку», а продавец, который доводит до сделки и возвращается сам:',
@@ -84,7 +84,7 @@ const UI = {
        market:'Цифри ринку ніші', online:'у мережі', getbot:'Отримати бота', askconsult:'Запитати у консультанта', blog:'Корисні матеріали',
        blogsub:'Статті з автоматизації продажів у ніші — оновлюються регулярно.',
        blogsoon:'Перші матеріали незабаром — публікуємо в міру готовності.',
-       faqh:'Часті запитання', buyerh:'Хто купує', mistakesh:'Де зазвичай втрачають продажі в ніші', integh:'Інтеграції в ніші',
+       faqh:'Часті запитання', buyerh:'Кому буде ефективно?', mistakesh:'Де зазвичай втрачають продажі в ніші', integh:'Інтеграції в ніші',
        trust:['Разова оплата — без абонплати','Оплата роботи ШІ за фактом','Умови повернення — в оферті','Розгортається приблизно за годину'],
        closerh:'Доводить угоду до грошей — і не кидає',
        closerlead:'Це не автовідповідач «прийняли заявку», а продавець, який доводить до угоди й повертається сам:',
@@ -287,7 +287,6 @@ ${jsonld(n, v, f, u)}
       <ul class="does caps">${t.caps.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
 
       ${f.objections.length?`<h2>${t.handles}</h2><div class="chips-row">${f.objections.map(o=>`<span class="chipx">${esc(o)}</span>`).join('')}</div>`:''}
-      ${f.knows.length?`<h2>${t.knows}</h2><div class="chips-row">${f.knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div>`:''}
 
       ${f.market.length?`<h2>${t.market}</h2><div class="stats">${f.market.map(m=>`<div class="stat"><div class="sv">${esc(m.value)}</div><div class="sl">${esc(m.label)}</div><div class="ss">${esc(m.source)}</div></div>`).join('')}</div>`:''}
 
@@ -319,6 +318,7 @@ ${jsonld(n, v, f, u)}
 <span class="c">$</span> cp .env.example .env
 <span class="c">$</span> docker compose up -d</div>
       </div>
+      ${f.knows.length?`<div class="box"><div class="muted mono" style="font-size:.78rem">${t.knows}</div><div class="chips-row" style="margin-top:10px">${f.knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div></div>`:''}
       <div class="side-demo">
         <h2 style="font-size:1.05rem;margin:0 0 10px">${t.demo}</h2>
         ${phoneHTML({ name:f.name, sel, lang:v.lang, them:f.demo.them, bot:f.demo.bot })}
