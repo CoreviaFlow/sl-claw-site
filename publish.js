@@ -484,7 +484,7 @@ function enrichBlock(f, lang){
   if(!f.enrich) return '';
   const e=f.enrich; let out='';
   if(e.mistakes && e.mistakes.length)
-    out += H2(T(lang, `Типичные ошибки при автоматизации в нише «${f.name}»`, `Типові помилки при автоматизації в ніші «${f.name}»`)) + UL(e.mistakes.map(esc));
+    out += H2(T(lang, `Где обычно теряют продажи в нише «${f.name}»`, `Де зазвичай втрачають продажі в ніші «${f.name}»`)) + UL(e.mistakes.map(esc));
   if(e.integrations && e.integrations.length)
     out += H2(T(lang, "С какими системами связать бота", "З якими системами зв'язати бота")) + UL(e.integrations.map(esc));
   if(e.buyer)
