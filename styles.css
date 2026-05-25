@@ -466,5 +466,7 @@ section{padding:64px 0}
 .does.caps li{break-inside:avoid}
 @media(max-width:680px){.does.caps{columns:1}}
 /* разделители между секциями в левой колонке ниши (чтобы блоки не сливались) */
-.np-grid .main > h2{border-top:1px solid var(--line);padding-top:24px;margin-top:10px}
+.np-grid .main > h2{border-top:1px solid var(--line-strong);padding-top:34px;margin:36px 0 16px}
 .np-grid .main > h2:first-of-type{border-top:0;padding-top:0;margin-top:0}
+/* воздух после контента секции перед следующей чертой */
+.np-grid .main > .chips-row,.np-grid .main > .stats,.np-grid .main > .does,.np-grid .main > p,.np-grid .main > .faq,.np-grid .main > .blog-list{margin-bottom:8px}
