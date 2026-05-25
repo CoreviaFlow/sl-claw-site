@@ -282,9 +282,6 @@ ${jsonld(n, v, f, u)}
       ${f.objections.length?`<h2>${t.handles}</h2><div class="chips-row">${f.objections.map(o=>`<span class="chipx">${esc(o)}</span>`).join('')}</div>`:''}
       ${f.knows.length?`<h2>${t.knows}</h2><div class="chips-row">${f.knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div>`:''}
 
-      <h2>${t.demo}</h2>
-      ${phoneHTML({ name:f.name, sel, lang:v.lang, them:f.demo.them, bot:f.demo.bot })}
-
       ${f.market.length?`<h2>${t.market}</h2><div class="stats">${f.market.map(m=>`<div class="stat"><div class="sv">${esc(m.value)}</div><div class="sl">${esc(m.label)}</div><div class="ss">${esc(m.source)}</div></div>`).join('')}</div>`:''}
 
       ${f.enrich ? `<h2>${t.buyerh}</h2><p>${esc(f.enrich.buyer)}</p>`
@@ -314,6 +311,10 @@ ${jsonld(n, v, f, u)}
         <div class="deploy"><span class="d">${v.lang==='uk'?'# доступ до бота — після оплати':'# доступ к боту — после оплаты'}</span>
 <span class="c">$</span> cp .env.example .env
 <span class="c">$</span> docker compose up -d</div>
+      </div>
+      <div class="side-demo">
+        <h2 style="font-size:1.05rem;margin:0 0 10px">${t.demo}</h2>
+        ${phoneHTML({ name:f.name, sel, lang:v.lang, them:f.demo.them, bot:f.demo.bot })}
       </div>
     </aside>
   </div>
