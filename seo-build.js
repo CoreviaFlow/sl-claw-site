@@ -286,8 +286,6 @@ ${jsonld(n, v, f, u)}
       <h2>${t.capsh}</h2>
       <ul class="does caps">${t.caps.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
 
-      ${f.market.length?`<h2>${t.market}</h2><div class="stats">${f.market.map(m=>`<div class="stat"><div class="sv">${esc(m.value)}</div><div class="sl">${esc(m.label)}</div><div class="ss">${esc(m.source)}</div></div>`).join('')}</div>`:''}
-
       ${f.enrich ? `<h2>${t.buyerh}</h2><p>${esc(f.enrich.buyer)}</p>`
         + ((f.enrich.mistakes||[]).length?`<h2>${f.enrich.mode==='setup'?`${v.lang==='uk'?'Як налаштувати бота в ніші':'Как настроить бота в нише'} «${esc(f.name)}»${v.lang==='uk'?', щоб продавав':', чтобы продавал'}`:`${t.mistakesh} «${esc(f.name)}»`}</h2><ul class="does${f.enrich.mode==='setup'?' setup':''}">${f.enrich.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:'')
         + ((f.enrich.integrations||[]).length?`<h2>${t.integh}</h2><ul class="does">${f.enrich.integrations.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`:'') : ''}
@@ -320,8 +318,8 @@ ${jsonld(n, v, f, u)}
         <h2 style="font-size:1.05rem;margin:0 0 10px">${t.demo}</h2>
         ${phoneHTML({ name:f.name, sel, lang:v.lang, them:f.demo.them, bot:f.demo.bot })}
       </div>
-      ${f.objections.length?`<div class="box"><div class="muted mono" style="font-size:.78rem">${t.handles}</div><div class="chips-row" style="margin-top:10px">${f.objections.map(o=>`<span class="chipx">${esc(o)}</span>`).join('')}</div></div>`:''}
-      ${f.knows.length?`<div class="box"><div class="muted mono" style="font-size:.78rem">${t.knows}</div><div class="chips-row" style="margin-top:10px">${f.knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div></div>`:''}
+      ${f.objections.length?`<div class="box"><h2 style="font-size:1.05rem;margin:0 0 12px">${t.handles}</h2><div class="chips-row" style="margin:0">${f.objections.map(o=>`<span class="chipx">${esc(o)}</span>`).join('')}</div></div>`:''}
+      ${f.knows.length?`<div class="box"><h2 style="font-size:1.05rem;margin:0 0 12px">${t.knows}</h2><div class="chips-row" style="margin:0">${f.knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div></div>`:''}
     </aside>
   </div>
 </div></section>
