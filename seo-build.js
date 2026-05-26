@@ -170,6 +170,25 @@ function faqItems(f, lang){
     [`В каких каналах работает бот?`, `Telegram, виджет на сайт, WhatsApp, Instagram — один бот сразу во всех текстовых каналах.`],
   ];
 }
+// enrich-секции (кому/как настроить/интеграции), упакованные в FAQ-аккордеон.
+// Один источник для видимого блока И для FAQPage-schema.
+function enrichFaq(f, lang){
+  if(!f.enrich) return [];
+  const e=f.enrich, uk=lang==='uk', out=[];
+  out.push({ q: uk?'Кому буде ефективно?':'Кому будет эффективно?',
+    body:`<p>${esc(e.buyer)}</p>`, text:e.buyer });
+  if((e.mistakes||[]).length){
+    const q = e.mode==='setup'
+      ? (uk?`Як налаштувати бота в ніші «${f.name}», щоб продавав`:`Как настроить бота в нише «${f.name}», чтобы продавал`)
+      : (uk?`Де зазвичай втрачають продажі в ніші «${f.name}»`:`Где обычно теряют продажи в нише «${f.name}»`);
+    out.push({ q, body:`<ul class="does${e.mode==='setup'?' setup':''}">${e.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`, text:e.mistakes.join(' ') });
+  }
+  if((e.integrations||[]).length){
+    out.push({ q: uk?"З якими системами зв'язати бота?":'С какими системами связать бота?',
+      body:`<ul class="does">${e.integrations.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`, text:e.integrations.join(' ') });
+  }
+  return out;
+}
 function jsonld(n, v, f, u){
   const tier = PRICES[n.tier]||{price:'$249'};
   const price = (PROMO_ON && tier.sale ? tier.sale : tier.price).replace('$','');
@@ -183,7 +202,7 @@ function jsonld(n, v, f, u){
     {"@type":"ListItem",position:1,name:UI[v.lang].crumbHome,item:BASE+'/'},
     {"@type":"ListItem",position:2,name:UI[v.lang].crumbCat,item:BASE+'/catalog.html'},
     {"@type":"ListItem",position:3,name:f.name,item:u} ]};
-  const faqs = faqItems(f, v.lang);
+  const faqs = [...enrichFaq(f, v.lang).map(it=>[it.q, it.text]), ...faqItems(f, v.lang)];
   const faq = {"@context":"https://schema.org","@type":"FAQPage", mainEntity: faqs.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))};
   return [product,crumbs,faq].map(x=>`<script type="application/ld+json">${jset(x)}</script>`).join('\n');
 }
@@ -286,12 +305,8 @@ ${jsonld(n, v, f, u)}
       <h2>${t.capsh}</h2>
       <ul class="does caps">${t.caps.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
 
-      ${f.enrich ? `<h2>${t.buyerh}</h2><p>${esc(f.enrich.buyer)}</p>`
-        + ((f.enrich.mistakes||[]).length?`<h2>${f.enrich.mode==='setup'?`${v.lang==='uk'?'Як налаштувати бота в ніші':'Как настроить бота в нише'} «${esc(f.name)}»${v.lang==='uk'?', щоб продавав':', чтобы продавал'}`:`${t.mistakesh} «${esc(f.name)}»`}</h2><ul class="does${f.enrich.mode==='setup'?' setup':''}">${f.enrich.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:'')
-        + ((f.enrich.integrations||[]).length?`<h2>${t.integh}</h2><ul class="does">${f.enrich.integrations.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`:'') : ''}
-
       <h2>${t.faqh}</h2>
-      <div class="faq">${faqItems(f,v.lang).map(([q,a])=>`<details class="faq-item"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>
+      <div class="faq">${enrichFaq(f,v.lang).map(it=>`<details class="faq-item"><summary>${esc(it.q)}</summary>${it.body}</details>`).join('')}${faqItems(f,v.lang).map(([q,a])=>`<details class="faq-item"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>
 
       <h2>${t.blog}</h2>
       <p class="muted" style="margin:-6px 0 12px;font-size:.9rem">${t.blogsub}</p>

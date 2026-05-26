@@ -400,6 +400,9 @@ section{padding:64px 0}
 .faq summary{cursor:pointer;font-weight:600;font-size:.98rem;color:var(--ink)}
 .faq details[open] summary{margin-bottom:8px}
 .faq details p{margin:0;color:var(--ink-soft);font-size:.95rem}
+.faq details .does{margin:0}
+.faq details .does li{font-size:.95rem;color:var(--ink-soft)}
+.faq details .does li:last-child{border-bottom:0;padding-bottom:0}
 .post-cta{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
   border:1px solid var(--line-strong);border-radius:14px;padding:20px 22px;margin:26px 0 8px;background:var(--bg-soft)}
 .post-cta b{display:block;font-size:1.02rem;margin-bottom:3px}
