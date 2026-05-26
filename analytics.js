@@ -1,12 +1,17 @@
-// SL-CLAW analytics — FB Pixel + CAPI mirror + auto-події + GA4.
+// SL-CLAW analytics — FB Pixel + CAPI mirror + GA4 + Umami (self-hosted, real-time).
 // Підключений на всіх сторінках (n/*, ua/*, index, catalog, pricing, checkout).
 // Pixel: 1303860444646281. CAPI proxy: events.coreviaflow.space. GA4: G-ZTB9NLZPXL.
+// Umami: https://umami.coreviaflow.space — self-hosted, bypass ad-blockers, real-time data.
 (function () {
   'use strict';
 
   var PIXEL_ID = '1303860444646281';
   var CAPI_URL = 'https://events.coreviaflow.space/v1/track';
   var GA4_ID = 'G-ZTB9NLZPXL'; // GA4 Measurement ID (sl-claw.tech)
+  // Umami: privacy-first self-hosted analytics. Заповнити WEBSITE_ID після деплою.
+  // Деплой: див. ~/.claude/projects/<...>/memory/umami_deploy.md
+  var UMAMI_HOST = 'https://umami.coreviaflow.space'; // self-hosted instance
+  var UMAMI_WEBSITE_ID = ''; // TODO: заповнити UUID після створення сайту в Umami панелі
 
   // ---------- helpers ----------
   function uuid() {
@@ -70,7 +75,7 @@
     } catch (e) {}
   }
 
-  // Універсальний трекер: Pixel + CAPI з одним event_id (дедуплікація).
+  // Універсальний трекер: Pixel + CAPI + GA4 + Umami з одним event_id (дедуплікація).
   window.slclawTrack = function (eventName, customData, userData, eventIdOverride) {
     var eventId = eventIdOverride || uuid();
     var opts = { eventID: eventId };
@@ -78,6 +83,10 @@
     toCapi(eventName, eventId, customData, userData);
     // GA4 mirror
     if (window.gtag) { try { gtag('event', eventName, customData || {}); } catch (e) {} }
+    // Umami mirror (real-time, bypass ad-blockers)
+    if (window.umami && typeof window.umami.track === 'function') {
+      try { window.umami.track(eventName, customData || {}); } catch (e) {}
+    }
     return eventId;
   };
 
@@ -90,6 +99,17 @@
     window.gtag = function () { dataLayer.push(arguments); };
     gtag('js', new Date());
     gtag('config', GA4_ID, { anonymize_ip: true });
+  }
+
+  // ---------- Umami (privacy-first, real-time, bypass ad-blockers) ----------
+  if (UMAMI_WEBSITE_ID && UMAMI_HOST) {
+    var um = document.createElement('script');
+    um.async = true; um.defer = true;
+    um.src = UMAMI_HOST + '/script.js';
+    um.setAttribute('data-website-id', UMAMI_WEBSITE_ID);
+    // Auto-track усі піддомени sl-claw.tech як один сайт
+    um.setAttribute('data-domains', 'sl-claw.tech,www.sl-claw.tech');
+    document.head.appendChild(um);
   }
 
   // ---------- auto PageView ----------
