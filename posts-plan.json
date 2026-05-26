@@ -18239,8 +18239,10 @@
      "title": "Голосовой агент для «Управленческий консалтинг»: когда нужен апгрейд",
      "lang": "ru",
      "publish": "2026-05-26",
-     "status": "planned",
-     "publishAt": "2026-05-26T14:39:00Z"
+     "status": "published",
+     "publishAt": "2026-05-26T14:39:00Z",
+     "slug": "holosovoi-ahent-dlia-kohda-nuzhen-aphreid",
+     "publishedAt": "2026-05-26T15:00:49.222Z"
     },
     {
      "title": "Як вимірювати ефективність бота в ніші «Управлінський консалтинг»",

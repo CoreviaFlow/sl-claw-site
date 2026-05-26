@@ -804,6 +804,7 @@ for(const slug in plan.niches){
           eyebrow: lang==='uk' ? '// блог · автоматизація продажів' : '// блог · автоматизация продаж',
           title: post.title, sub: f.name, archLabel: al, archetype: n.archetype,
           term: 'docker compose up -d',
+          lang,
         }));
         fs.writeFileSync(path.join(dir,'index.html'), renderArticle(n, lang, post, themeIdx, pretty(post.publishedAt||post.publish,lang), related, altUrl));
       }

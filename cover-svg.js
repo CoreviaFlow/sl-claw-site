@@ -12,7 +12,7 @@ function wrap(s, max){ const w=String(s).split(/\s+/); const out=[]; let cur='';
 const SANS = "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif";
 const MONO = "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 
-function coverSVG({ eyebrow, title, sub, archLabel, archetype, term }){
+function coverSVG({ eyebrow, title, sub, archLabel, archetype, term, lang }){
   const a = ARCH[archetype] || ARCH['product-sell'];
   const W=1200, H=630, PAD=72;
   const allLines = wrap(title, title.length>34 ? 24 : 18);
@@ -44,7 +44,7 @@ ${subSvg}
   <text x="20" y="36" font-family="${MONO}" font-size="20"><tspan fill="#5be39a">$</tspan><tspan fill="#d7e0ea"> ${esc(term||'docker compose up -d')}</tspan></text>
 </g>
 <text x="${W-PAD}" y="${H-66}" text-anchor="end" font-family="${MONO}" font-weight="700" font-size="22" fill="#0b0d10">sl-claw.tech</text>
-<text x="${W-PAD}" y="${H-40}" text-anchor="end" font-family="${SANS}" font-size="17" fill="#8a93a0">AI-продавец · продаёт в переписке 24/7</text>
+<text x="${W-PAD}" y="${H-40}" text-anchor="end" font-family="${SANS}" font-size="17" fill="#8a93a0">${lang==='uk'?'AI-продавець · продає в листуванні 24/7':'AI-продавец · продаёт в переписке 24/7'}</text>
 </svg>`;
 }
 module.exports = { coverSVG };
