@@ -68,6 +68,17 @@ const UI = {
        blogsoon:'Первые материалы скоро — публикуем по мере готовности.',
        faqh:'Частые вопросы', buyerh:'Кому будет эффективно?', mistakesh:'Где обычно теряют продажи в нише', integh:'Интеграции в нише',
        trust:['Разовая оплата — без абонентки','Оплата работы ИИ по факту','Условия возврата — в оферте','Разворачивается примерно за час'],
+       trustStrip:['Разово · без абонентки','ИИ по факту · ~$5 ≈ 2000 диалогов','Готов за час','Гарантия возврата 14 дней'],
+       guarBadge:'🛡 Гарантия возврата 14 дней',
+       payperuse:'Бот покупаешь разово. ИИ платишь по факту через токен SL-CLAW: ~$5 ≈ 2000 диалогов. Без абонентки.',
+       compareHint:'Также доступны: Core + Study $449 (+ методология SPIN) · Professional $499 ★ (−50% от $999, + экспертиза ниши)',
+       compareMore:'Сравнить тарифы →',
+       devDetails:'Для разработчика · развернуть за час',
+       closerFaq:[
+         {q:'А если не подойдёт — можно вернуть?', a:'Да, гарантия возврата 14 дней с момента оплаты. Не подошло — напишите в поддержку, оформим возврат в течение 24 часов. Условия — в оферте.'},
+         {q:'А абонентка не вырастет со временем?', a:'Абонентки нет в принципе. Бот — разовая покупка ($249–$499 в зависимости от тарифа). Дальше платите только за работу ИИ через токен: ~$5 ≈ 2000 диалогов. Не общается бот — ничего не списывается.'},
+         {q:'А если я не справлюсь с настройкой сам?', a:'Self-service по инструкции подходит большинству — разворачивается примерно за час. Если не хочется морочиться — есть «Под ключ» от $2000: настраиваем под ваш бизнес, делаем интеграции (CRM, 1С), наполняем знаниями, обучаем команду.'}
+       ],
        closerh:'Доводит сделку до денег — и не бросает',
        closerlead:'Это не автоответчик «приняли заявку», а продавец, который доводит до сделки и возвращается сам:',
        closer:['Дожимает сделку: снимает последние возражения и подводит к оплате','Возвращается через время — проверяет статус, переспрашивает по предложению и аккуратно тревожит «дозревающего» клиента, пока тот не купит или не откажет','Помнит клиента и историю переписки — узнаёт по имени, бюджету и прошлым интересам','Счёт, КП, драфт договора, интеграция с CRM или 1С — подключаем индивидуально, как доп. внедрение под ваш бизнес'],
@@ -86,6 +97,17 @@ const UI = {
        blogsoon:'Перші матеріали незабаром — публікуємо в міру готовності.',
        faqh:'Часті запитання', buyerh:'Кому буде ефективно?', mistakesh:'Де зазвичай втрачають продажі в ніші', integh:'Інтеграції в ніші',
        trust:['Разова оплата — без абонплати','Оплата роботи ШІ за фактом','Умови повернення — в оферті','Розгортається приблизно за годину'],
+       trustStrip:['Разово · без абонплати','ШІ за фактом · ~$5 ≈ 2000 діалогів','Готовий за годину','Гарантія повернення 14 днів'],
+       guarBadge:'🛡 Гарантія повернення 14 днів',
+       payperuse:'Бот купуєш разово. ШІ платиш за фактом через токен SL-CLAW: ~$5 ≈ 2000 діалогів. Без абонплати.',
+       compareHint:'Також доступні: Core + Study $449 (+ методологія SPIN) · Professional $499 ★ (−50% від $999, + експертиза ніші)',
+       compareMore:'Порівняти тарифи →',
+       devDetails:'Для розробника · розгорнути за годину',
+       closerFaq:[
+         {q:'А якщо не підійде — чи можу повернути?', a:'Так, гарантія повернення 14 днів з моменту оплати. Не підійшло — напишіть у підтримку, оформимо повернення протягом 24 годин. Умови — в оферті.'},
+         {q:'А абонплата не виросте з часом?', a:'Абонплати немає в принципі. Бот — разова покупка ($249–$499 залежно від тарифу). Далі платите лише за роботу ШІ через токен: ~$5 ≈ 2000 діалогів. Не спілкується бот — нічого не списується.'},
+         {q:'А якщо я не подужаю налаштувати сам?', a:'Self-service за інструкцією підходить більшості — розгортається приблизно за годину. Якщо не хочеться морочитися — є «Під ключ» від $2000: налаштовуємо під ваш бізнес, робимо інтеграції (CRM, 1С), наповнюємо знаннями, навчаємо команду.'}
+       ],
        closerh:'Доводить угоду до грошей — і не кидає',
        closerlead:'Це не автовідповідач «прийняли заявку», а продавець, який доводить до угоди й повертається сам:',
        closer:['Дотискає угоду: знімає останні заперечення й підводить до оплати','Повертається згодом — перевіряє статус, перепитує по пропозиції й акуратно турбує «дозріваючого» клієнта, поки той не купить або не відмовиться','Памʼятає клієнта та історію листування — впізнає за імʼям, бюджетом і минулими інтересами','Рахунок, КП, драфт договору, інтеграція з CRM або 1С — підключаємо індивідуально, як дод. впровадження під ваш бізнес'],
@@ -270,7 +292,7 @@ ${alts}
 <link rel="icon" href="/favicon.ico?v=2" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
-<link rel="stylesheet" href="/styles.css?v=3">
+<link rel="stylesheet" href="/styles.css?v=4">
 <script src="/analytics.js" defer></script>
 <script src="/phone-demo.js" defer></script>
 <script src="/mobile-bar.js" defer></script>
@@ -293,6 +315,7 @@ ${jsonld(n, v, f, u)}
     <span class="tag ${n.archetype}">${esc(archLabel(n.archetype, v.lang))}</span>
     <h1>AI-${sel} для «${esc(f.name)}» — ${v.lang==='uk'?'продає в листуванні':'продаёт в переписке'} 24/7</h1>
     <p class="lead">${esc(f.tagline)}</p>
+    <ul class="trust-strip" aria-label="Ключові переваги">${t.trustStrip.map(b=>`<li>✓ ${esc(b)}</li>`).join('')}</ul>
     <p class="mono" style="color:var(--ink-faint);font-size:.82rem;margin-top:14px">${t.pipe}</p>
   </div>
   <div class="np-grid">
@@ -313,7 +336,7 @@ ${jsonld(n, v, f, u)}
       <ul class="does caps">${t.caps.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
 
       <h2>${t.faqh}</h2>
-      <div class="faq">${enrichFaq(f,v.lang).map(it=>`<details class="faq-item"><summary><h3>${esc(it.q)}</h3></summary>${it.body}</details>`).join('')}${faqItems(f,v.lang).map(([q,a])=>`<details class="faq-item"><summary><h3>${esc(q)}</h3></summary><p>${esc(a)}</p></details>`).join('')}</div>
+      <div class="faq">${t.closerFaq.map(it=>`<details class="faq-item faq-closer"><summary><h3>${esc(it.q)}</h3></summary><p>${esc(it.a)}</p></details>`).join('')}${enrichFaq(f,v.lang).map(it=>`<details class="faq-item"><summary><h3>${esc(it.q)}</h3></summary>${it.body}</details>`).join('')}${faqItems(f,v.lang).map(([q,a])=>`<details class="faq-item"><summary><h3>${esc(q)}</h3></summary><p>${esc(a)}</p></details>`).join('')}</div>
 
       <h2>${t.blog}</h2>
       <p class="muted" style="margin:-6px 0 12px;font-size:.9rem">${t.blogsub}</p>
@@ -324,18 +347,21 @@ ${jsonld(n, v, f, u)}
       <div class="box box-price">
         <div class="muted mono" style="font-size:.78rem">${onSale?t.sale:t.price}</div>
         ${priceHtml}
+        <div class="ppu-note">${esc(t.payperuse)}</div>
+        <div class="guarantee-badge">${esc(t.guarBadge)}</div>
         <div class="row2"><span>${v.lang==='uk'?'Галузь':'Отрасль'}</span><span>${esc(secOf(n.sector, v.lang))}</span></div>
         <div class="row2"><span>${v.lang==='uk'?'Можлива ціль':'Возможная цель'}</span><span>${esc(f.cta)}</span></div>
         <a class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px" href="/checkout.html?niche=${n.slug}&tier=${n.tier}">${t.getbot}</a>
         <button type="button" class="btn-ask" onclick="var b=document.querySelector('.dw-btn');if(b){b.click()}" style="width:100%;justify-content:center;margin-top:8px;background:none;border:0;color:#0b0f19;font:600 .82rem/1.2 inherit;cursor:pointer;padding:8px;text-decoration:underline;text-underline-offset:3px;opacity:.75">${t.askconsult}</button>
+        <div class="compare-hint">${t.compareHint} · <a href="/pricing.html">${t.compareMore}</a></div>
         <ul class="trust-list"><li>${t.trust[0]}</li><li>${t.trust[1]}</li><li><a href="/payment-refund.html">${t.trust[2]}</a></li><li>${t.trust[3]}</li></ul>
       </div>
-      <div class="box">
-        <div class="muted mono" style="font-size:.78rem">${t.deploy}</div>
+      <details class="box dev-deploy">
+        <summary>${esc(t.devDetails)}</summary>
         <div class="deploy"><span class="d">${v.lang==='uk'?'# доступ до бота — після оплати':'# доступ к боту — после оплаты'}</span>
 <span class="c">$</span> cp .env.example .env
 <span class="c">$</span> docker compose up -d</div>
-      </div>
+      </details>
       <div class="side-demo">
         <h2 style="font-size:1.05rem;margin:0 0 10px">${t.demo}</h2>
         ${phoneHTML({ name:f.name, sel, lang:v.lang, them:f.demo.them, bot:f.demo.bot })}
