@@ -11,7 +11,7 @@
   // Umami: privacy-first self-hosted analytics. Заповнити WEBSITE_ID після деплою.
   // Деплой: див. ~/.claude/projects/<...>/memory/umami_deploy.md
   var UMAMI_HOST = 'https://umami.coreviaflow.space'; // self-hosted instance
-  var UMAMI_WEBSITE_ID = ''; // TODO: заповнити UUID після створення сайту в Umami панелі
+  var UMAMI_WEBSITE_ID = '3781d723-03e3-42df-91e5-4abd8c0864e8';
 
   // ---------- helpers ----------
   function uuid() {
