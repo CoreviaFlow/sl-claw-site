@@ -175,8 +175,6 @@ function faqItems(f, lang){
 function enrichFaq(f, lang){
   if(!f.enrich) return [];
   const e=f.enrich, uk=lang==='uk', out=[];
-  out.push({ q: uk?'Кому буде ефективно?':'Кому будет эффективно?',
-    body:`<p>${esc(e.buyer)}</p>`, text:e.buyer });
   if((e.mistakes||[]).length){
     const q = e.mode==='setup'
       ? (uk?`Як налаштувати бота в ніші «${f.name}», щоб продавав`:`Как настроить бота в нише «${f.name}», чтобы продавал`)
