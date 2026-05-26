@@ -32421,8 +32421,10 @@
      "title": "Як не втрачати заявки вночі в ніші «Інвестиції та брокерські послуги»",
      "lang": "uk",
      "publish": "2026-05-26",
-     "status": "planned",
-     "publishAt": "2026-05-26T16:05:00Z"
+     "status": "published",
+     "publishAt": "2026-05-26T16:05:00Z",
+     "slug": "iak-ne-vtrachaty-zaiavky-vnochi-v-nishi",
+     "publishedAt": "2026-05-26T18:24:39.535Z"
     },
     {
      "title": "Интеграция чат-бота «Инвестиции и брокерские услуги» с CRM",
@@ -33628,8 +33630,10 @@
      "title": "Як налаштувати бота під товари і ціни в «SEO-агентство»",
      "lang": "uk",
      "publish": "2026-05-26",
-     "status": "planned",
-     "publishAt": "2026-05-26T16:00:00Z"
+     "status": "published",
+     "publishAt": "2026-05-26T16:00:00Z",
+     "slug": "iak-nalashtuvaty-bota-pid-tovary-i-tsiny-v",
+     "publishedAt": "2026-05-26T18:24:39.535Z"
     },
     {
      "title": "Как автоматизировать продажи в нише «SEO-агентство» — пошагово",
