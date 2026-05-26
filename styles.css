@@ -398,6 +398,7 @@ section{padding:64px 0}
 .faq{margin:6px 0 22px;display:flex;flex-direction:column;gap:8px}
 .faq details{border:1px solid var(--line);border-radius:10px;padding:12px 16px;background:var(--bg-soft)}
 .faq summary{cursor:pointer;font-weight:600;font-size:.98rem;color:var(--ink)}
+.faq summary h3{display:inline;margin:0;font-size:inherit;font-weight:inherit;line-height:inherit;letter-spacing:inherit}
 .faq details[open] summary{margin-bottom:8px}
 .faq details p{margin:0;color:var(--ink-soft);font-size:.95rem}
 .faq details .does{margin:0}

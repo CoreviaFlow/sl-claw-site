@@ -306,7 +306,7 @@ ${jsonld(n, v, f, u)}
       <ul class="does caps">${t.caps.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
 
       <h2>${t.faqh}</h2>
-      <div class="faq">${enrichFaq(f,v.lang).map(it=>`<details class="faq-item"><summary>${esc(it.q)}</summary>${it.body}</details>`).join('')}${faqItems(f,v.lang).map(([q,a])=>`<details class="faq-item"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>
+      <div class="faq">${enrichFaq(f,v.lang).map(it=>`<details class="faq-item"><summary><h3>${esc(it.q)}</h3></summary>${it.body}</details>`).join('')}${faqItems(f,v.lang).map(([q,a])=>`<details class="faq-item"><summary><h3>${esc(q)}</h3></summary><p>${esc(a)}</p></details>`).join('')}</div>
 
       <h2>${t.blog}</h2>
       <p class="muted" style="margin:-6px 0 12px;font-size:.9rem">${t.blogsub}</p>
