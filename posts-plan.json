@@ -32403,8 +32403,10 @@
      "title": "Как не терять заявки ночью в нише «Инвестиции и брокерские услуги»",
      "lang": "ru",
      "publish": "2026-05-26",
-     "status": "planned",
-     "publishAt": "2026-05-26T14:11:00Z"
+     "status": "published",
+     "publishAt": "2026-05-26T14:11:00Z",
+     "slug": "kak-ne-teriat-zaiavky-nochiu-v-nyshe",
+     "publishedAt": "2026-05-26T14:11:10.429Z"
     },
     {
      "title": "Інтеграція чат-бота «Інвестиції та брокерські послуги» з CRM",

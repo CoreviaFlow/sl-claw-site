@@ -549,7 +549,20 @@ function renderArticle(n, lang, post, themeIdx, prettyDate, related, altUrl){
   body += enrichBlock(f, lang) + demoBlock(f, lang) + faqBlock(f, lang) + ctaBlock(n, f, lang);
   const mins = readMins(body);
   const url = postUrl(n.slug, lang, post.slug);
-  const desc = (post.title.replace(/«|»/g,'') + '. ' + f.tagline).slice(0,158);
+  // description: prefer the lead paragraph (real content) over duplicating the title.
+  const leadText = (tc.lead && tc.lead[0]) ? tc.lead[0].replace(/<[^>]+>/g,'') : '';
+  const descRaw = (leadText || f.tagline || post.title).trim();
+  const desc = descRaw.length > 158 ? descRaw.slice(0,155).trimEnd()+'…' : descRaw;
+  // title: drop the «| SL-CLAW» suffix when it would push us past Google's display limit (~60).
+  // For very long niche names that still produce >72ch, trim at word boundary with ellipsis.
+  function _trimTitle(s, max){
+    if(s.length <= max) return s;
+    const cut = s.slice(0, max);
+    const sp = cut.lastIndexOf(' ');
+    return ((sp > max - 18 ? cut.slice(0, sp) : cut).replace(/[—,:\s]+$/,'')) + '…';
+  }
+  let pageTitle = (post.title.length <= 55) ? (post.title + ' | SL-CLAW') : post.title;
+  pageTitle = _trimTitle(pageTitle, 72);
   const author = 'SL-CLAW';
   // related внутр.ссылки
   const relHtml = related.length ? (H2(T(lang,'Читайте также','Читайте також')) +
@@ -559,7 +572,7 @@ function renderArticle(n, lang, post, themeIdx, prettyDate, related, altUrl){
     {"@context":"https://schema.org","@type":"BlogPosting",headline:post.title,description:desc,inLanguage:lang==='uk'?'uk-UA':'ru-UA',
       datePublished:post.publishedAt||post.publish,dateModified:post.publishedAt||post.publish,
       author:{"@type":"Organization",name:"SL-CLAW"},publisher:{"@type":"Organization",name:LEGAL.entity,logo:{"@type":"ImageObject",url:BASE+'/icon-512.png'}},
-      mainEntityOfPage:url,image:BASE+'/icon-512.png'},
+      mainEntityOfPage:url,image:url+'cover.svg'},
     {"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[
       {"@type":"ListItem",position:1,name:T(lang,'Главная','Головна'),item:BASE+'/'},
       {"@type":"ListItem",position:2,name:T(lang,'Каталог','Каталог'),item:BASE+'/catalog.html'},
@@ -577,19 +590,23 @@ function renderArticle(n, lang, post, themeIdx, prettyDate, related, altUrl){
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(post.title)} | SL-CLAW</title>
+<title>${esc(pageTitle)}</title>
 <meta name="description" content="${esc(desc)}">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="${url}">
-${altUrl ? `<link rel="alternate" hreflang="${lang==='uk'?'uk-UA':'ru-UA'}" href="${url}">
-<link rel="alternate" hreflang="${lang==='uk'?'ru-UA':'uk-UA'}" href="${altUrl}">
-<link rel="alternate" hreflang="x-default" href="${lang==='uk'?altUrl:url}">` : ''}
+<link rel="alternate" hreflang="${lang==='uk'?'uk-UA':'ru-UA'}" href="${url}">
+${altUrl ? `<link rel="alternate" hreflang="${lang==='uk'?'ru-UA':'uk-UA'}" href="${altUrl}">
+<link rel="alternate" hreflang="x-default" href="${lang==='uk'?altUrl:url}">` : `<link rel="alternate" hreflang="x-default" href="${url}">`}
 <meta property="og:type" content="article">
 <meta property="og:locale" content="${lang==='uk'?'uk_UA':'ru_UA'}">
 <meta property="og:title" content="${esc(post.title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${BASE}/icon-512.png">
+<meta property="og:image" content="${url}cover.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/svg+xml">
+<meta property="og:image:alt" content="${esc(post.title)}">
 <meta property="og:site_name" content="SL-CLAW">
 <meta property="article:published_time" content="${post.publishedAt||post.publish}">
 <meta name="twitter:card" content="summary_large_image">
