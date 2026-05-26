@@ -511,7 +511,7 @@ function faqBlock(f, lang){
   return H2('FAQ') + `<div class="faq">${qa.map(([q,a])=>`<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>`;
 }
 function ctaBlock(n, f, lang){
-  return `<div class="post-cta"><div><b>${T(lang,'Готовый AI-продавец для ниши','Готовий AI-продавець для ніші')} «${esc(f.name)}»</b><span>${T(lang,'Разверни за час — продаёт в переписке 24/7.','Розгорни за годину — продає в листуванні 24/7.')}</span></div><a class="btn btn-primary" href="/checkout.html?niche=${n.slug}&tier=${n.tier}">${T(lang,'Получить бота','Отримати бота')}</a></div>`;
+  return `<div class="post-cta"><div><b>${T(lang,'Готовый AI-продавец для ниши','Готовий AI-продавець для ніші')} «${esc(f.name)}»</b><span>${T(lang,'Разверни за час — продаёт в переписке 24/7.','Розгорни за годину — продає в листуванні 24/7.')}</span></div><a class="btn btn-primary" href="${lang==='uk'?'/ua/':'/n/'}${n.slug}/">${T(lang,'Получить бота','Отримати бота')}</a></div>`;
 }
 
 // футер (зеркало seo-build.js)
@@ -623,6 +623,7 @@ ${ld}
   <h1>${esc(post.title)}</h1>
   <div class="post-meta mono">${prettyDate} · ${mins} ${t.min} · ${author}</div>
   <img class="cover" src="cover.svg" width="1200" height="630" alt="${esc(post.title)}" loading="lazy">
+  <aside class="post-intro-cta"><a href="${nicheUrl(n.slug,lang).replace(BASE,'')}">${T(lang, `Готовый AI-продавец для ниши «${esc(f.name)}» — посмотреть страницу бота`, `Готовий AI-продавець для ніші «${esc(f.name)}» — подивитися сторінку бота`)} →</a></aside>
   <div class="post-body">
 ${body}
 ${relHtml}
@@ -667,7 +668,7 @@ function renderNicheBlogIndex(n, lang, posts){
   <h1>${esc(t.title)}</h1>
   <p class="lead">${t.sub}</p>
   ${list}
-  <p style="margin-top:24px"><a class="btn btn-primary" href="/checkout.html?niche=${n.slug}&tier=${n.tier}">${T(lang,'Получить бота','Отримати бота')}</a></p>
+  <p style="margin-top:24px"><a class="btn btn-primary" href="${lang==='uk'?'/ua/':'/n/'}${n.slug}/">${T(lang,'Получить бота','Отримати бота')}</a></p>
 </div></section>
 ${footerHTML(lang)}
 </body></html>`;
@@ -731,7 +732,8 @@ outer:
 for(const slug in plan.niches){
   const n = niceBySlug[slug]; if(!n) continue;
   for(const post of plan.niches[slug].posts){
-    if(post.status === 'published') continue;
+    const alreadyPublished = post.status === 'published';
+    if(alreadyPublished && !process.env.REPUBLISH) continue;
     const due = post.publishAt || (post.publish + 'T23:59:59Z'); // нет времени → конец дня
     if(due > NOW) continue;
     if(published >= LIMIT) break outer;
@@ -740,9 +742,10 @@ for(const slug in plan.niches){
     const titles = postTitles(f.name, lang);
     let themeIdx = titles.indexOf(post.title);
     if(themeIdx < 0) themeIdx = Math.floor(rng(post.title)()*25);
-    // slug поста
-    let ps = slugify(post.title.replace(`«${f.name}»`,'').replace(f.name,'')).replace(/^-+/,'') || ('post-'+(themeIdx+1));
-    post.slug = ps; post.status='published'; post.publishedAt = new Date().toISOString();
+    // slug поста (сохраняем существующий при REPUBLISH)
+    let ps = post.slug || slugify(post.title.replace(`«${f.name}»`,'').replace(f.name,'')).replace(/^-+/,'') || ('post-'+(themeIdx+1));
+    post.slug = ps;
+    if(!alreadyPublished){ post.status='published'; post.publishedAt = new Date().toISOString(); }
     published++;
     touchedNiches.add(slug+'|'+lang);
     (newlyByNicheLang[slug+'|'+lang] = newlyByNicheLang[slug+'|'+lang]||[]).push({post,themeIdx,n,lang});

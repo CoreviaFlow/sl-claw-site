@@ -408,6 +408,9 @@ section{padding:64px 0}
   border:1px solid var(--line-strong);border-radius:14px;padding:20px 22px;margin:26px 0 8px;background:var(--bg-soft)}
 .post-cta b{display:block;font-size:1.02rem;margin-bottom:3px}
 .post-cta span{color:var(--ink-soft);font-size:.9rem}
+.post-intro-cta{margin:14px 0 26px;padding:13px 18px;background:var(--bg-soft);border-left:3px solid var(--accent);border-radius:8px}
+.post-intro-cta a{color:var(--ink);font-weight:600;text-decoration:none;font-size:.95rem;letter-spacing:-.005em}
+.post-intro-cta a:hover{text-decoration:underline;text-underline-offset:3px}
 .blog-list.big{columns:1;padding-left:0;list-style:none;margin:8px 0}
 .blog-list.big li{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
   padding:13px 0;border-bottom:1px solid var(--line);font-size:1rem}

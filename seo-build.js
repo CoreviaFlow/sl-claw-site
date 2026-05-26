@@ -179,23 +179,31 @@ function enrichFaq(f, lang){
     const q = e.mode==='setup'
       ? (uk?`Як налаштувати бота в ніші «${f.name}», щоб продавав`:`Как настроить бота в нише «${f.name}», чтобы продавал`)
       : (uk?`Де зазвичай втрачають продажі в ніші «${f.name}»`:`Где обычно теряют продажи в нише «${f.name}»`);
-    out.push({ q, body:`<ul class="does${e.mode==='setup'?' setup':''}">${e.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`, text:e.mistakes.join(' ') });
+    const lead = uk
+      ? `Щоб AI-продавець SL-CLAW у ніші «${f.name}» продавав, а не просто відповідав: `
+      : `Чтобы AI-продавец SL-CLAW в нише «${f.name}» продавал, а не просто отвечал: `;
+    out.push({ q, body:`<ul class="does${e.mode==='setup'?' setup':''}">${e.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`, text: lead + e.mistakes.join(' ') });
   }
   if((e.integrations||[]).length){
+    const lead = uk
+      ? `AI-продавець SL-CLAW для ніші «${f.name}» інтегрується з усіма основними системами: `
+      : `AI-продавец SL-CLAW для ниши «${f.name}» подключается ко всем основным системам: `;
     out.push({ q: uk?"З якими системами зв'язати бота?":'С какими системами связать бота?',
-      body:`<ul class="does">${e.integrations.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`, text:e.integrations.join(' ') });
+      body:`<ul class="does">${e.integrations.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`, text: lead + e.integrations.join('. ') + '.' });
   }
   return out;
 }
 function jsonld(n, v, f, u){
   const tier = PRICES[n.tier]||{price:'$249'};
   const price = (PROMO_ON && tier.sale ? tier.sale : tier.price).replace('$','');
+  const today = new Date().toISOString().slice(0,10);
   const product = { "@context":"https://schema.org","@type":"Product",
     name:`AI-${UI[v.lang].seller}: ${f.name}`, description:f.tagline,
     image:BASE+'/icon-512.png',
     brand:{"@type":"Brand",name:"SL-CLAW"}, category:secOf(n.sector, v.lang),
     offers:{"@type":"Offer", price:price, priceCurrency:"USD", availability:"https://schema.org/InStock", url:u,
-      priceValidUntil:"2026-12-31", seller:{"@type":"Organization",name:"SL-CLAW"}} };
+      priceValidUntil:"2026-12-31", seller:{"@type":"Organization",name:"SL-CLAW"}},
+    dateModified: today };
   const crumbs = { "@context":"https://schema.org","@type":"BreadcrumbList", itemListElement:[
     {"@type":"ListItem",position:1,name:UI[v.lang].crumbHome,item:BASE+'/'},
     {"@type":"ListItem",position:2,name:UI[v.lang].crumbCat,item:BASE+'/catalog.html'},
