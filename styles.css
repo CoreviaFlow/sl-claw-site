@@ -165,11 +165,13 @@ section{padding:64px 0}
 .partners-title{font-size:1.4rem;letter-spacing:-.01em;margin:0 0 24px;font-weight:800}
 .partners-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .partner-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:22px 14px;background:#fff;border:1px solid var(--line);border-radius:14px;text-decoration:none;color:inherit;transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
-.partner-card:hover{border-color:var(--brand,var(--line-strong));transform:translateY(-2px);box-shadow:0 8px 24px rgba(10,13,16,.08)}
+.partner-card:hover,.partner-card:active{border-color:var(--brand,var(--line-strong));transform:translateY(-2px);box-shadow:0 8px 24px rgba(10,13,16,.08)}
 .pc-logo{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--brand-soft,#f5f6f8);color:var(--brand,#0b0d10);transition:transform .2s ease}
 .pc-logo svg{width:28px;height:28px;display:block}
 .partner-card:hover .pc-logo{transform:scale(1.08)}
-.partner-card b{font-size:.95rem;color:var(--ink);font-weight:700;letter-spacing:-.01em;text-align:center}
+.partner-card b{font-size:.95rem;color:var(--ink);font-weight:700;letter-spacing:-.01em;text-align:center;word-break:break-word;overflow-wrap:anywhere}
+.partner-card:focus-visible{outline:2px solid var(--accent,#0b0d10);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.partner-card,.partner-card:hover,.pc-logo,.partner-card:hover .pc-logo,.ncard,.ncard:hover{transition:none;transform:none}}
 @media(max-width:760px){.partners-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:520px){.partners-grid{grid-template-columns:repeat(2,1fr)}.partner-card{padding:18px 12px}}
 
