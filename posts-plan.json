@@ -18346,8 +18346,10 @@
      "title": "Голосовий агент для «Управлінський консалтинг»: коли потрібен апгрейд",
      "lang": "uk",
      "publish": "2026-05-26",
-     "status": "planned",
-     "publishAt": "2026-05-26T20:46:00Z"
+     "status": "published",
+     "publishAt": "2026-05-26T20:46:00Z",
+     "slug": "holosovyi-ahent-dlia-koly-potriben-aphreid",
+     "publishedAt": "2026-05-27T00:02:45.686Z"
     },
     {
      "title": "Автоматична воронка продажів для «Управлінський консалтинг»: схема",
