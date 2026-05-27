@@ -383,11 +383,7 @@ ${jsonld(n, v, f, u)}
       <ul class="does caps">${t.caps.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
 
       <h2>${t.faqh}</h2>
-<<<<<<< Updated upstream
-      <div class="faq">${t.closerFaq.map(it=>`<details class="faq-item faq-closer"><summary><h3>${esc(it.q)}</h3></summary><p>${esc(it.a)}</p></details>`).join('')}${enrichFaq(f,v.lang).map(it=>`<details class="faq-item"><summary><h3>${esc(it.q)}</h3></summary>${it.body}</details>`).join('')}${faqItems(f,v.lang).map(([q,a])=>`<details class="faq-item"><summary><h3>${esc(q)}</h3></summary><p>${esc(a)}</p></details>`).join('')}</div>
-=======
-      <div class="faq">${enrichFaq(f,v.lang).map(it=>`<details class="faq-item"><summary><h3>${esc(it.q)}</h3></summary>${it.body}</details>`).join('')}${faqItems(f,v.lang,n).map(([q,a])=>`<details class="faq-item"><summary><h3>${esc(q)}</h3></summary><p>${esc(a)}</p></details>`).join('')}</div>
->>>>>>> Stashed changes
+      <div class="faq">${t.closerFaq.map(it=>`<details class="faq-item faq-closer"><summary><h3>${esc(it.q)}</h3></summary><p>${esc(it.a)}</p></details>`).join('')}${enrichFaq(f,v.lang).map(it=>`<details class="faq-item"><summary><h3>${esc(it.q)}</h3></summary>${it.body}</details>`).join('')}${faqItems(f,v.lang,n).slice(0,1).map(([q,a])=>`<details class="faq-item"><summary><h3>${esc(q)}</h3></summary><p>${esc(a)}</p></details>`).join('')}</div>
 
       <h2>${t.blog}</h2>
       <p class="muted" style="margin:-6px 0 12px;font-size:.9rem">${t.blogsub}</p>
@@ -421,6 +417,23 @@ ${jsonld(n, v, f, u)}
       ${f.knows.length?`<div class="box"><h2 style="font-size:1.05rem;margin:0 0 12px">${t.knows}</h2><div class="chips-row" style="margin:0">${f.knows.map(k=>`<span class="chipx soft">${esc(k)}</span>`).join('')}</div></div>`:''}
     </aside>
   </div>
+
+  <section class="partners-section" aria-labelledby="partners-h">
+    <h2 id="partners-h" class="partners-title">${v.lang==='uk'?'Наші партнери':'Наши партнёры'}</h2>
+    <p class="partners-sub">${v.lang==='uk'?'Працюємо на технологіях провідних AI-платформ та інтегруємо бот з вашими робочими системами':'Работаем на технологиях ведущих AI-платформ и интегрируем бот с вашими рабочими системами'}.</p>
+    <div class="partners-grid">
+      <a class="partner-card" href="https://www.anthropic.com" target="_blank" rel="noopener" data-brand="anthropic"><span class="pc-mark" style="background:#cc785c">A</span><span class="pc-body"><b>Anthropic</b><em>${v.lang==='uk'?'Claude — основна LLM':'Claude — основная LLM'}</em></span></a>
+      <a class="partner-card" href="https://openai.com" target="_blank" rel="noopener" data-brand="openai"><span class="pc-mark" style="background:#10a37f">O</span><span class="pc-body"><b>OpenAI</b><em>${v.lang==='uk'?'GPT, embeddings, voice':'GPT, embeddings, voice'}</em></span></a>
+      <a class="partner-card" href="https://deepmind.google/technologies/gemini/" target="_blank" rel="noopener" data-brand="gemini"><span class="pc-mark" style="background:#4285f4">G</span><span class="pc-body"><b>Google Gemini</b><em>${v.lang==='uk'?'Резервна AI-модель':'Резервная AI-модель'}</em></span></a>
+      <a class="partner-card" href="https://github.com" target="_blank" rel="noopener" data-brand="github"><span class="pc-mark" style="background:#24292f">G</span><span class="pc-body"><b>GitHub</b><em>${v.lang==='uk'?'Код і деплой':'Код и деплой'}</em></span></a>
+      <a class="partner-card" href="https://ringostat.com" target="_blank" rel="noopener" data-brand="ringostat"><span class="pc-mark" style="background:#2079c8">R</span><span class="pc-body"><b>Ringostat</b><em>${v.lang==='uk'?'Телефонія, voice-канал':'Телефония, voice-канал'}</em></span></a>
+      <a class="partner-card" href="https://www.bitrix24.ua" target="_blank" rel="noopener" data-brand="bitrix24"><span class="pc-mark" style="background:#f7a925">B</span><span class="pc-body"><b>Bitrix24</b><em>${v.lang==='uk'?'CRM — інтеграція ліда':'CRM — интеграция лида'}</em></span></a>
+      <a class="partner-card" href="https://salesdrive.ua" target="_blank" rel="noopener" data-brand="salesdrive"><span class="pc-mark" style="background:#00a85e">S</span><span class="pc-body"><b>SalesDrive</b><em>${v.lang==='uk'?'CRM (Україна)':'CRM (Украина)'}</em></span></a>
+      <a class="partner-card" href="https://keycrm.app" target="_blank" rel="noopener" data-brand="keycrm"><span class="pc-mark" style="background:#1976d2">K</span><span class="pc-body"><b>KeyCRM</b><em>${v.lang==='uk'?'CRM для e-commerce':'CRM для e-commerce'}</em></span></a>
+      <a class="partner-card" href="https://1c.ua" target="_blank" rel="noopener" data-brand="1c"><span class="pc-mark" style="background:#ffd600;color:#1a1a1a">1C</span><span class="pc-body"><b>1С</b><em>${v.lang==='uk'?'Облік і ERP — індивідуально':'Учёт и ERP — индивидуально'}</em></span></a>
+    </div>
+    <p class="partners-note">${v.lang==='uk'?'Список технологій під вашу нішу узгоджуємо при підключенні бота.':'Список технологий под вашу нишу согласовываем при подключении бота.'}</p>
+  </section>
 </div></section>
 
 ${footerHTML(v.lang)}
