@@ -31705,8 +31705,10 @@
      "title": "Чат-бот «Клінінгові послуги» у Telegram, WhatsApp і на сайті",
      "lang": "uk",
      "publish": "2026-05-27",
-     "status": "planned",
-     "publishAt": "2026-05-27T17:12:00Z"
+     "status": "published",
+     "publishAt": "2026-05-27T17:12:00Z",
+     "slug": "chat-bot-u-telegram-whatsapp-i-na-saiti",
+     "publishedAt": "2026-05-27T18:26:12.230Z"
     },
     {
      "title": "Як автоматизувати продажі в ніші «Клінінгові послуги» — покроково",
