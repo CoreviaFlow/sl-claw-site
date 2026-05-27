@@ -2507,8 +2507,10 @@
      "title": "Інтеграція чат-бота «Будівельні матеріали» з CRM",
      "lang": "uk",
      "publish": "2026-05-27",
-     "status": "planned",
-     "publishAt": "2026-05-27T09:50:00Z"
+     "status": "published",
+     "publishAt": "2026-05-27T09:50:00Z",
+     "slug": "intehratsiia-chat-bota-z-crm",
+     "publishedAt": "2026-05-27T12:19:48.075Z"
     },
     {
      "title": "Як автоматизувати продажі в ніші «Будівельні матеріали» — покроково",
@@ -31801,8 +31803,10 @@
      "title": "Чат-бот «Клининговые услуги» в Telegram, WhatsApp и на сайте",
      "lang": "ru",
      "publish": "2026-05-27",
-     "status": "planned",
-     "publishAt": "2026-05-27T08:25:00Z"
+     "status": "published",
+     "publishAt": "2026-05-27T08:25:00Z",
+     "slug": "chat-bot-v-telegram-whatsapp-y-na-saite",
+     "publishedAt": "2026-05-27T12:19:48.076Z"
     },
     {
      "title": "Як не втрачати заявки вночі в ніші «Клінінгові послуги»",
@@ -40932,8 +40936,10 @@
      "title": "Интеграция чат-бота «ВЭД и выход на экспорт» с CRM",
      "lang": "ru",
      "publish": "2026-05-27",
-     "status": "planned",
-     "publishAt": "2026-05-27T08:37:00Z"
+     "status": "published",
+     "publishAt": "2026-05-27T08:37:00Z",
+     "slug": "yntehratsyia-chat-bota-s-crm",
+     "publishedAt": "2026-05-27T12:19:48.076Z"
     },
     {
      "title": "Голосовой агент для «ВЭД и выход на экспорт»: когда нужен апгрейд",
