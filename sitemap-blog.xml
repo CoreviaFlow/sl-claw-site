@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://sl-claw.tech/blog/</loc><lastmod>2026-05-27</lastmod><priority>0.6</priority></url>
+  <url><loc>https://sl-claw.tech/ua/export-consulting/blog/</loc><lastmod>2026-05-27</lastmod><priority>0.5</priority></url>
+  <url><loc>https://sl-claw.tech/ua/export-consulting/blog/intehratsiia-chat-bota-z-crm/</loc><lastmod>2026-05-27</lastmod><priority>0.6</priority></url>
+  <url><loc>https://sl-claw.tech/n/construction-materials/blog/</loc><lastmod>2026-05-27</lastmod><priority>0.5</priority></url>
+  <url><loc>https://sl-claw.tech/n/construction-materials/blog/yntehratsyia-chat-bota-s-crm/</loc><lastmod>2026-05-27</lastmod><priority>0.6</priority></url>
   <url><loc>https://sl-claw.tech/ua/cleaning-services/blog/</loc><lastmod>2026-05-27</lastmod><priority>0.5</priority></url>
   <url><loc>https://sl-claw.tech/ua/cleaning-services/blog/chat-bot-u-telegram-whatsapp-i-na-saiti/</loc><lastmod>2026-05-27</lastmod><priority>0.6</priority></url>
   <url><loc>https://sl-claw.tech/n/cleaning-services/blog/</loc><lastmod>2026-05-27</lastmod><priority>0.5</priority></url>

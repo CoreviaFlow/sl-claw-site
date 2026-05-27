@@ -2684,8 +2684,10 @@
      "title": "Интеграция чат-бота «Стройматериалы» с CRM",
      "lang": "ru",
      "publish": "2026-05-27",
-     "status": "planned",
-     "publishAt": "2026-05-27T21:46:00Z"
+     "status": "published",
+     "publishAt": "2026-05-27T21:46:00Z",
+     "slug": "yntehratsyia-chat-bota-s-crm",
+     "publishedAt": "2026-05-27T23:59:23.882Z"
     },
     {
      "title": "Розгорнути AI-продавця «Будівельні матеріали» за годину: інструкція",
@@ -41101,8 +41103,10 @@
      "title": "Інтеграція чат-бота «ЗЕД і вихід на експорт» з CRM",
      "lang": "uk",
      "publish": "2026-05-27",
-     "status": "planned",
-     "publishAt": "2026-05-27T19:21:00Z"
+     "status": "published",
+     "publishAt": "2026-05-27T19:21:00Z",
+     "slug": "intehratsiia-chat-bota-z-crm",
+     "publishedAt": "2026-05-27T23:59:23.883Z"
     },
     {
      "title": "Какие возражения снимает AI-продавец в «ВЭД и выход на экспорт»",
