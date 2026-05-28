@@ -172,7 +172,7 @@ section{padding:64px 0}
 .partner-card b{font-size:.95rem;color:var(--ink);font-weight:700;letter-spacing:-.01em;text-align:center;word-break:break-word;overflow-wrap:anywhere}
 .partner-card:focus-visible{outline:2px solid var(--accent,#0b0d10);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.partner-card,.partner-card:hover,.pc-logo,.partner-card:hover .pc-logo,.ncard,.ncard:hover{transition:none;transform:none}}
-@media(max-width:760px){.partners-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.partners-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.partners-grid{grid-template-columns:repeat(2,1fr)}.partner-card{padding:18px 12px}}
 
 .np-grid{display:grid;grid-template-columns:1.4fr .9fr;gap:40px;padding:44px 0}

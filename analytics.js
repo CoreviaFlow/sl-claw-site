@@ -104,7 +104,10 @@
   // ---------- Umami (privacy-first, real-time, bypass ad-blockers) ----------
   if (UMAMI_WEBSITE_ID && UMAMI_HOST) {
     var um = document.createElement('script');
-    um.async = true; um.defer = true;
+    // ВАЖНО: только defer, БЕЗ async. Umami client читает document.currentScript
+    // в момент execution — async=true ломает currentScript (становится null) и
+    // клиент молча выходит на `if(!u)return`. Это была причина 0 pageviews.
+    um.defer = true;
     um.src = UMAMI_HOST + '/script.js';
     um.setAttribute('data-website-id', UMAMI_WEBSITE_ID);
     // Auto-track усі піддомени sl-claw.tech як один сайт
