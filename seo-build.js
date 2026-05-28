@@ -245,20 +245,38 @@ function jsonld(n, v, f, u){
   const tier = PRICES[n.tier]||{price:'$249'};
   const price = (PROMO_ON && tier.sale ? tier.sale : tier.price).replace('$','');
   const today = new Date().toISOString().slice(0,10);
+  const t = UI[v.lang];
   const product = { "@context":"https://schema.org","@type":"Product",
-    name:`AI-${UI[v.lang].seller}: ${f.name}`, description:f.tagline,
+    name:`AI-${t.seller}: ${f.name}`, description:f.tagline,
     image:BASE+'/icon-512.png',
     brand:{"@type":"Brand",name:"SL-CLAW"}, category:secOf(n.sector, v.lang),
     offers:{"@type":"Offer", price:price, priceCurrency:"USD", availability:"https://schema.org/InStock", url:u,
       priceValidUntil:"2026-12-31", seller:{"@type":"Organization",name:"SL-CLAW"}},
     dateModified: today };
+  // SoftwareApplication — Google AI Overviews предпочитает этот тип для AI-tools.
+  // Параллельный schema-блок с тем же price/offer (Google объединяет по URL).
+  const software = { "@context":"https://schema.org","@type":"SoftwareApplication",
+    name:`AI-${t.seller}: ${f.name}`, description:f.tagline,
+    applicationCategory:"BusinessApplication",
+    operatingSystem:"Web, Telegram, WhatsApp, Instagram",
+    offers:{"@type":"Offer", price:price, priceCurrency:"USD"},
+    brand:{"@type":"Brand",name:"SL-CLAW"},
+    dateModified: today };
   const crumbs = { "@context":"https://schema.org","@type":"BreadcrumbList", itemListElement:[
-    {"@type":"ListItem",position:1,name:UI[v.lang].crumbHome,item:BASE+'/'},
-    {"@type":"ListItem",position:2,name:UI[v.lang].crumbCat,item:BASE+'/catalog.html'},
+    {"@type":"ListItem",position:1,name:t.crumbHome,item:BASE+'/'},
+    {"@type":"ListItem",position:2,name:t.crumbCat,item:BASE+'/catalog.html'},
     {"@type":"ListItem",position:3,name:f.name,item:u} ]};
-  const faqs = [...enrichFaq(f, v.lang).map(it=>[it.q, it.text]), ...faqItems(f, v.lang, n)];
+  // closerFaq (refund / no-subscription / setup-help) — это самые trust-критичные FAQ-вопросы.
+  // Раньше они были только в DOM (как <details>), теперь добавляем в FAQPage schema → видны
+  // и Google Rich Results, и LLM (Claude/GPT/Perplexity) при цитировании.
+  const closer = UI[v.lang].closerFaq || [];
+  const faqs = [
+    ...closer.map(it => [it.q, it.a]),
+    ...enrichFaq(f, v.lang).map(it=>[it.q, it.text]),
+    ...faqItems(f, v.lang, n)
+  ];
   const faq = {"@context":"https://schema.org","@type":"FAQPage", mainEntity: faqs.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))};
-  return [product,crumbs,faq].map(x=>`<script type="application/ld+json">${jset(x)}</script>`).join('\n');
+  return [product,software,crumbs,faq].map(x=>`<script type="application/ld+json">${jset(x)}</script>`).join('\n');
 }
 
 // Динамический closer-lead под нишу — раньше был идентичным на 125 страницах.
@@ -540,7 +558,9 @@ for(const n of D.niches){
   }
 }
 // статические корневые страницы
-const staticUrls = ['/','/catalog.html','/pricing.html','/oferta.html','/privacy.html','/payment-refund.html','/contacts.html'];
+// oferta.html и privacy.html намеренно НЕ включены в sitemap — это legal-only
+// страницы без SEO-value. Они доступны через footer-ссылки и имеют meta noindex.
+const staticUrls = ['/','/catalog.html','/pricing.html','/payment-refund.html','/contacts.html'];
 const head = staticUrls.map(p=>{
   const fp = p==='/' ? 'index.html' : p.replace(/^\//,'');
   let c=''; try{ c=fs.readFileSync(path.join(ROOT, fp),'utf8'); }catch(e){}

@@ -28,5 +28,19 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
+# Training-only scrapers — блок согласно llms.txt («training datasets require permission»).
+# Без этих правил декларация в llms.txt неисполняема на crawl-уровне.
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
 Sitemap: https://sl-claw.tech/sitemap.xml
 Sitemap: https://sl-claw.tech/sitemap-blog.xml
