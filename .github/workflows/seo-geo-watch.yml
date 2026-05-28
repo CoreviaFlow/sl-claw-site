@@ -62,24 +62,16 @@ jobs:
         run: |
           DATE=$(date -u +%Y-%m-%d)
           REPORT_FILE=".seo-alerts/geo-${DATE}.md"
-          [ -f "$REPORT_FILE" ] || exit 0
+          if [ ! -f "$REPORT_FILE" ]; then exit 0; fi
+          BODY_FILE=$(mktemp)
+          printf 'GEO Watch Alert %s\n\nGEO score упал. Отчёт ниже.\n\n---\n\n' "$DATE" > "$BODY_FILE"
+          cat "$REPORT_FILE" >> "$BODY_FILE"
+          printf '\n\n---\n\nWorkflow run: https://github.com/CoreviaFlow/sl-claw-site/actions/runs/%s\n' "$GITHUB_RUN_ID" >> "$BODY_FILE"
           EXISTING=$(gh issue list --label "geo-watch" --state open --limit 1 --json number --jq '.[0].number' || echo "")
-          BODY="# 🤖 GEO Watch Alert · $DATE
-
-GEO score упал. Полный отчёт ниже.
-
----
-
-$(cat "$REPORT_FILE")
-
----
-
-[📂 Все отчёты](https://github.com/CoreviaFlow/sl-claw-site/tree/main/.seo-alerts)
-[⚙️ Workflow run](https://github.com/CoreviaFlow/sl-claw-site/actions/runs/$GITHUB_RUN_ID)"
           if [ -n "$EXISTING" ]; then
-            gh issue comment "$EXISTING" --body "$BODY"
+            gh issue comment "$EXISTING" --body-file "$BODY_FILE"
           else
-            gh issue create --title "🤖 GEO Watch Alert (auto-tracking)" --body "$BODY" --label "geo-watch,automated"
+            gh issue create --title "GEO Watch Alert (auto-tracking)" --body-file "$BODY_FILE" --label "geo-watch,automated"
           fi
 
       - name: Close issue if GEO healthy
