@@ -26498,8 +26498,10 @@
      "title": "Топ помилок при впровадженні чат-бота в «Водоочищення та фільтри для води»",
      "lang": "uk",
      "publish": "2026-05-28",
-     "status": "planned",
-     "publishAt": "2026-05-28T07:40:00Z"
+     "status": "published",
+     "publishAt": "2026-05-28T07:40:00Z",
+     "slug": "top-pomylok-pry-vprovadzhenni-chat-bota-v",
+     "publishedAt": "2026-05-28T12:25:45.098Z"
     },
     {
      "title": "Бот vs форма заявки в «Водоочищення та фільтри для води»: що конвертує краще",
@@ -36811,8 +36813,10 @@
      "title": "Бот для записи и заявок в нише «Event-агентство»",
      "lang": "ru",
      "publish": "2026-05-28",
-     "status": "planned",
-     "publishAt": "2026-05-28T12:21:00Z"
+     "status": "published",
+     "publishAt": "2026-05-28T12:21:00Z",
+     "slug": "bot-dlia-zapysy-y-zaiavok-v-nyshe",
+     "publishedAt": "2026-05-28T12:25:45.099Z"
     },
     {
      "title": "Скрипт продажів для бота в «Event-агентство»: SPIN і робота із запереченнями",
@@ -41974,8 +41978,10 @@
      "title": "Як бот кваліфікує клієнта в ніші «Продуктивність праці та оптимізація»",
      "lang": "uk",
      "publish": "2026-05-28",
-     "status": "planned",
-     "publishAt": "2026-05-28T09:10:00Z"
+     "status": "published",
+     "publishAt": "2026-05-28T09:10:00Z",
+     "slug": "iak-bot-kvalifikuie-kliienta-v-nishi",
+     "publishedAt": "2026-05-28T12:25:45.099Z"
     },
     {
      "title": "Інтеграція чат-бота «Продуктивність праці та оптимізація» з CRM",
