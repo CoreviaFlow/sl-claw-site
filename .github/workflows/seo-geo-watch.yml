@@ -1,0 +1,93 @@
+name: seo-geo-watch
+
+# Daily GEO (Generative Engine Optimization) health watch.
+# Сканирует все страницы на сигналы для AI search (Google AIO, ChatGPT Search,
+# Perplexity, Claude search, Bing Copilot). 09:00 UTC = 11:00 Kyiv.
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # 09:00 UTC = 11:00 Kyiv (после seo-watch в 08:00)
+  workflow_dispatch:
+  push:
+    paths:
+      - 'seo-geo-watch.js'
+      - 'seo-geo-guard.js'
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run GEO watch
+        id: watch
+        continue-on-error: true
+        run: |
+          node seo-geo-watch.js
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Show today's GEO report
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          if [ -f ".seo-alerts/geo-${DATE}.md" ]; then
+            echo "=========================================="
+            echo "GEO Health Report ${DATE}"
+            echo "=========================================="
+            cat ".seo-alerts/geo-${DATE}.md"
+          fi
+
+      - name: Commit report
+        if: always()
+        run: |
+          git config user.name "seo-geo-watch[bot]"
+          git config user.email "seo-geo-watch@sl-claw.tech"
+          git add .seo-alerts/ || true
+          git diff --staged --quiet || git commit -m "geo-watch: daily report $(date -u +%Y-%m-%d)"
+          git push origin main || echo "push skipped"
+
+      - name: Create/update GitHub Issue if GEO score low
+        if: steps.watch.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          REPORT_FILE=".seo-alerts/geo-${DATE}.md"
+          [ -f "$REPORT_FILE" ] || exit 0
+          EXISTING=$(gh issue list --label "geo-watch" --state open --limit 1 --json number --jq '.[0].number' || echo "")
+          BODY="# 🤖 GEO Watch Alert · $DATE
+
+GEO score упал. Полный отчёт ниже.
+
+---
+
+$(cat "$REPORT_FILE")
+
+---
+
+[📂 Все отчёты](https://github.com/CoreviaFlow/sl-claw-site/tree/main/.seo-alerts)
+[⚙️ Workflow run](https://github.com/CoreviaFlow/sl-claw-site/actions/runs/$GITHUB_RUN_ID)"
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+          else
+            gh issue create --title "🤖 GEO Watch Alert (auto-tracking)" --body "$BODY" --label "geo-watch,automated"
+          fi
+
+      - name: Close issue if GEO healthy
+        if: steps.watch.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING=$(gh issue list --label "geo-watch" --state open --limit 1 --json number --jq '.[0].number' || echo "")
+          if [ -n "$EXISTING" ]; then
+            gh issue close "$EXISTING" --comment "✅ GEO health восстановлен. Auto-closed by seo-geo-watch."
+          fi

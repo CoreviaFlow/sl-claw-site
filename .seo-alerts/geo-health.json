@@ -1,0 +1,71 @@
+{
+  "date": "2026-05-28",
+  "scanned": 283,
+  "by_kind": {
+    "blog": 27,
+    "niche": 256,
+    "static": 0
+  },
+  "llms_txt_present": true,
+  "llms_txt_size": 2511,
+  "llms_full_size": 31487,
+  "ai_crawlers_allowed": {
+    "GPTBot": true,
+    "ClaudeBot": true,
+    "Google-Extended": true,
+    "PerplexityBot": true,
+    "OAI-SearchBot": true,
+    "ChatGPT-User": true,
+    "Applebot-Extended": true
+  },
+  "training_scrapers_blocked": {
+    "CCBot": true,
+    "anthropic-ai": true,
+    "cohere-ai": true,
+    "Bytespider": true
+  },
+  "pages_with_intro_prose": 280,
+  "pages_with_anchor_ids": 256,
+  "pages_with_brand_mention": 283,
+  "pages_with_software_schema": 256,
+  "pages_with_date_published": 283,
+  "pages_with_sameAs": 0,
+  "pages_with_faq_user_voice": 256,
+  "no_intro_pages": [
+    "n/construction-materials/blog/yntehratsyia-chat-bota-s-crm/index.html",
+    "ua/construction-materials/blog/intehratsiia-chat-bota-z-crm/index.html",
+    "ua/windows-doors/blog/skilky-koshtuie-avtomatyzatsiia-prodazhiv-u/index.html"
+  ],
+  "no_anchor_pages": [
+    "n/beauty-equipment/blog/avtovoronka-prodazh-dlia-skhema/index.html (0/7 H2 with id)",
+    "n/beauty-equipment/blog/holosovoi-ahent-dlia-kohda-nuzhen-aphreid/index.html (0/8 H2 with id)",
+    "n/cleaning-services/blog/chat-bot-v-telegram-whatsapp-y-na-saite/index.html (0/7 H2 with id)",
+    "n/commercial-vehicles/blog/kak-bot-kvalyfytsyruet-klyenta-v-nyshe/index.html (0/7 H2 with id)",
+    "n/construction-materials/blog/yntehratsyia-chat-bota-s-crm/index.html (0/6 H2 with id)",
+    "n/event-agency/blog/bot-dlia-zapysy-y-zaiavok-v-nyshe/index.html (0/6 H2 with id)",
+    "n/export-consulting/blog/yntehratsyia-chat-bota-s-crm/index.html (0/6 H2 with id)",
+    "n/fin-consulting/blog/kak-avtomatyzyrovat-prodazhy-v-nyshe-poshahovo/index.html (0/7 H2 with id)",
+    "n/hr-recruiting/blog/kak-ne-teriat-zaiavky-nochiu-v-nyshe/index.html (0/7 H2 with id)",
+    "n/investment-broker/blog/kak-ne-teriat-zaiavky-nochiu-v-nyshe/index.html (0/7 H2 with id)",
+    "n/mgmt-consulting/blog/holosovoi-ahent-dlia-kohda-nuzhen-aphreid/index.html (0/7 H2 with id)",
+    "n/realestate-rent/blog/kak-nastroyt-bota-pod-tovary-y-tseny-v/index.html (0/7 H2 with id)",
+    "n/security-cctv/blog/kak-obuchyt-bota-ekspertyze-nyshy/index.html (0/7 H2 with id)",
+    "n/seo-agency/blog/kak-nastroyt-bota-pod-tovary-y-tseny-v/index.html (0/7 H2 with id)",
+    "ua/cleaning-services/blog/chat-bot-u-telegram-whatsapp-i-na-saiti/index.html (0/7 H2 with id)",
+    "ua/cnc-machines/blog/rozhornuty-ai-prodavtsia-za-hodynu-instruktsiia/index.html (0/7 H2 with id)",
+    "ua/construction-materials/blog/intehratsiia-chat-bota-z-crm/index.html (0/6 H2 with id)",
+    "ua/export-consulting/blog/intehratsiia-chat-bota-z-crm/index.html (0/6 H2 with id)",
+    "ua/industrial-tools/blog/avtomatychna-voronka-prodazhiv-dlia-skhema/index.html (0/6 H2 with id)",
+    "ua/investment-broker/blog/chat-bot-dlia-skilky-koshtuie-i-iak-vprovadyty/index.html (0/7 H2 with id)",
+    "ua/investment-broker/blog/iak-ne-vtrachaty-zaiavky-vnochi-v-nishi/index.html (0/8 H2 with id)",
+    "ua/mgmt-consulting/blog/holosovyi-ahent-dlia-koly-potriben-aphreid/index.html (0/7 H2 with id)",
+    "ua/productivity-consulting/blog/iak-bot-kvalifikuie-kliienta-v-nishi/index.html (0/7 H2 with id)",
+    "ua/security-cctv/blog/obrobka-lidiv-u-bez-menedzhera-24-7/index.html (0/6 H2 with id)",
+    "ua/seo-agency/blog/iak-nalashtuvaty-bota-pid-tovary-i-tsiny-v/index.html (0/7 H2 with id)",
+    "ua/water-treatment/blog/top-pomylok-pry-vprovadzhenni-chat-bota-v/index.html (0/6 H2 with id)",
+    "ua/windows-doors/blog/skilky-koshtuie-avtomatyzatsiia-prodazhiv-u/index.html (0/6 H2 with id)"
+  ],
+  "no_brand_mention_pages": [],
+  "no_date_pages": [],
+  "geo_score": 94
+}

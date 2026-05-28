@@ -1,0 +1,52 @@
+name: seo-geo-rules-watch
+
+# Weekly мониторинг официальных GEO/AI-search правил.
+# Среда 17:00 UTC = 20:00 Kyiv (через день после SEO rules-watch в понедельник).
+
+on:
+  schedule:
+    - cron: '0 17 * * 3'  # среда 17:00 UTC = 20:00 Kyiv
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run GEO rules watch
+        id: watch
+        continue-on-error: true
+        run: |
+          node seo-geo-rules-watch.js
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Show update (if any)
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          if [ -f ".seo-alerts/geo-rules-update-${DATE}.md" ]; then
+            echo "=========================================="
+            echo "GEO Rules Update ${DATE}"
+            echo "=========================================="
+            cat ".seo-alerts/geo-rules-update-${DATE}.md"
+          else
+            echo "No GEO rule updates this week"
+          fi
+
+      - name: Commit baseline + report
+        if: always()
+        run: |
+          git config user.name "seo-geo-rules-watch[bot]"
+          git config user.email "seo-geo-rules-watch@sl-claw.tech"
+          git add .seo-alerts/ || true
+          git diff --staged --quiet || git commit -m "geo-rules-watch: weekly check $(date -u +%Y-%m-%d)"
+          git push origin main || echo "push skipped"

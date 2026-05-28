@@ -1,0 +1,38 @@
+{
+  "google-ai-overviews": {
+    "fingerprint": "146eb1a1ab8cd808",
+    "headline": "AI Features and Your Website | Google Search Central &nbsp;|&nbsp; Documentation &nbsp;|&nbsp; Google for Developers Skip to main content Google Search Central / English Deutsch Español Español – América Latina Français Indonesia Italiano Polski Português – Brasil Tiếng Việt Türkçe Русский العربيّة हिंदी ภาษาไทย 中文 – 简体 中文 – 繁體 日本語 한국어 Sign in Documentation Search Console Home Search Central",
+    "url": "https://developers.google.com/search/docs/appearance/ai-features",
+    "checked": "2026-05-28"
+  },
+  "anthropic-supported-channels": {
+    "fingerprint": "a0d05f0114cf2726",
+    "headline": "Does Anthropic crawl data from the web, and how can site owners block the crawler? | Claude Help Center Skip to main content Does Anthropic crawl data from the web, and how can site owners block the crawler? April 7, 2026 As per industry standard, Anthropic uses a variety of robots to gather data from the public web for model",
+    "url": "https://support.anthropic.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler",
+    "checked": "2026-05-28"
+  },
+  "perplexity-publishers": {
+    "fingerprint": "995be1217c7db496",
+    "headline": "Overview - Perplexity Skip to main content Documentation Index Fetch the complete documentation index at: https://docs.perplexity.ai/llms.txt Use this file to discover all available pages before exploring further. Power your products with unparalleled real-time, web-wide research and Q&amp;A capabilities. Available APIs Agent API Access third-party models with web search tools and presets. Search API Get raw, ranked web search results with",
+    "url": "https://docs.perplexity.ai/guides/getting-started",
+    "checked": "2026-05-28"
+  },
+  "bing-webmaster-ai": {
+    "fingerprint": "8cfb5f18f65ea63f",
+    "headline": "Bing Webmaster Blog | This is a place devoted to giving you deeper... Skip to content Bing Webmaster Blog Now in public preview, AI Performance in Bing Webmaster Tools shows when your site is cited in AI‑generated answers across Microsoft Copilot, AI‑generated summaries in Bing, and select partner integrations. See which URLs are referenced and how citation activity changes over",
+    "url": "https://blogs.bing.com/webmaster/",
+    "checked": "2026-05-28"
+  },
+  "llmstxt-spec": {
+    "fingerprint": "ae4c659cf8b6c65d",
+    "headline": "The /llms.txt file – llms-txt Background Large language models increasingly rely on website information, but face a critical limitation: context windows are too small to handle most websites in their entirety. Converting complex HTML pages with navigation, ads, and JavaScript into LLM-friendly plain text is both difficult and imprecise. While websites serve both human readers and LLMs, the latter benefit",
+    "url": "https://llmstxt.org/",
+    "checked": "2026-05-28"
+  },
+  "schemaorg-softwareapp": {
+    "fingerprint": "f0fb8eee62ed4ed5",
+    "headline": "SoftwareApplication - Schema.org Type Note : You are viewing the development version of Schema.org . See how we work for more details. Schema.org Docs Schemas Validate About SoftwareApplication A Schema.org Type Thing &gt; CreativeWork &gt; SoftwareApplication [more...] Canonical URL: https://schema.org/SoftwareApplication Leave public feedback on this term &#128172; --> Check for open issues. A software application. Property Expected Type Description Properties",
+    "url": "https://schema.org/SoftwareApplication",
+    "checked": "2026-05-28"
+  }
+}
