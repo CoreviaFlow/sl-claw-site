@@ -23,6 +23,7 @@ on:
 
 permissions:
   contents: write  # для коммита отчёта
+  issues: write    # для auto-create Issue при failure
 
 jobs:
   watch:
@@ -63,8 +64,79 @@ jobs:
           git diff --staged --quiet || git commit -m "seo-watch: daily report $(date -u +%Y-%m-%d)"
           git push origin main || echo "push skipped (race-condition with another workflow)"
 
+      - name: Run autofix (если возможно)
+        if: steps.watch.outcome == 'failure'
+        continue-on-error: true
+        run: |
+          node seo-autofix.js || echo "autofix produced no changes or skipped"
+
+      - name: Commit autofix changes
+        if: steps.watch.outcome == 'failure'
+        run: |
+          git add -A
+          git diff --staged --quiet || git commit -m "seo-autofix: applied automatic remediation $(date -u +%Y-%m-%d)"
+          git push origin main || echo "push skipped"
+
+      - name: Create/update GitHub Issue with report
+        if: steps.watch.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          REPORT_FILE=".seo-alerts/${DATE}.md"
+          [ -f "$REPORT_FILE" ] || exit 0
+          # Найти существующий открытый issue «SEO Watch — Active Issues»
+          EXISTING=$(gh issue list --label "seo-watch" --state open --limit 1 --json number --jq '.[0].number' || echo "")
+          BODY=$(cat <<BODYEOF
+          # 🛡 SEO Watch Alert · $DATE
+
+          Автоматический ежедневный обход sl-claw.tech нашёл проблемы.
+          Полный отчёт ниже + файл \`.seo-alerts/${DATE}.md\` в репозитории.
+
+          ---
+
+          $(cat "$REPORT_FILE")
+
+          ---
+
+          ## Что делать
+
+          1. Прочитать отчёт выше — какие именно проблемы найдены
+          2. Если seo-autofix уже что-то применил автоматически — посмотреть последний commit с тегом \`seo-autofix:\`
+          3. Если остались issues — решить вручную:
+             - Cannibalization → 301-redirect или переименование slug
+             - NUMBER_WITHOUT_SOURCE → добавить \`<a href>\` на источник из \`seo-trusted-sources.json\`
+             - Duplicate titles → разная niche-кастомизация
+          4. После починки — Issue закроется автоматически следующим зелёным прогоном
+
+          [📂 Все отчёты](https://github.com/CoreviaFlow/sl-claw-site/tree/main/.seo-alerts)
+          [⚙️ Workflow run](https://github.com/CoreviaFlow/sl-claw-site/actions/runs/$GITHUB_RUN_ID)
+          BODYEOF
+          )
+          if [ -n "$EXISTING" ]; then
+            echo "Updating existing issue #$EXISTING"
+            gh issue comment "$EXISTING" --body "$BODY"
+          else
+            echo "Creating new issue"
+            gh issue create \
+              --title "🛡 SEO Watch Alert (auto-tracking)" \
+              --body "$BODY" \
+              --label "seo-watch,automated"
+          fi
+
+      - name: Close issue if all clean
+        if: steps.watch.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING=$(gh issue list --label "seo-watch" --state open --limit 1 --json number --jq '.[0].number' || echo "")
+          if [ -n "$EXISTING" ]; then
+            echo "All SEO issues resolved — closing #$EXISTING"
+            gh issue close "$EXISTING" --comment "✅ Все SEO проблемы исправлены. Health score восстановлен. Auto-closed by seo-watch."
+          fi
+
       - name: Fail if errors
         if: steps.watch.outcome == 'failure'
         run: |
-          echo "::error::SEO watch detected critical issues — see report above"
+          echo "::error::SEO watch detected critical issues — Issue создан/обновлён"
           exit 1

@@ -137,6 +137,20 @@ for (const fp of blogPosts){
 }
 for (const [key, files] of Object.entries(slugToFiles)){
   if (files.length >= 2){
+    // Проверяем: managed ли через canonical (т.е. дубликаты указывают на primary)?
+    const canons = files.map(f => {
+      const html = readHtml(f.fp); if (!html) return null;
+      const m = html.match(/<link rel="canonical" href="([^"]+)"/);
+      return m ? m[1] : null;
+    });
+    const uniqueCanons = new Set(canons.filter(Boolean));
+    // Если все указывают на один URL (primary) — это resolved via canonical
+    const managed = uniqueCanons.size === 1 && [...uniqueCanons][0] !== '';
+    if (managed){
+      // Не считаем за cannibalization — Google поймёт что это duplicate с primary
+      stats.cannibalization_managed = (stats.cannibalization_managed || 0) + 1;
+      continue;
+    }
     const niches = files.map(f => f.nicheSlug).join(', ');
     stats.cannibalization.push({
       bareSlug: key,

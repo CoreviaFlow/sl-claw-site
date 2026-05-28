@@ -218,6 +218,12 @@ function check(ctx){
   // Если есть self-source-фраза в окне → OK без линка (first-party data).
   const isBlogPost = url && /\/blog\/[^/]+\/?$/.test(url);
   if (isArticle && isBlogPost){
+    // Skip demo-блоки (mock chat preview, phone-демо) — там цифры
+    // legitimate (это reenactment диалога, не assertion).
+    // Также skip JSON-LD блоки и Product schema.
+    let cleanHtml = html
+      .replace(/<div[^>]*class="[^"]*(?:phone-msgs|phone-demo|pm-row|pm |demo-chat|conversation-mock)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
+      .replace(/<script[^>]*application\/ld\+json[^>]*>[\s\S]*?<\/script>/gi, '');
     const NUM_PATTERNS = [
       // % с числом
       { re: /\b\d{1,3}(?:[.,]\d+)?\s*%/g, kind: 'percentage' },
@@ -230,17 +236,13 @@ function check(ctx){
     const issues = [];
     for (const { re, kind } of NUM_PATTERNS){
       let m;
-      while ((m = re.exec(html)) !== null){
+      while ((m = re.exec(cleanHtml)) !== null){
         const idx = m.index;
         const windowStart = Math.max(0, idx - 200);
-        const windowEnd = Math.min(html.length, idx + m[0].length + 200);
-        const win = html.slice(windowStart, windowEnd);
-        // Skip if внутри schema JSON-LD (там много price="499" итд)
-        const beforeIdx = html.slice(0, idx);
-        const lastScriptOpen = beforeIdx.lastIndexOf('<script');
-        const lastScriptClose = beforeIdx.lastIndexOf('</script>');
-        if (lastScriptOpen > lastScriptClose) continue; // внутри <script>
-        // Skip если число внутри meta tags / style / class atributes (атрибуты)
+        const windowEnd = Math.min(cleanHtml.length, idx + m[0].length + 200);
+        const win = cleanHtml.slice(windowStart, windowEnd);
+        // Skip если число внутри meta tags / style / class atributes
+        const beforeIdx = cleanHtml.slice(0, idx);
         const inAttr = /[a-z-]+="[^"]*$/i.test(beforeIdx.slice(-100));
         if (inAttr) continue;
         // Ищем <a href> в окне
