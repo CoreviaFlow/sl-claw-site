@@ -98,7 +98,6 @@
     geo:'Послуги недоступні для резидентів рф та рб.',
     order:'замовлення', nodisc:'Без знижки', sale:'За акцією', price:'Ціна', typeLbl:'Тип', typeVal:'разовий платіж · бот назавжди',
     save:'Економія', prodPrefix:'AI-продавець: ',
-    anchorLbl:'Під ключ', anchorPrice:'від $2000',
     guarantee:'Разова оплата — бот залишається у вас назавжди. Повернення та умови — у <a href="payment-refund.html" target="_blank" rel="noopener">розділі «Оплата та повернення»</a>.',
     impl:'<div style="margin-bottom:10px"><b>Потрібна допомога з розгортанням або хочете кастомне рішення?</b> Напишіть нашому консультанту — обговоримо задачу і за потреби запишемо на зустріч із керівником, який ухвалює рішення.</div><a href="#" class="btn btn-primary co-consult co-consult-btn" data-co-src="co_unpaid">Поговорити з консультантом →</a>',
     errEmail:'Введіть коректний email — на нього прийде доступ і чек.', errAgree:'Підтвердіть згоду з офертою та політикою конфіденційності.'
@@ -115,7 +114,6 @@
     geo:'Услуги недоступны для резидентов рф и рб.',
     order:'заказ', nodisc:'Без скидки', sale:'По акции', price:'Цена', typeLbl:'Тип', typeVal:'разовый платёж · бот навсегда',
     save:'Экономия', prodPrefix:'AI-продавец: ',
-    anchorLbl:'Под ключ', anchorPrice:'от $2000',
     guarantee:'Разовая оплата — бот остаётся у вас навсегда. Возврат и условия — в <a href="payment-refund.html" target="_blank" rel="noopener">разделе «Оплата и возврат»</a>.',
     impl:'<div style="margin-bottom:10px"><b>Нужна помощь с развёртыванием или хотите кастомное решение?</b> Напишите нашему консультанту — обсудим задачу и при необходимости запишем на встречу с руководителем, принимающим решение.</div><a href="#" class="btn btn-primary co-consult co-consult-btn" data-co-src="co_unpaid">Поговорить с консультантом →</a>',
     errEmail:'Введите корректный email — на него придёт доступ и чек.', errAgree:'Подтвердите согласие с офертой и политикой конфиденциальности.'
@@ -168,8 +166,7 @@
       '<div class="co-inc">'+TIER_NAME[tier].inc+'</div>'+
     '</div>'+
     '<div class="co-pricebox">'+
-      (onSale?'<div class="co-pl"><span>'+TX.nodisc+'</span><s>'+pr.price+'</s></div>'
-            :'<div class="co-pl"><span>'+TX.anchorLbl+'</span><s>'+TX.anchorPrice+'</s></div>')+
+      (onSale?'<div class="co-pl"><span>'+TX.nodisc+'</span><s>'+pr.price+'</s></div>':'')+
       '<div class="co-pl big"><span>'+(onSale?(TX.sale+' −'+pr.off+'%'):TX.price)+'</span><b>'+priceNow+'</b></div>'+
       (onSale?'<div class="co-pl save"><span>'+TX.save+'</span><b>−'+pr.off+'%</b></div>':'')+
       '<div class="co-pl muted"><span>'+TX.typeLbl+'</span><span>'+TX.typeVal+'</span></div>'+
