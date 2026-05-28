@@ -177,6 +177,12 @@ section{padding:64px 0}
 
 .np-grid{display:grid;grid-template-columns:1.4fr .9fr;gap:40px;padding:44px 0}
 .np-grid h2{font-size:1.2rem;margin:0 0 14px;letter-spacing:-.01em}
+/* Intro-параграф: prose-блок для AI citation (Perplexity/AIO/ChatGPT) */
+.np-intro{margin:8px 0 32px;padding:18px 22px;background:var(--bg-soft);border-left:3px solid var(--accent);border-radius:8px}
+.np-intro p{font-size:.98rem;line-height:1.62;color:var(--ink);margin:0}
+/* Visually-hidden: H2 присутствует в DOM для screen-readers и SEO outline,
+   но не видим визуально (intro и так читается как первый prose-блок). */
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .does{list-style:none;padding:0;margin:0 0 32px}
 .does li{padding:11px 0 11px 28px;position:relative;border-bottom:1px solid var(--line);color:var(--ink)}
 .does li:before{content:"→";position:absolute;left:0;color:var(--accent-ink);font-family:var(--mono)}

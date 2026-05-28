@@ -65,7 +65,7 @@ const UI = {
        handles:'Снимает возражения', knows:'Что бот знает в нише', demo:'Живой пример диалога',
        market:'Цифры рынка ниши', online:'в сети', getbot:'Получить бота', askconsult:'Спросить у консультанта', blog:'Полезные материалы',
        blogsub:'Статьи по автоматизации продаж в нише — обновляются регулярно.',
-       blogsoon:'Первые материалы скоро — публикуем по мере готовности.',
+       blogsoon:'Раздел наполняется: разборы кейсов из ниши, советы по настройке бота под специфику бизнеса, частые вопросы клиентов и шаблоны диалогов. Публикации выходят по мере готовности материала.',
        faqh:'Частые вопросы', buyerh:'Кому будет эффективно?', mistakesh:'Где обычно теряют продажи в нише', integh:'Интеграции в нише',
        trust:['Разовая оплата — без абонентки','Оплата работы ИИ по факту','Условия возврата — в оферте','Разворачивается примерно за час'],
        trustStrip:['Разово · без абонентки','ИИ по факту · от $0.50 за диалог','Готов за час','Гарантия возврата 14 дней'],
@@ -94,7 +94,7 @@ const UI = {
        handles:'Знімає заперечення', knows:'Що бот знає в ніші', demo:'Живий приклад діалогу',
        market:'Цифри ринку ніші', online:'у мережі', getbot:'Отримати бота', askconsult:'Запитати у консультанта', blog:'Корисні матеріали',
        blogsub:'Статті з автоматизації продажів у ніші — оновлюються регулярно.',
-       blogsoon:'Перші матеріали незабаром — публікуємо в міру готовності.',
+       blogsoon:'Розділ наповнюється: розбори кейсів з ніші, поради з налаштування бота під специфіку бізнесу, типові питання клієнтів та шаблони діалогів. Публікації виходять у міру готовності матеріалу.',
        faqh:'Часті запитання', buyerh:'Кому буде ефективно?', mistakesh:'Де зазвичай втрачають продажі в ніші', integh:'Інтеграції в ніші',
        trust:['Разова оплата — без абонплати','Оплата роботи ШІ за фактом','Умови повернення — в оферті','Розгортається приблизно за годину'],
        trustStrip:['Разово · без абонплати','ШІ за фактом · від $0.50 за діалог','Готовий за годину','Гарантія повернення 14 днів'],
@@ -246,12 +246,20 @@ function jsonld(n, v, f, u){
   const price = (PROMO_ON && tier.sale ? tier.sale : tier.price).replace('$','');
   const today = new Date().toISOString().slice(0,10);
   const t = UI[v.lang];
+  // SL-CLAW marketplace запущен в production 2026-05-21 — это datePublished
+  // baseline для всех niche-страниц (не было раньше → не путаем GSC).
+  // dateModified обновляется при каждой регенерации (today).
+  const PUBLISHED = "2026-05-21";
+  const publisher = {"@type":"Organization", name:"SL-CLAW", url:BASE,
+    logo:{"@type":"ImageObject", url:BASE+'/icon-512.png'}};
   const product = { "@context":"https://schema.org","@type":"Product",
     name:`AI-${t.seller}: ${f.name}`, description:f.tagline,
     image:BASE+'/icon-512.png',
     brand:{"@type":"Brand",name:"SL-CLAW"}, category:secOf(n.sector, v.lang),
     offers:{"@type":"Offer", price:price, priceCurrency:"USD", availability:"https://schema.org/InStock", url:u,
       priceValidUntil:"2026-12-31", seller:{"@type":"Organization",name:"SL-CLAW"}},
+    manufacturer: publisher,
+    datePublished: PUBLISHED,
     dateModified: today };
   // SoftwareApplication — Google AI Overviews предпочитает этот тип для AI-tools.
   // Параллельный schema-блок с тем же price/offer (Google объединяет по URL).
@@ -261,6 +269,8 @@ function jsonld(n, v, f, u){
     operatingSystem:"Web, Telegram, WhatsApp, Instagram",
     offers:{"@type":"Offer", price:price, priceCurrency:"USD"},
     brand:{"@type":"Brand",name:"SL-CLAW"},
+    publisher: publisher,
+    datePublished: PUBLISHED,
     dateModified: today };
   const crumbs = { "@context":"https://schema.org","@type":"BreadcrumbList", itemListElement:[
     {"@type":"ListItem",position:1,name:t.crumbHome,item:BASE+'/'},
@@ -300,6 +310,21 @@ function smartTrim(s, max){
   return ((sp > max - 20 ? cut.slice(0, sp) : cut).replace(/[—,:;.\s]+$/,'')) + '…';
 }
 
+// Intro-параграф 130-160 слов на нишевой странице — для AI search citation
+// readiness (Perplexity/ChatGPT/AIO любят prose-блоки самодостаточной длины).
+// Template-derived: уникален для каждой ниши через {name, tagline, does[0], cta}.
+// Это снимает риск "scaled content abuse" (Helpful Content 2024) — каждая страница
+// получает 130+ слов уникального prose помимо bullet-lists.
+function nicheIntro(f, lang){
+  const tl = (f.tagline || '').trim().replace(/[.!?]+$/, '');
+  const does0 = ((f.does && f.does[0]) || '').toLowerCase().trim().replace(/[.!?]+$/, '');
+  const cta = (f.cta || '').toLowerCase().trim();
+  if (lang === 'uk') {
+    return `AI-продавець SL-CLAW для бізнесу в ніші «${f.name}» — це готове програмне рішення, яке ${does0 || 'веде діалог з клієнтом'}. ${tl}. Бот працює там, де клієнт уже знаходиться: Telegram, WhatsApp, Instagram, віджет на сайті — текст і голос в одному агенті. На відміну від автовідповідача «прийняли заявку, передзвонимо», він веде повноцінний діалог за методологією SPIN: виявляє потребу клієнта, знімає типові заперечення для ніші та доводить до цільової дії — ${cta || 'заявки в CRM'}. Рішення продається як разова покупка ($249–$499 залежно від тарифу), розгортається приблизно за годину за готовою інструкцією, без абонентської плати і без обмеження за терміном використання. Далі ви платите лише за роботу ШІ за фактом — в середньому від $0.50 за повний діалог з клієнтом.`;
+  }
+  return `AI-продавец SL-CLAW для бизнеса в нише «${f.name}» — это готовое программное решение, которое ${does0 || 'ведёт диалог с клиентом'}. ${tl}. Бот развёрнут в каналах, где клиент уже находится: Telegram, WhatsApp, Instagram, виджет на сайте — текст и голос в одном агенте. В отличие от автоответчика «приняли заявку, перезвоним», он ведёт полноценный диалог по методологии SPIN: выявляет потребность клиента, снимает типичные для ниши возражения и доводит до целевого действия — ${cta || 'заявки в CRM'}. Решение продаётся как разовая покупка ($249–$499 в зависимости от тарифа), разворачивается примерно за час по готовой инструкции, без абонентской платы и без ограничения по сроку использования. Дальше платите только за работу ИИ по факту — в среднем от $0.50 за полный диалог с клиентом.`;
+}
+
 function page(n, v){
   const t = UI[v.lang], f = F(n, v.lang);
   const u = urlFor(v, n.slug);
@@ -328,7 +353,7 @@ function page(n, v){
   const blogBlock = pubPosts.length
     ? `<ul class="blog-list">${pubPosts.map(p=>`<li><a href="/${DIR(v.lang)}/${n.slug}/blog/${p.slug}/">${esc(p.title)}</a></li>`).join('')}</ul>`
       + `<p style="margin-top:8px"><a href="/${DIR(v.lang)}/${n.slug}/blog/" class="mono" style="font-size:.85rem">${v.lang==='uk'?'Усі матеріали →':'Все материалы →'}</a></p>`
-    : `<ul class="blog-list"><li class="muted">${t.blogsoon}</li></ul>`;
+    : `<p class="muted" style="font-size:.9rem;line-height:1.55">${esc(t.blogsoon)}</p>`;
   const langSwitch = VARIANTS.map(x=>`<a href="${urlFor(x,n.slug)}"${x.key===v.key?' class="on"':''}>${x.hl}</a>`).join('');
 
   return `<!doctype html>
@@ -387,23 +412,29 @@ ${jsonld(n, v, f, u)}
   <div class="np-grid">
     <div class="main">
       <img class="cover" src="cover.svg" width="1200" height="630" alt="AI-${sel} для «${esc(f.name)}» — ${esc(f.tagline)}" loading="lazy">
-      <h2>${t.does}</h2>
+
+      <section id="intro" class="np-intro" aria-labelledby="intro-h">
+        <h2 id="intro-h" class="visually-hidden">${v.lang==='uk'?`AI-продавець для «${esc(f.name)}» — як це працює`:`AI-продавец для «${esc(f.name)}» — как это работает`}</h2>
+        <p>${esc(nicheIntro(f, v.lang))}</p>
+      </section>
+
+      <h2 id="does">${t.does}</h2>
       <ul class="does">${f.does.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>
       <div class="promo-note" style="margin:4px 0 2px">${t.feed}</div>
 
-      <div class="closer">
+      <div class="closer" id="closer">
         <h2>${t.closerh}</h2>
         <p class="closer-lead">${esc(closerLeadFor(f, v.lang))}</p>
         <ul>${t.closer.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
       </div>
 
-      <h2>${t.capsh}</h2>
+      <h2 id="caps">${t.capsh}</h2>
       <ul class="does caps">${t.caps.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
 
-      <h2>${t.faqh}</h2>
+      <h2 id="faq">${t.faqh}</h2>
       <div class="faq">${t.closerFaq.map(it=>`<details class="faq-item faq-closer"><summary><h3>${esc(it.q)}</h3></summary><p>${esc(it.a)}</p></details>`).join('')}${enrichFaq(f,v.lang).map(it=>`<details class="faq-item"><summary><h3>${esc(it.q)}</h3></summary>${it.body}</details>`).join('')}${faqItems(f,v.lang,n).map(([q,a])=>`<details class="faq-item"><summary><h3>${esc(q)}</h3></summary><p>${esc(a)}</p></details>`).join('')}</div>
 
-      <h2>${t.blog}</h2>
+      <h2 id="materials">${t.blog}</h2>
       <p class="muted" style="margin:-6px 0 12px;font-size:.9rem">${t.blogsub}</p>
       ${blogBlock}
     </div>
