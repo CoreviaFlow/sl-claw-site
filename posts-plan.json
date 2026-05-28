@@ -23170,8 +23170,10 @@
      "title": "Автоматична воронка продажів для «Промисловий інструмент»: схема",
      "lang": "uk",
      "publish": "2026-05-28",
-     "status": "planned",
-     "publishAt": "2026-05-28T13:34:00Z"
+     "status": "published",
+     "publishAt": "2026-05-28T13:34:00Z",
+     "slug": "avtomatychna-voronka-prodazhiv-dlia-skhema",
+     "publishedAt": "2026-05-28T18:35:17.768Z"
     },
     {
      "title": "Сколько стоит автоматизация продаж в «Промышленный инструмент»",
