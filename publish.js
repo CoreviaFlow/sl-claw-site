@@ -141,7 +141,23 @@ function postTitles(name, lang){
 const P = s => `<p>${s}</p>`;
 const UL = arr => `<ul>${arr.map(x=>`<li>${x}</li>`).join('')}</ul>`;
 const OL = arr => `<ol>${arr.map(x=>`<li>${x}</li>`).join('')}</ol>`;
-const H2 = s => `<h2>${esc(s)}</h2>`;
+// H2 с auto-generated anchor ID для passage-level citation (AI search,
+// Perplexity/AIO любят прямые ссылки на конкретный блок). Slug — простой
+// детерминированный transliterit заголовка, не уникален между постами
+// (это OK — ID работает в пределах одной страницы).
+function h2Slug(s){
+  return String(s||'').toLowerCase()
+    .replace(/[«»"'`]/g,'')
+    .replace(/[^a-zа-яё0-9\s-]/gi,'')
+    .replace(/\s+/g,'-')
+    .replace(/-+/g,'-')
+    .replace(/^-|-$/g,'')
+    .slice(0, 50) || 'section';
+}
+const H2 = (s, id) => {
+  const aid = id || h2Slug(s);
+  return `<h2 id="${aid}">${esc(s)}</h2>`;
+};
 const objList = f => f.objections.slice(0,6).map(esc);
 const knowList = f => f.knows.slice(0,6).map(esc);
 
@@ -744,6 +760,24 @@ let published = 0;
 const touchedNiches = new Set(); // `${slug}|${lang}`
 const newlyByNicheLang = {}; // для related/индексов
 
+// ── Регистр slug-ов для предотвращения cross-niche collision ────────
+// До коммита b0edb443 publish.js сознательно вырезал имя ниши из title
+// перед slugify() → разные ниши с одинаковым шаблоном заголовка получали
+// одинаковый slug. Это привело к 5 парам дублей в проде (см. QA-отчёт).
+// Cannibalization risk: тот же ключевик таргетится двумя URL разных ниш.
+//
+// Fix: при генерации НОВОГО slug проверяем регистр уже занятых slug+lang
+// → если коллизия с другой нишей, добавляем niche-slug как суффикс.
+// Существующие опубликованные посты НЕ трогаем (canonical=self уже в проде).
+const slugRegistry = new Map(); // `${slug}|${lang}` → niche-slug owner
+for(const nslug in plan.niches){
+  for(const post of plan.niches[nslug].posts){
+    if(post.status === 'published' && post.slug){
+      slugRegistry.set(post.slug + '|' + post.lang, nslug);
+    }
+  }
+}
+
 // 1) публикуем то, что должно
 outer:
 for(const slug in plan.niches){
@@ -761,6 +795,17 @@ for(const slug in plan.niches){
     if(themeIdx < 0) themeIdx = Math.floor(rng(post.title)()*25);
     // slug поста (сохраняем существующий при REPUBLISH)
     let ps = post.slug || slugify(post.title.replace(`«${f.name}»`,'').replace(f.name,'')).replace(/^-+/,'') || ('post-'+(themeIdx+1));
+    // Collision check — если baseSlug уже занят в другой нише (для этого языка),
+    // добавляем niche-slug как суффикс для уникальности.
+    if(!post.slug){
+      const key0 = ps + '|' + lang;
+      const owner = slugRegistry.get(key0);
+      if(owner && owner !== slug){
+        ps = ps + '-' + slug;
+        console.log(`slug collision: ${key0} owned by ${owner}, using ${ps} for ${slug}`);
+      }
+      slugRegistry.set(ps + '|' + lang, slug);
+    }
     post.slug = ps;
     if(!alreadyPublished){ post.status='published'; post.publishedAt = new Date().toISOString(); }
     published++;
