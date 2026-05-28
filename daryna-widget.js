@@ -1,19 +1,66 @@
 /* Дарина — віджет консультації для sl-claw.tech.
    Плаваюча кнопка «Отримати консультацію» → чат по WebSocket з Дариною.
-   Мова береться з sl_lang (uk/ru). Підключення: wss://daryna.coreviaflow.space/ws/{id}. */
+   Мова: 1) localStorage.sl_lang (юзер раніше обрав) 2) navigator.language
+        3) Accept-Language (через серверний рендер data-атрибут) 4) fallback uk.
+   Source: з URL-параметрів (?src=, ?ref=, ?utm_*) → передається в init для
+   source-aware welcome (sl_claw_rules.md → правило lang-detection + arch p.3).
+   Підключення: wss://daryna.coreviaflow.space/ws/{id}. */
 (function () {
   if (window.__darynaWidget) return;
   window.__darynaWidget = true;
 
-  var LANG = (localStorage.getItem("sl_lang") === "ru") ? "ru" : "uk";
-  var T = {
+  // --- LANG-DETECTION (sl_claw_rules.md → MULTI-LANG) -----------------------
+  // Пріоритет: localStorage.sl_lang → navigator.language → fallback uk
+  function detectLang() {
+    var saved = localStorage.getItem("sl_lang");
+    if (saved === "ru" || saved === "uk" || saved === "en") return saved;
+    var nav = (navigator.language || navigator.userLanguage || "").toLowerCase();
+    if (nav.indexOf("uk") === 0) return "uk";
+    if (nav.indexOf("ru") === 0) return "ru";
+    if (nav.indexOf("en") === 0) return "en";
+    return "uk";
+  }
+  var LANG = detectLang();
+  // Зберігаємо обраний LANG щоб при поверненні використовувати той самий.
+  try { localStorage.setItem("sl_lang", LANG); } catch (e) {}
+
+  // --- SOURCE-DETECTION з URL -----------------------------------------------
+  // Збираємо ?src= / ?ref= / ?utm_source= / page-path → передаємо в init payload.
+  // Backend (source_router.py) ці поля може використати для welcome-routing.
+  function detectSource() {
+    var qs = new URLSearchParams(location.search || "");
+    var src = {
+      page_path: location.pathname || "/",
+      page_url: location.href || "",
+      src_param: qs.get("src") || qs.get("source") || null,
+      ref_param: qs.get("ref") || null,
+      utm_source: qs.get("utm_source") || null,
+      utm_campaign: qs.get("utm_campaign") || null,
+      utm_medium: qs.get("utm_medium") || null,
+      referrer: document.referrer || null,
+    };
+    // Спрощений type-hint для backend: pricing-page → гарячий лід
+    if (/\/pricing|\/tariffs|\/тариф/i.test(src.page_path)) src.page_hint = "pricing";
+    else if (/^\/n\//i.test(src.page_path)) src.page_hint = "niche";
+    else if (/\/blog/i.test(src.page_path)) src.page_hint = "blog";
+    else if (src.page_path === "/" || /\/index/i.test(src.page_path)) src.page_hint = "home";
+    return src;
+  }
+  var SOURCE = detectSource();
+  var T_ALL = {
     uk: { btn: "Консультація у AI-продавця", title: "Дарина", sub: "AI-консультант · онлайн",
           ph: "Напишіть питання…", typing: "Дарина друкує…",
           hi: "Вітаю! Я Дарина Підберу AI-продавця під вашу нішу й відповім на питання щодо тарифів і запуску." },
     ru: { btn: "Консультация у AI-продавца", title: "Дарина", sub: "AI-консультант · онлайн",
           ph: "Напишите вопрос…", typing: "Дарина печатает…",
-          hi: "Здравствуйте! Я Дарина Подберу AI-продавца под вашу нишу и отвечу по тарифам и запуску." }
-  }[LANG];
+          hi: "Здравствуйте! Я Дарина Подберу AI-продавца под вашу нишу и отвечу по тарифам и запуску." },
+    en: { btn: "Chat with AI Sales", title: "Daryna", sub: "AI consultant · online",
+          ph: "Ask a question…", typing: "Daryna is typing…",
+          hi: "Hi! I am Daryna. I will help pick an AI seller for your niche and answer questions about pricing and launch." }
+  };
+  // EN-режим: backend поки відповідатиме uk (sl_claw_rules.md → EN запуск пізніше),
+  // але UI віджету англомовний, щоб клієнт побачив релевантне привітання.
+  var T = T_ALL[LANG] || T_ALL.uk;
 
   var WS_URL = "wss://daryna.coreviaflow.space/ws/";
   var PRONOUNCE = { "SL-CLAW": "Эс-эл Кло", "SL CLAW": "Эс-эл Кло", "AI": "Эй-Ай", "ШІ": "Эй-Ай" };
@@ -73,7 +120,14 @@
   function connect() {
     ws = new WebSocket(WS_URL + encodeURIComponent(uid));
     ws.onopen = function () {
-      ws.send(JSON.stringify({ type: "init", greeting_shown: true, lang: LANG }));
+      // init: передаємо lang, browser_lang (як backup на бекенді), source з URL
+      ws.send(JSON.stringify({
+        type: "init",
+        greeting_shown: true,
+        lang: LANG,
+        browser_lang: navigator.language || "",
+        source: SOURCE,
+      }));
     };
     ws.onmessage = function (e) { typing(false);
       try { add((JSON.parse(e.data).text) || "", "bot"); } catch (_) { add(e.data, "bot"); } };
@@ -83,7 +137,12 @@
     var t = input.value.trim(); if (!t) return;
     add(t, "me"); input.value = ""; typing(true);
     if (!ws || ws.readyState > 1) connect();
-    var payload = JSON.stringify({ text: t, lang: LANG, pronounce: PRONOUNCE });
+    var payload = JSON.stringify({
+      text: t,
+      lang: LANG,
+      browser_lang: navigator.language || "",
+      pronounce: PRONOUNCE,
+    });
     if (ws.readyState === 1) ws.send(payload);
     else ws.addEventListener("open", function () { ws.send(payload); }, { once: true });
   }
