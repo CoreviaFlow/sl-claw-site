@@ -1,0 +1,56 @@
+name: seo-rules-watch
+
+# Weekly мониторинг официальных SEO/AI правил.
+# Каждый понедельник 17:00 UTC = 20:00 Kyiv.
+# Фетчит Google Search Central, QRG PDF, Anthropic/OpenAI announcements,
+# Schema.org releases, robots.txt RFC. Сравнивает с baseline по sha256.
+# Если найдены изменения → коммитит rules-update-YYYY-MM-DD.md в main.
+
+on:
+  schedule:
+    - cron: '0 17 * * 1'  # понедельник 17:00 UTC = 20:00 Kyiv
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run rules watch
+        id: watch
+        continue-on-error: true
+        run: |
+          node seo-rules-watch.js
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Show today's update (if any)
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          if [ -f ".seo-alerts/rules-update-${DATE}.md" ]; then
+            echo "=========================================="
+            echo "Rules Update Report ${DATE}"
+            echo "=========================================="
+            cat ".seo-alerts/rules-update-${DATE}.md"
+          else
+            echo "No rule updates this week — baseline unchanged"
+          fi
+
+      - name: Commit baseline + report
+        if: always()
+        run: |
+          git config user.name "seo-rules-watch[bot]"
+          git config user.email "seo-rules-watch@sl-claw.tech"
+          git add .seo-alerts/ || true
+          git diff --staged --quiet || git commit -m "seo-rules-watch: weekly check $(date -u +%Y-%m-%d)"
+          git push origin main || echo "push skipped"

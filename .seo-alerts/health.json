@@ -1,7 +1,7 @@
 {
   "date": "2026-05-28",
   "scanned": 311,
-  "errors": 0,
+  "errors": 1,
   "warnings": 97,
   "by_kind": {
     "blog": 52,
@@ -56,10 +56,17 @@
     }
   ],
   "thin_content": [],
-  "spam_patterns": [],
+  "spam_patterns": [
+    {
+      "url": "ua/productivity-consulting/blog/iak-bot-kvalifikuie-kliienta-v-nishi/index.html",
+      "errors": [
+        "NUMBER_WITHOUT_SOURCE: 1 случая(ев). Первый: «10%» (percentage) — контекст: «»"
+      ]
+    }
+  ],
   "duplicate_titles": [],
   "orphan_pages": [],
   "sitemap_urls": 261,
   "sitemap_broken": [],
-  "health_score": 55
+  "health_score": 53
 }

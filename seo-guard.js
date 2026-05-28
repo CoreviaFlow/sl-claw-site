@@ -18,6 +18,27 @@
 const fs = require('fs');
 const path = require('path');
 
+// ── Trusted sources whitelist ─────────────────────────────────────────
+// Загружается из seo-trusted-sources.json. Если файл недоступен — fallback
+// на минимальный hardcoded list (HubSpot/Drift/Google) чтобы guard не упал.
+let TRUSTED_DOMAINS = new Set([
+  'hubspot.com','drift.com','tidio.com','salesforce.com','intercom.com',
+  'forrester.com','gartner.com','mckinsey.com','developers.google.com',
+  'hbr.org','schema.org','wikipedia.org'
+]);
+let SELF_SOURCE_RE = null;
+try {
+  const ts = JSON.parse(fs.readFileSync(path.join(__dirname, 'seo-trusted-sources.json'), 'utf8'));
+  TRUSTED_DOMAINS = new Set();
+  for (const cat of Object.values(ts.sources || {})){
+    for (const src of cat) if (src.domain) TRUSTED_DOMAINS.add(src.domain.toLowerCase());
+  }
+  const phrases = [...(ts.self_source_patterns?.ru || []), ...(ts.self_source_patterns?.uk || [])];
+  if (phrases.length){
+    SELF_SOURCE_RE = new RegExp(phrases.map(p => p.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'), 'i');
+  }
+} catch(e){ /* fallback */ }
+
 const ALERTS_DIR = path.join(__dirname, '.seo-alerts');
 function alertsToday(){ return path.join(ALERTS_DIR, new Date().toISOString().slice(0,10) + '.md'); }
 function appendAlert(level, msg){
@@ -185,6 +206,66 @@ function check(ctx){
     const hits = html.match(pat.re);
     if (hits) {
       errors.push(`SPAM_PATTERN: ${pat.msg} (×${hits.length})`);
+    }
+  }
+
+  // ── NUMBER_WITHOUT_SOURCE: число с %/$/UAH/«млн»/«тыс» должно иметь ссылку рядом ──
+  // ВАЖНО: enforced ТОЛЬКО для blog-постов (url содержит /blog/), не для niche-страниц.
+  // На niche-страницах есть legitimate prices ($249/$449/$499) в Product schema + promo
+  // bar (−50% на Professional) — это offer data, а не unsupported claim.
+  // Регекс ловит: «5%», «50,3%», «$249», «UAH 1000», «10 млн», «5 тыс» в тексте.
+  // Для каждого hit — берём окно ±200 символов в html и ищем там <a href>.
+  // Если есть self-source-фраза в окне → OK без линка (first-party data).
+  const isBlogPost = url && /\/blog\/[^/]+\/?$/.test(url);
+  if (isArticle && isBlogPost){
+    const NUM_PATTERNS = [
+      // % с числом
+      { re: /\b\d{1,3}(?:[.,]\d+)?\s*%/g, kind: 'percentage' },
+      // $/USD/EUR/UAH (с цифрами от 10 — чтобы не ловить «$1», «1₴»)
+      { re: /(?:\$|€|£)\s*\d{2,}|\d{2,}\s*(?:USD|EUR|UAH|грн|долл)/gi, kind: 'currency' },
+      // «N млн», «N тыс», «N тысяч», «N міль», «N тис»
+      { re: /\b\d+(?:[.,]\d+)?\s*(?:млн|тыс\.?|тысяч|мил|тис\.?|тисяч|млрд)\b/gi, kind: 'big_number' },
+      // «N раз», «N клиентов/постов/диалогов» — НЕ ловим, слишком много false positive
+    ];
+    const issues = [];
+    for (const { re, kind } of NUM_PATTERNS){
+      let m;
+      while ((m = re.exec(html)) !== null){
+        const idx = m.index;
+        const windowStart = Math.max(0, idx - 200);
+        const windowEnd = Math.min(html.length, idx + m[0].length + 200);
+        const win = html.slice(windowStart, windowEnd);
+        // Skip if внутри schema JSON-LD (там много price="499" итд)
+        const beforeIdx = html.slice(0, idx);
+        const lastScriptOpen = beforeIdx.lastIndexOf('<script');
+        const lastScriptClose = beforeIdx.lastIndexOf('</script>');
+        if (lastScriptOpen > lastScriptClose) continue; // внутри <script>
+        // Skip если число внутри meta tags / style / class atributes (атрибуты)
+        const inAttr = /[a-z-]+="[^"]*$/i.test(beforeIdx.slice(-100));
+        if (inAttr) continue;
+        // Ищем <a href> в окне
+        const linkMatch = win.match(/<a\b[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
+        const selfSource = SELF_SOURCE_RE && SELF_SOURCE_RE.test(win);
+        if (selfSource) continue; // first-party data — OK
+        if (!linkMatch){
+          issues.push({ number: m[0], kind, around: text.slice(Math.max(0, idx-50), idx+50).replace(/\s+/g,' ').trim() });
+        } else {
+          // Есть линк — проверяем домен
+          try {
+            const u = new URL(linkMatch[1], 'https://sl-claw.tech');
+            const host = u.host.replace(/^www\./,'').toLowerCase();
+            if (host === 'sl-claw.tech') continue; // internal линк — игнор (не источник)
+            if (!TRUSTED_DOMAINS.has(host) && ![...TRUSTED_DOMAINS].some(d => host.endsWith('.' + d) || host === d)){
+              warnings.push(`UNTRUSTED_SOURCE for "${m[0]}" → ${host} (не в whitelist)`);
+            }
+          } catch { /* invalid URL — игнор */ }
+        }
+      }
+    }
+    // Группируем — даём один error на пост (не спамим)
+    if (issues.length){
+      const first = issues[0];
+      errors.push(`NUMBER_WITHOUT_SOURCE: ${issues.length} случая(ев). Первый: «${first.number}» (${first.kind}) — контекст: «${first.around.slice(0,100)}»`);
     }
   }
 

@@ -1,0 +1,109 @@
+{
+  "_meta": {
+    "version": "2026-05-28",
+    "purpose": "Whitelist доверенных доменов для seo-guard.js. Если в блог-посте упомянута цифра/%/$ — рядом должна быть <a href> на источник из этого списка. Любой другой домен помечается warning (но не error). Self-source паттерны («по нашим данным», «в нашей базе») разрешены без ссылки.",
+    "categories": [
+      "sales_chatbots — исследования по чат-ботам, conversational AI, B2B sales automation",
+      "ai_tech — исследования AI/LLM от лидеров индустрии",
+      "b2b_strategy — стратегические инсайты по B2B/SaaS",
+      "seo_marketing — best practices SEO + content marketing",
+      "growth_cro — conversion rate optimization, growth experiments",
+      "ukraine_local — украинский B2B-контекст (Госстат, Forbes UA и пр.)",
+      "schema_standards — Google docs, Schema.org, веб-стандарты"
+    ]
+  },
+  "sources": {
+    "sales_chatbots": [
+      { "name": "HubSpot Marketing Statistics", "url": "https://www.hubspot.com/marketing-statistics", "domain": "hubspot.com", "note": "Десятки фактов про чат-боты, lead capture, conversational marketing — все с источниками" },
+      { "name": "HubSpot State of Marketing Report", "url": "https://www.hubspot.com/state-of-marketing", "domain": "hubspot.com" },
+      { "name": "HubSpot State of Sales Report", "url": "https://www.hubspot.com/state-of-sales", "domain": "hubspot.com" },
+      { "name": "Drift State of Conversational Marketing", "url": "https://www.drift.com/insider/learn/research-reports/", "domain": "drift.com", "note": "Прямо про conversational sales — главный источник для нашей ниши" },
+      { "name": "Salesforce State of Sales", "url": "https://www.salesforce.com/resources/research-reports/state-of-sales/", "domain": "salesforce.com" },
+      { "name": "Salesforce State of Service", "url": "https://www.salesforce.com/resources/research-reports/state-of-service/", "domain": "salesforce.com" },
+      { "name": "Intercom Customer Service Trends Report", "url": "https://www.intercom.com/resources/reports", "domain": "intercom.com" },
+      { "name": "Tidio Chatbot Statistics", "url": "https://www.tidio.com/blog/chatbot-statistics/", "domain": "tidio.com", "note": "Compiled stats — удобно цитировать, обновляется ежегодно" },
+      { "name": "Zendesk CX Trends Report", "url": "https://www.zendesk.com/customer-experience-trends/", "domain": "zendesk.com" },
+      { "name": "Pipedrive State of Sales", "url": "https://www.pipedrive.com/en/blog", "domain": "pipedrive.com" },
+      { "name": "LivePerson Conversational AI Index", "url": "https://www.liveperson.com/research/", "domain": "liveperson.com" },
+      { "name": "Freshworks Customer Service Trends", "url": "https://www.freshworks.com/insights/", "domain": "freshworks.com" },
+      { "name": "Gartner Customer Service & Support", "url": "https://www.gartner.com/en/insights/customer-service-support", "domain": "gartner.com" },
+      { "name": "Forrester Customer Experience Research", "url": "https://www.forrester.com/research/", "domain": "forrester.com" },
+      { "name": "Outreach Sales Trends", "url": "https://www.outreach.io/resources", "domain": "outreach.io" }
+    ],
+    "ai_tech": [
+      { "name": "Anthropic Research", "url": "https://www.anthropic.com/research", "domain": "anthropic.com", "note": "Для утверждений про Claude, LLM поведение, safety" },
+      { "name": "OpenAI Research", "url": "https://openai.com/research", "domain": "openai.com" },
+      { "name": "Google AI Blog", "url": "https://blog.google/technology/ai/", "domain": "blog.google" },
+      { "name": "Google Research", "url": "https://research.google", "domain": "research.google" },
+      { "name": "DeepMind", "url": "https://deepmind.google/discover/blog/", "domain": "deepmind.google" },
+      { "name": "McKinsey State of AI", "url": "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai", "domain": "mckinsey.com" },
+      { "name": "Stanford AI Index", "url": "https://aiindex.stanford.edu", "domain": "aiindex.stanford.edu", "note": "Самый авторитетный annual AI report" },
+      { "name": "MIT Technology Review AI", "url": "https://www.technologyreview.com/topic/artificial-intelligence/", "domain": "technologyreview.com" },
+      { "name": "a16z AI Insights", "url": "https://a16z.com/topics/ai/", "domain": "a16z.com" },
+      { "name": "Hugging Face Blog", "url": "https://huggingface.co/blog", "domain": "huggingface.co" }
+    ],
+    "b2b_strategy": [
+      { "name": "Harvard Business Review", "url": "https://hbr.org", "domain": "hbr.org", "note": "Editorial gold standard — авторитет максимальный" },
+      { "name": "McKinsey Insights", "url": "https://www.mckinsey.com/our-insights", "domain": "mckinsey.com" },
+      { "name": "Bain Insights", "url": "https://www.bain.com/insights/", "domain": "bain.com" },
+      { "name": "BCG Insights", "url": "https://www.bcg.com/publications", "domain": "bcg.com" },
+      { "name": "Forrester Insights", "url": "https://www.forrester.com/research/", "domain": "forrester.com" },
+      { "name": "Forbes Business", "url": "https://www.forbes.com/business/", "domain": "forbes.com" },
+      { "name": "Inc.com", "url": "https://www.inc.com", "domain": "inc.com" },
+      { "name": "PwC Insights", "url": "https://www.pwc.com/gx/en/issues/insights.html", "domain": "pwc.com" }
+    ],
+    "seo_marketing": [
+      { "name": "Google Search Central", "url": "https://developers.google.com/search", "domain": "developers.google.com", "note": "Первоисточник для всех SEO best practices" },
+      { "name": "Google Search Quality Guidelines (QRG)", "url": "https://developers.google.com/search/docs/essentials", "domain": "developers.google.com" },
+      { "name": "Moz Blog", "url": "https://moz.com/blog", "domain": "moz.com" },
+      { "name": "Search Engine Journal", "url": "https://www.searchenginejournal.com", "domain": "searchenginejournal.com" },
+      { "name": "Search Engine Land", "url": "https://searchengineland.com", "domain": "searchengineland.com" },
+      { "name": "Ahrefs Blog", "url": "https://ahrefs.com/blog", "domain": "ahrefs.com" },
+      { "name": "Semrush Blog", "url": "https://www.semrush.com/blog/", "domain": "semrush.com" }
+    ],
+    "growth_cro": [
+      { "name": "ConversionXL (CXL)", "url": "https://cxl.com/blog/", "domain": "cxl.com" },
+      { "name": "GrowthHackers", "url": "https://growthhackers.com", "domain": "growthhackers.com" },
+      { "name": "Reforge", "url": "https://www.reforge.com/blog", "domain": "reforge.com", "note": "Топ-источник для growth methodology" },
+      { "name": "First Round Review", "url": "https://review.firstround.com", "domain": "firstround.com" }
+    ],
+    "ukraine_local": [
+      { "name": "Forbes Ukraine", "url": "https://forbes.ua", "domain": "forbes.ua" },
+      { "name": "Mind.ua", "url": "https://mind.ua", "domain": "mind.ua", "note": "B2B-журнал, реальные кейсы укр. бизнеса" },
+      { "name": "Госстат України", "url": "https://www.ukrstat.gov.ua", "domain": "ukrstat.gov.ua", "note": "Официальная статистика — для всех демографических цифр про UA" },
+      { "name": "YouControl", "url": "https://youcontrol.com.ua", "domain": "youcontrol.com.ua", "note": "Открытые данные про укр. компании — количество ФОПов в нише" },
+      { "name": "Liga Business", "url": "https://biz.liga.net", "domain": "liga.net" },
+      { "name": "Економічна правда", "url": "https://www.epravda.com.ua", "domain": "epravda.com.ua" }
+    ],
+    "schema_standards": [
+      { "name": "Schema.org", "url": "https://schema.org", "domain": "schema.org", "note": "Для всех schema-related утверждений" },
+      { "name": "Wikipedia (universal definitions)", "url": "https://wikipedia.org", "domain": "wikipedia.org" },
+      { "name": "MDN Web Docs", "url": "https://developer.mozilla.org", "domain": "developer.mozilla.org" }
+    ]
+  },
+  "self_source_patterns": {
+    "_note": "Если в тексте есть эти фразы — % без линка разрешён (это first-party data)",
+    "ru": [
+      "по нашим данным",
+      "в нашей базе",
+      "в нашей статистике",
+      "у нас в проекте",
+      "наш бот",
+      "наша AI-продавец",
+      "по статистике SL-CLAW",
+      "в SL-CLAW",
+      "из нашего опыта"
+    ],
+    "uk": [
+      "за нашими даними",
+      "у нашій базі",
+      "у нашій статистиці",
+      "у нас у проекті",
+      "наш бот",
+      "наш AI-продавець",
+      "за статистикою SL-CLAW",
+      "у SL-CLAW",
+      "з нашого досвіду"
+    ]
+  }
+}
