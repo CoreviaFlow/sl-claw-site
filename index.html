@@ -45,8 +45,14 @@
   <span class="kicker" data-i18n="home.kicker">// готовые AI-продавцы по нишам</span>
   <h1 data-i18n="hero.h1">AI-продавец под твою нишу.<br>Купил → обучил под свой бизнес → развернул → продаёт.</h1>
   <p class="lead" data-i18n="hero.lead">Внутри — готовая экспертиза ниши и навыки продаж. Ты наполняешь бота знаниями о своих товарах, ценах и компании — и дальше обогащаешь. Он становится твоим экспертом-продавцом. Без разработчиков и абонентки агентству.</p>
+  <ul class="trust-strip" aria-label="Ключевые преимущества" style="margin:18px 0 22px;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:10px;font-size:.86rem">
+    <li style="background:var(--bg-soft);padding:7px 14px;border-radius:999px;border:1px solid var(--line)"><b id="niches-count"></b> готовых ниш</li>
+    <li style="background:var(--bg-soft);padding:7px 14px;border-radius:999px;border:1px solid var(--line)">Разворачивается за час</li>
+    <li style="background:var(--bg-soft);padding:7px 14px;border-radius:999px;border:1px solid var(--line)">Без абонентки</li>
+    <li style="background:var(--bg-soft);padding:7px 14px;border-radius:999px;border:1px solid var(--line)">Гарантия возврата 14 дней</li>
+  </ul>
   <div class="cta">
-    <a class="btn btn-primary" href="catalog.html" data-i18n="hero.cta1">Открыть каталог ниш →</a>
+    <a class="btn btn-primary" href="catalog.html" data-i18n="hero.cta1">Найти свою нишу →</a>
     <a class="btn btn-ghost" href="#how" data-i18n="hero.cta2">Как разворачивается</a>
   </div>
   <div class="hero-paths">
@@ -61,6 +67,30 @@
   </div>
 </div></section>
 
+<!-- 1. POPULAR NICHES — главный conversion path для marketplace. Сразу после hero,
+     пользователь видит свою нишу и жмёт «Получить бота» → checkout. -->
+<section id="niches"><div class="wrap">
+  <div class="eyebrow" data-i18n="home.shopeye">// витрина</div>
+  <h2 class="h2"><span data-i18n="home.popular">Популярные ниши</span> <span class="count" id="total"></span></h2>
+  <p class="sub" data-i18n="home.popularsub">Каждая ниша — готовый репозиторий и <b>полноценный продавец</b>: ведёт диалог, снимает возражения, доводит до сделки. Зелёным — целевое действие закрытия.</p>
+  <div class="cards" id="featured"></div>
+  <div style="margin-top:28px"><a class="btn btn-accent" href="catalog.html" data-i18n="home.allbtn">Смотреть все ниши →</a></div>
+</div></section>
+
+<!-- 2. THREE ARCHETYPES — для тех кто свою нишу в featured не увидел → ведёт в каталог. -->
+<section id="archetypes" style="background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
+  <div class="eyebrow" data-i18n="home.typeseye">// типы ботов</div>
+  <h2 class="h2" data-i18n="home.typesh2">Три типа под любой бизнес</h2>
+  <p class="sub" data-i18n="home.typessub">Одно ядро продаж — разные специальности. Под товар, под услугу и под B2B-экспертизу.</p>
+  <div class="grid g3">
+    <div class="card"><span class="tag product-sell" data-i18n="home.t1tag">Продажа товара</span><h3 style="margin-top:12px" data-i18n="home.t1h">Товар</h3><p data-i18n="home.t1p">Подбор под задачу, характеристики, закрытие на покупку/осмотр. Спецтехника, авто, мебель, стройматериалы…</p></div>
+    <div class="card"><span class="tag b2c-service" data-i18n="home.t2tag">Услуга людям</span><h3 style="margin-top:12px" data-i18n="home.t2h">Услуга</h3><p data-i18n="home.t2p">Подбор и запись. Салоны, клиники, фитнес, школы, рестораны, туризм…</p></div>
+    <div class="card"><span class="tag b2b-services" data-i18n="home.t3tag">B2B-экспертиза</span><h3 style="margin-top:12px" data-i18n="home.t3h">Консалтинг</h3><p data-i18n="home.t3p">Консультативная продажа, закрытие на диагностику/аудит. Кайдзен, ISO, HR, маркетинг…</p></div>
+  </div>
+  <div style="margin-top:24px"><a class="btn btn-ghost" href="catalog.html">Открыть каталог по типу →</a></div>
+</div></section>
+
+<!-- 3. HOW IT WORKS — короткое объяснение для тех кто сомневается «а это сложно?» -->
 <section id="how"><div class="wrap">
   <div class="eyebrow" data-i18n="home.howeye">// процесс</div>
   <h2 class="h2" data-i18n="home.howh2">Как это работает</h2>
@@ -73,18 +103,7 @@
   </div>
 </div></section>
 
-<section id="archetypes" style="background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
-  <div class="eyebrow" data-i18n="home.typeseye">// типы ботов</div>
-  <h2 class="h2" data-i18n="home.typesh2">Три типа под любой бизнес</h2>
-  <p class="sub" data-i18n="home.typessub">Одно ядро продаж — разные специальности. Под товар, под услугу и под B2B-экспертизу.</p>
-  <div class="grid g3">
-    <div class="card"><span class="tag product-sell" data-i18n="home.t1tag">Продажа товара</span><h3 style="margin-top:12px" data-i18n="home.t1h">Товар</h3><p data-i18n="home.t1p">Подбор под задачу, характеристики, закрытие на покупку/осмотр. Спецтехника, авто, мебель, стройматериалы…</p></div>
-    <div class="card"><span class="tag b2c-service" data-i18n="home.t2tag">Услуга людям</span><h3 style="margin-top:12px" data-i18n="home.t2h">Услуга</h3><p data-i18n="home.t2p">Подбор и запись. Салоны, клиники, фитнес, школы, рестораны, туризм…</p></div>
-    <div class="card"><span class="tag b2b-services" data-i18n="home.t3tag">B2B-экспертиза</span><h3 style="margin-top:12px" data-i18n="home.t3h">Консалтинг</h3><p data-i18n="home.t3p">Консультативная продажа, закрытие на диагностику/аудит. Кайдзен, ISO, HR, маркетинг…</p></div>
-  </div>
-</div></section>
-
-<section><div class="wrap">
+<section id="channels"><div class="wrap">
   <div class="eyebrow" data-i18n="home.cheye">// каналы продаж</div>
   <h2 class="h2" data-i18n="home.chh2">Работает в любом канале продаж</h2>
   <p class="sub" data-i18n="home.chsub">Это <b>продавец, который продаёт в переписке</b>: ведёт диалог, квалифицирует, снимает возражения и доводит до сделки. Один бот — сразу все текстовые каналы; отличается только <b>сложность подключения</b>.</p>
@@ -98,12 +117,40 @@
   <div class="promo-note" style="margin-top:18px" data-i18n="home.voicenote"><b>Голосовой агент — апгрейд в будущем.</b> Сейчас бот продаёт <b>в переписке</b>. Когда он сполна поработает в вашей компании и покажет результат — его можно обновить до голосового агента (звонки).</div>
 </div></section>
 
-<section><div class="wrap">
-  <div class="eyebrow" data-i18n="home.shopeye">// витрина</div>
-  <h2 class="h2"><span data-i18n="home.popular">Популярные ниши</span> <span class="count" id="total"></span></h2>
-  <p class="sub" data-i18n="home.popularsub">Каждая ниша — готовый репозиторий и <b>полноценный продавец</b>: ведёт диалог, снимает возражения, доводит до сделки. Зелёным — целевое действие закрытия.</p>
-  <div class="cards" id="featured"></div>
-  <div style="margin-top:28px"><a class="btn btn-accent" href="catalog.html" data-i18n="home.allbtn">Смотреть все ниши →</a></div>
+<section id="what" style="border-top:1px solid var(--line)"><div class="wrap" style="max-width:780px">
+  <div class="eyebrow">// что это</div>
+  <h2 class="h2">Что такое AI-продавец и чем он отличается от чат-бота</h2>
+  <div style="font-size:1.04rem;line-height:1.72;color:var(--ink);margin-top:18px">
+    <p>AI-продавец SL-CLAW — это не FAQ-бот и не автоответчик «приняли заявку, перезвоним». Это <b>полноценный продавец-программа</b>, который ведёт диалог с клиентом по методологии SPIN: сначала выявляет потребность, потом снимает возражения, доводит до целевого действия. Бот понимает <b>7 этапов сделки</b> и сам определяет, на каком этапе находится клиент — где надо «прогревать», а где уже пора выставлять счёт.</p>
+
+    <h3 style="margin:28px 0 10px;font-size:1.05rem">Что встроено в бота «из коробки»</h3>
+    <ul style="padding-left:22px;margin:0">
+      <li><b>Экспертиза ниши</b> — рыночные цифры, типичные возражения, базовые знания об отрасли. Бот знает контекст до того, как вы наполните его собственными товарами и ценами.</li>
+      <li><b>Навыки продаж</b> — SPIN, работа с отказами, дожим тёплых лидов, возвращение к «остывшим» через follow-up.</li>
+      <li><b>Многоканальность</b> — Telegram, WhatsApp, Instagram, виджет на сайте. Текст и голос в одном агенте.</li>
+      <li><b>Интеграции</b> — Bitrix24, SalesDrive, KeyCRM, 1С и любые другие CRM через webhook.</li>
+      <li><b>Долговременная память клиента</b> — имя, бюджет, прошлые интересы. Не начинает диалог с нуля каждый раз.</li>
+    </ul>
+
+    <h3 style="margin:28px 0 10px;font-size:1.05rem">Как устроена оплата</h3>
+    <p>Бот вы покупаете <b>разово</b>. После покупки он остаётся у вас навсегда, на вашем сервере или нашем хосте. Никакой абонентской платы, никаких ежемесячных подписок — <a href="/pricing.html">актуальные тарифы на отдельной странице</a>.</p>
+    <p>Дальше вы платите только за <b>работу ИИ по факту</b> через токен SL-CLAW: ИИ сам подбирает «мощность» под сложность вопроса, и короткие консультации стоят дешевле длинных. Не общается бот — ничего не списывается. Это существенно дешевле наёма менеджера на смену и в разы дешевле кастомной разработки чат-бота под ключ.</p>
+
+    <h3 style="margin:28px 0 10px;font-size:1.05rem">Кому подходит</h3>
+    <p>Малому и среднему бизнесу, где есть <b>входящий поток заявок в мессенджерах</b> или на сайт: автосалоны, агентства недвижимости, салоны красоты, ветклиники, IT-консалтинг, B2B-услуги, e-commerce. Если ваш менеджер пишет одно и то же 30 раз в день — есть смысл переложить это на AI-продавца, а человека освободить под закрытие сделок.</p>
+  </div>
+</div></section>
+
+<!-- 4. FINAL CTA — последний шанс конверсии для тех кто долистал. Two-path:
+     каталог (выбрать нишу) или тарифы (понять цены). -->
+<section id="cta-final" style="background:var(--ink);color:#fff;padding:56px 0;border-top:1px solid var(--line)"><div class="wrap" style="max-width:760px;text-align:center">
+  <h2 class="h2" style="color:#fff;font-size:1.6rem;margin:0 0 14px">Готов выбрать AI-продавца под свою нишу?</h2>
+  <p style="color:rgba(255,255,255,.78);font-size:1.05rem;line-height:1.6;margin:0 0 28px">128 готовых ниш в каталоге. Если вашей пока нет — напишите консультанту, добавим под вас.</p>
+  <div class="cta" style="justify-content:center">
+    <a class="btn btn-accent" href="catalog.html" style="font-size:1rem;padding:14px 22px">Открыть каталог ниш →</a>
+    <a class="btn btn-ghost" href="pricing.html" style="font-size:1rem;padding:14px 22px;color:#fff;border-color:rgba(255,255,255,.3)">Посмотреть тарифы</a>
+  </div>
+  <p style="margin-top:22px;font-size:.85rem;color:rgba(255,255,255,.55)">Гарантия возврата 14 дней · разовая оплата · бот остаётся у вас навсегда</p>
 </div></section>
 
 <footer class="foot-site"><div class="wrap row">
@@ -117,6 +164,9 @@
 <script>
   const D = window.NICHES;
   document.getElementById('total').textContent = '['+D.niches.length+']';
+  // Hero trust-strip: реальное число ниш из niches.json (не captive).
+  const nc = document.getElementById('niches-count');
+  if (nc) nc.textContent = D.niches.length;
   const pick = ['spectech','realestate-resale','beauty-salon','lean-kaizen','restaurant-delivery','sales-training'];
   const featured = pick.map(s=>D.niches.find(n=>n.slug===s)).filter(Boolean);
   document.getElementById('featured').innerHTML = featured.map(card).join('');
