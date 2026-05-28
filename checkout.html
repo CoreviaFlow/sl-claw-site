@@ -16,7 +16,9 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/css/intlTelInput.min.css">
 <script src="/analytics.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/js/intlTelInput.min.js" defer></script>
 </head>
 <body>
 <header class="nav"><div class="wrap row">
@@ -45,7 +47,7 @@
 
       <label class="co-field">
         <span class="co-lbl" id="phonelbl">Телефон <i>для связи</i></span>
-        <input type="tel" id="phone" placeholder="+380 __ ___ __ __" autocomplete="tel" inputmode="tel">
+        <input type="tel" id="phone" autocomplete="tel" inputmode="tel">
         <small id="phonehint">Менеджер свяжется при необходимости и поможет с запуском.</small>
       </label>
 
@@ -91,7 +93,7 @@
     order:'замовлення', nodisc:'Без знижки', sale:'За акцією', price:'Ціна', typeLbl:'Тип', typeVal:'разовий платіж · бот назавжди',
     save:'Економія', prodPrefix:'AI-продавець: ',
     guarantee:'Разова оплата — бот залишається у вас назавжди. Повернення та умови — у <a href="payment-refund.html" target="_blank" rel="noopener">розділі «Оплата та повернення»</a>.',
-    impl:'<b>Купили, але не вийшло розгорнути самому — чи хочете доопрацювати?</b> Замовте <b>індивідуальне впровадження «під ключ»</b>: просто доплачуєте, і ми доводимо бота до результату. Наша робота — <b>від $1600 + агент</b>. Напишіть на <a href="mailto:support@sl-claw.tech?subject=Індивідуальне впровадження SL-CLAW" style="color:#047857">support@sl-claw.tech</a> або <a href="https://t.me/darynacoreflow_bot" target="_blank" rel="noopener" style="color:#047857">нашому консультанту в Telegram — Дарині</a>.',
+    impl:'<div style="margin-bottom:10px"><b>Потрібна допомога з розгортанням або хочете кастомне рішення?</b> Напишіть нашому консультанту — обговоримо задачу і за потреби запишемо на зустріч із керівником, який ухвалює рішення.</div><a href="#" class="btn btn-primary co-consult co-consult-btn" data-co-src="co_unpaid">Поговорити з консультантом →</a>',
     errEmail:'Введіть коректний email — на нього прийде доступ і чек.', errAgree:'Підтвердіть згоду з офертою та політикою конфіденційності.'
   } : {
     title:'Оформление заказа — SL-CLAW', crumbT:'тарифы', crumbC:'оформление', h1:'Оформление заказа',
@@ -107,7 +109,7 @@
     order:'заказ', nodisc:'Без скидки', sale:'По акции', price:'Цена', typeLbl:'Тип', typeVal:'разовый платёж · бот навсегда',
     save:'Экономия', prodPrefix:'AI-продавец: ',
     guarantee:'Разовая оплата — бот остаётся у вас навсегда. Возврат и условия — в <a href="payment-refund.html" target="_blank" rel="noopener">разделе «Оплата и возврат»</a>.',
-    impl:'<b>Купили, но не получилось развернуть самому — или хотите доработать?</b> Закажите <b>индивидуальное внедрение «под ключ»</b>: просто доплачиваете, и мы доводим бота до результата. Наша работа — <b>от $1600 + агент</b>. Напишите на <a href="mailto:support@sl-claw.tech?subject=Индивидуальное внедрение SL-CLAW" style="color:#047857">support@sl-claw.tech</a> или <a href="https://t.me/darynacoreflow_bot" target="_blank" rel="noopener" style="color:#047857">нашему консультанту в Telegram — Дарине</a>.',
+    impl:'<div style="margin-bottom:10px"><b>Нужна помощь с развёртыванием или хотите кастомное решение?</b> Напишите нашему консультанту — обсудим задачу и при необходимости запишем на встречу с руководителем, принимающим решение.</div><a href="#" class="btn btn-primary co-consult co-consult-btn" data-co-src="co_unpaid">Поговорить с консультантом →</a>',
     errEmail:'Введите корректный email — на него придёт доступ и чек.', errAgree:'Подтвердите согласие с офертой и политикой конфиденциальности.'
   };
 
@@ -168,13 +170,43 @@
     '<svg class="pay-ic" viewBox="0 0 48 30" xmlns="http://www.w3.org/2000/svg"><rect width="47" height="29" x="0.5" y="0.5" rx="4" fill="#fff" stroke="#e6e8ec"/><text x="24" y="20" text-anchor="middle" font-family="Arial" font-weight="700" font-style="italic" font-size="12" fill="#1A1F71">VISA</text></svg>'+
     '<svg class="pay-ic" viewBox="0 0 48 30" xmlns="http://www.w3.org/2000/svg"><rect width="47" height="29" x="0.5" y="0.5" rx="4" fill="#fff" stroke="#e6e8ec"/><circle cx="20" cy="15" r="7.5" fill="#EB001B"/><circle cx="28" cy="15" r="7.5" fill="#F79E1B"/><path d="M24 9.7a7.5 7.5 0 010 10.6 7.5 7.5 0 010-10.6z" fill="#FF5F00"/></svg>';
 
+  // intl-tel-input: dropdown стран + автодетект по IP + валидация через libphonenumber.
+  // initialCountry: "auto" → geoIpLookup ниже, fallback ua. separateDialCode: код страны
+  // выведен отдельно слева от поля, юзер вводит только локальный номер.
+  var iti = null;
+  function initPhoneInput(){
+    if (iti || !window.intlTelInput) return;
+    var phoneEl = document.getElementById('phone');
+    if (!phoneEl) return;
+    iti = window.intlTelInput(phoneEl, {
+      initialCountry: 'auto',
+      separateDialCode: true,
+      preferredCountries: ['ua','pl','de','us','gb'],
+      geoIpLookup: function(success, failure){
+        fetch('https://ipapi.co/json/').then(function(r){return r.json();})
+          .then(function(d){ success(d && d.country_code ? d.country_code : 'ua'); })
+          .catch(function(){ success('ua'); });
+      },
+      utilsScript: 'https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/js/utils.js'
+    });
+  }
+  if (window.intlTelInput) initPhoneInput();
+  else window.addEventListener('load', initPhoneInput);
+
   function showErr(m){ var e=document.getElementById('coerr'); e.textContent=m; e.style.display='block'; }
   document.getElementById('pay').onclick = function(){
     var email = (document.getElementById('email').value||'').trim();
     var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if(!ok){ showErr(TX.errEmail); document.getElementById('email').focus(); return; }
-    var phone = (document.getElementById('phone').value||'').trim();
-    if(phone.replace(/[^0-9]/g,'').length < 7){ showErr(TX.errPhone); document.getElementById('phone').focus(); return; }
+    // Валидация телефона через libphonenumber (через iti). Fallback: ≥10 цифр.
+    var phone;
+    if (iti && typeof iti.isValidNumber === 'function') {
+      if (!iti.isValidNumber()) { showErr(TX.errPhone); document.getElementById('phone').focus(); return; }
+      phone = iti.getNumber(); // E.164: "+380501234567"
+    } else {
+      phone = (document.getElementById('phone').value||'').trim();
+      if(phone.replace(/[^0-9]/g,'').length < 10){ showErr(TX.errPhone); document.getElementById('phone').focus(); return; }
+    }
     if(!document.getElementById('agree').checked){ showErr(TX.errAgree); return; }
     // лид → CRM «It цифра» (через бэкенд pay /lead, который форвардит в CRM)
     try { fetch('https://pay.sl-claw.tech/lead', { method:'POST', headers:{'Content-Type':'application/json'},
@@ -202,6 +234,24 @@
     location.href = url;
   };
   document.getElementById('email').addEventListener('keydown',function(e){ if(e.key==='Enter') document.getElementById('pay').click(); });
+
+  // Клик «Поговорить с консультантом» → виджет Дарины с меткой источника.
+  // Метка: co_<niche>_<tier>_unpaid → Дарина в боте знает что юзер на checkout не оплатил,
+  // ведёт по воронке консультации, при необходимости назначает Google Meet с founder.
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('.co-consult');
+    if (!a) return;
+    e.preventDefault();
+    var src = 'co_' + (refNiche||'unknown') + '_t' + (tier.toLowerCase()) + '_unpaid';
+    // Host-nginx инжектит daryna-widget.js глобально; виджет имеет dw.open(label) API.
+    try {
+      if (window.dw && typeof window.dw.open === 'function') { window.dw.open(src); return; }
+      // fallback: открыть бота напрямую с меткой
+      window.open('https://t.me/darynacoreflow_bot?start=' + encodeURIComponent(src), '_blank', 'noopener');
+    } catch(err) {
+      window.open('https://t.me/darynacoreflow_bot?start=' + encodeURIComponent(src), '_blank', 'noopener');
+    }
+  });
 })();
 </script>
 </body>
