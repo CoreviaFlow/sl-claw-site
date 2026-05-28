@@ -1,0 +1,70 @@
+name: seo-watch
+
+# Daily SEO health watch — сканирует весь сайт на:
+#  • cannibalization (дубль slug между разными нишами)
+#  • thin content (<300 слов)
+#  • spam-паттерны (fake stats, hidden text, keyword stuffing)
+#  • duplicate titles
+#  • broken sitemap URLs
+# Пишет отчёт в .seo-alerts/YYYY-MM-DD.md и коммитит обратно в main.
+# Если есть errors — Action отмечается красным → видно в email/UI.
+
+on:
+  schedule:
+    # 06:00 UTC = 08:00 Kyiv (до утреннего workflow publish-posts в 09:00 UTC)
+    - cron: '0 6 * * *'
+  workflow_dispatch:  # ручной запуск
+  push:
+    paths:
+      - 'seo-guard.js'
+      - 'seo-watch.js'
+      - 'publish.js'
+      - 'seo-build.js'
+
+permissions:
+  contents: write  # для коммита отчёта
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run SEO watch
+        id: watch
+        continue-on-error: true
+        run: |
+          node seo-watch.js
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Show today's report
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          if [ -f ".seo-alerts/${DATE}.md" ]; then
+            echo "=========================================="
+            echo "SEO Watch Report ${DATE}"
+            echo "=========================================="
+            cat ".seo-alerts/${DATE}.md"
+          fi
+
+      - name: Commit report
+        if: always()
+        run: |
+          git config user.name "seo-watch[bot]"
+          git config user.email "seo-watch@sl-claw.tech"
+          git add .seo-alerts/ || true
+          git diff --staged --quiet || git commit -m "seo-watch: daily report $(date -u +%Y-%m-%d)"
+          git push origin main || echo "push skipped (race-condition with another workflow)"
+
+      - name: Fail if errors
+        if: steps.watch.outcome == 'failure'
+        run: |
+          echo "::error::SEO watch detected critical issues — see report above"
+          exit 1

@@ -1,0 +1,65 @@
+{
+  "date": "2026-05-28",
+  "scanned": 311,
+  "errors": 0,
+  "warnings": 97,
+  "by_kind": {
+    "blog": 52,
+    "niche": 256,
+    "static": 3
+  },
+  "cannibalization": [
+    {
+      "bareSlug": "holosovoi-ahent-dlia-kohda-nuzhen-aphreid|ru",
+      "count": 2,
+      "niches": "beauty-equipment, mgmt-consulting",
+      "paths": [
+        "n/beauty-equipment/blog/holosovoi-ahent-dlia-kohda-nuzhen-aphreid/index.html",
+        "n/mgmt-consulting/blog/holosovoi-ahent-dlia-kohda-nuzhen-aphreid/index.html"
+      ]
+    },
+    {
+      "bareSlug": "yntehratsyia-chat-bota-s-crm|ru",
+      "count": 2,
+      "niches": "construction-materials, export-consulting",
+      "paths": [
+        "n/construction-materials/blog/yntehratsyia-chat-bota-s-crm/index.html",
+        "n/export-consulting/blog/yntehratsyia-chat-bota-s-crm/index.html"
+      ]
+    },
+    {
+      "bareSlug": "kak-ne-teriat-zaiavky-nochiu-v-nyshe|ru",
+      "count": 2,
+      "niches": "hr-recruiting, investment-broker",
+      "paths": [
+        "n/hr-recruiting/blog/kak-ne-teriat-zaiavky-nochiu-v-nyshe/index.html",
+        "n/investment-broker/blog/kak-ne-teriat-zaiavky-nochiu-v-nyshe/index.html"
+      ]
+    },
+    {
+      "bareSlug": "kak-nastroyt-bota-pod-tovary-y-tseny-v|ru",
+      "count": 2,
+      "niches": "realestate-rent, seo-agency",
+      "paths": [
+        "n/realestate-rent/blog/kak-nastroyt-bota-pod-tovary-y-tseny-v/index.html",
+        "n/seo-agency/blog/kak-nastroyt-bota-pod-tovary-y-tseny-v/index.html"
+      ]
+    },
+    {
+      "bareSlug": "intehratsiia-chat-bota-z-crm|uk",
+      "count": 2,
+      "niches": "construction-materials, export-consulting",
+      "paths": [
+        "ua/construction-materials/blog/intehratsiia-chat-bota-z-crm/index.html",
+        "ua/export-consulting/blog/intehratsiia-chat-bota-z-crm/index.html"
+      ]
+    }
+  ],
+  "thin_content": [],
+  "spam_patterns": [],
+  "duplicate_titles": [],
+  "orphan_pages": [],
+  "sitemap_urls": 261,
+  "sitemap_broken": [],
+  "health_score": 55
+}

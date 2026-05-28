@@ -13,6 +13,9 @@
    Геоблок РФ/BY не используется в текстах; цифры — только из niche.market[] с источниками. */
 
 const fs = require('fs');
+// SEO guard — pre-publish защита от scaled content abuse, spam-паттернов
+// и cannibalization. Блокирует пост ДО записи на диск если есть errors.
+const seoGuard = require('./seo-guard');
 const path = require('path');
 const ROOT = __dirname;
 const BASE = 'https://sl-claw.tech';
@@ -843,15 +846,38 @@ for(const slug in plan.niches){
         const related = pub.filter(p=>p.slug!==post.slug).slice(0,5);
         const altUrl = oByTheme[themeIdx]!=null ? postUrl(slug, oLang, oByTheme[themeIdx]) : '';
         const dir = path.join(ROOT, DIR(lang), slug, 'blog', post.slug);
-        fs.mkdirSync(dir,{recursive:true});
         const al = (lang==='uk' ? (D.archetypes_uk||{}) : (D.archetypes||{}))[n.archetype] || n.archetype;
+        // 1. Сгенерировать HTML
+        const articleHtml = renderArticle(n, lang, post, themeIdx, pretty(post.publishedAt||post.publish,lang), related, altUrl);
+        // 2. SEO guard — pre-publish защита от scaled abuse / spam / thin
+        const guardRes = seoGuard.check({
+          url: postUrl(slug, lang, post.slug),
+          lang,
+          title: (articleHtml.match(/<title>([^<]+)<\/title>/)||[])[1] || post.title,
+          description: (articleHtml.match(/<meta name="description" content="([^"]+)"/)||[])[1] || '',
+          html: articleHtml,
+        });
+        if (!guardRes.ok && !process.env.SKIP_SEO_GUARD){
+          // Помечаем пост как seoBlocked — НЕ записываем файл, НЕ помечаем published.
+          post.status = 'planned';
+          delete post.publishedAt;
+          post.slug = undefined;
+          post.seoBlocked = { date: new Date().toISOString(), errors: guardRes.errors, warnings: guardRes.warnings, words: guardRes.words };
+          console.error(`[seo-guard] BLOCKED ${postUrl(slug, lang, post.slug)}: ${guardRes.errors.join('; ')}`);
+          continue;
+        }
+        if (guardRes.warnings.length){
+          console.warn(`[seo-guard] warnings ${postUrl(slug, lang, post.slug)}: ${guardRes.warnings.join('; ')}`);
+        }
+        // 3. Запись файлов после guard
+        fs.mkdirSync(dir,{recursive:true});
         fs.writeFileSync(path.join(dir,'cover.svg'), coverSVG({
           eyebrow: lang==='uk' ? '// блог · автоматизація продажів' : '// блог · автоматизация продаж',
           title: post.title, sub: f.name, archLabel: al, archetype: n.archetype,
           term: 'docker compose up -d',
           lang,
         }));
-        fs.writeFileSync(path.join(dir,'index.html'), renderArticle(n, lang, post, themeIdx, pretty(post.publishedAt||post.publish,lang), related, altUrl));
+        fs.writeFileSync(path.join(dir,'index.html'), articleHtml);
       }
     }
     // индекс блога ниши + блок на хабе — ВСЕГДА (восстанавливает связь, если seo-build сбросил хаб)
