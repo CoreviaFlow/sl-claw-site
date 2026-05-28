@@ -4,7 +4,7 @@
   <url><loc>https://sl-claw.tech/catalog.html</loc><lastmod>2026-05-27</lastmod><priority>0.8</priority></url>
   <url><loc>https://sl-claw.tech/pricing.html</loc><lastmod>2026-05-27</lastmod><priority>0.8</priority></url>
   <url><loc>https://sl-claw.tech/oferta.html</loc><lastmod>2026-05-27</lastmod><priority>0.8</priority></url>
-  <url><loc>https://sl-claw.tech/privacy.html</loc><lastmod>2026-05-27</lastmod><priority>0.8</priority></url>
+  <url><loc>https://sl-claw.tech/privacy.html</loc><lastmod>2026-05-28</lastmod><priority>0.8</priority></url>
   <url><loc>https://sl-claw.tech/payment-refund.html</loc><lastmod>2026-05-27</lastmod><priority>0.8</priority></url>
   <url><loc>https://sl-claw.tech/contacts.html</loc><lastmod>2026-05-27</lastmod><priority>0.8</priority></url>
   <url><loc>https://sl-claw.tech/n/spectech/</loc>
@@ -1506,5 +1506,41 @@
     <xhtml:link rel="alternate" hreflang="ru-UA" href="https://sl-claw.tech/n/oem-manufacturing/"/>
     <xhtml:link rel="alternate" hreflang="uk-UA" href="https://sl-claw.tech/ua/oem-manufacturing/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://sl-claw.tech/n/oem-manufacturing/"/>
+  </url>
+  <url><loc>https://sl-claw.tech/n/vet-clinic/</loc>
+    <lastmod>2026-05-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru-UA" href="https://sl-claw.tech/n/vet-clinic/"/>
+    <xhtml:link rel="alternate" hreflang="uk-UA" href="https://sl-claw.tech/ua/vet-clinic/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sl-claw.tech/n/vet-clinic/"/>
+  </url>
+  <url><loc>https://sl-claw.tech/ua/vet-clinic/</loc>
+    <lastmod>2026-05-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru-UA" href="https://sl-claw.tech/n/vet-clinic/"/>
+    <xhtml:link rel="alternate" hreflang="uk-UA" href="https://sl-claw.tech/ua/vet-clinic/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sl-claw.tech/n/vet-clinic/"/>
+  </url>
+  <url><loc>https://sl-claw.tech/n/security-guard/</loc>
+    <lastmod>2026-05-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru-UA" href="https://sl-claw.tech/n/security-guard/"/>
+    <xhtml:link rel="alternate" hreflang="uk-UA" href="https://sl-claw.tech/ua/security-guard/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sl-claw.tech/n/security-guard/"/>
+  </url>
+  <url><loc>https://sl-claw.tech/ua/security-guard/</loc>
+    <lastmod>2026-05-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru-UA" href="https://sl-claw.tech/n/security-guard/"/>
+    <xhtml:link rel="alternate" hreflang="uk-UA" href="https://sl-claw.tech/ua/security-guard/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sl-claw.tech/n/security-guard/"/>
+  </url>
+  <url><loc>https://sl-claw.tech/n/freight-forwarding/</loc>
+    <lastmod>2026-05-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru-UA" href="https://sl-claw.tech/n/freight-forwarding/"/>
+    <xhtml:link rel="alternate" hreflang="uk-UA" href="https://sl-claw.tech/ua/freight-forwarding/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sl-claw.tech/n/freight-forwarding/"/>
+  </url>
+  <url><loc>https://sl-claw.tech/ua/freight-forwarding/</loc>
+    <lastmod>2026-05-28</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru-UA" href="https://sl-claw.tech/n/freight-forwarding/"/>
+    <xhtml:link rel="alternate" hreflang="uk-UA" href="https://sl-claw.tech/ua/freight-forwarding/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sl-claw.tech/n/freight-forwarding/"/>
   </url>
 </urlset>
