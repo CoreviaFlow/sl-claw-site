@@ -155,9 +155,9 @@ async function gscApi(token, method, path, body){
     const token = await getAccessToken();
     console.log('[gsc-watch] got OAuth token');
 
-    // ── 1. Sitemaps status ──
+    // ── 1. Sitemaps status (webmasters/v3 API path) ──
     const sitemapsRes = await gscApi(token, 'GET',
-      `/v1/sites/${encodeURIComponent(SITE_URL)}/sitemaps`);
+      `/webmasters/v3/sites/${encodeURIComponent(SITE_URL)}/sitemaps`);
     for (const sm of sitemapsRes.sitemap || []){
       stats.sitemaps.push({
         path: sm.path,
@@ -178,7 +178,7 @@ async function gscApi(token, method, path, body){
     let topUrls = [];
     try {
       const saRes = await gscApi(token, 'POST',
-        `/v1/sites/${encodeURIComponent(SITE_URL)}/searchAnalytics/query`, {
+        `/webmasters/v3/sites/${encodeURIComponent(SITE_URL)}/searchAnalytics/query`, {
           startDate: fmt(dateStart),
           endDate: fmt(dateEnd),
           dimensions: ['page'],
