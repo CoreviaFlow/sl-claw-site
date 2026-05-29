@@ -85,6 +85,47 @@ const SOURCES = [
     url: 'https://schema.org/ChatBot',
     label: 'Schema.org ChatBot Type',
     why: 'Новый тип для chat-агентов — если появится stable, надо использовать' },
+
+  // ── 2026 НОВЫЕ ИСТОЧНИКИ (AEO/GEO/AIO эра) ──
+  // Cloudflare AI bot policies (КРИТИЧНО — CF в 2024 ввёл AI Bot Blocker по дефолту)
+  { id: 'cloudflare-ai-bots',
+    url: 'https://blog.cloudflare.com/tag/ai-bots/',
+    label: 'Cloudflare AI Bots Blog',
+    why: 'Если сайт за CF — изменения в их AI bot blocking настройках могут случайно заблокировать GPTBot/ClaudeBot' },
+  // Reddit — ~40% базы Perplexity, важный GEO канал
+  { id: 'reddit-content-policy',
+    url: 'https://redditinc.com/policies/content-policy',
+    label: 'Reddit Content Policy',
+    why: 'Reddit — ~40% базы Perplexity. Изменения политики влияют на GEO citation availability' },
+  { id: 'reddit-data-api',
+    url: 'https://www.redditinc.com/policies/data-api-terms',
+    label: 'Reddit Data API Terms',
+    why: 'Reddit регулярно меняет правила доступа AI-краулеров к контенту' },
+  // HubSpot AEO/GEO research — главный edu-источник для практиков
+  { id: 'hubspot-ai-search',
+    url: 'https://blog.hubspot.com/marketing/topic/ai-search',
+    label: 'HubSpot AI Search Blog',
+    why: 'Главный source для AEO/GEO practical guidelines с реальными данными' },
+  // Search Engine Land AI column
+  { id: 'sel-ai-search',
+    url: 'https://searchengineland.com/library/ai-search',
+    label: 'Search Engine Land AI Search Column',
+    why: 'Industry analysis по AIO/AEO/GEO — обновления best practices' },
+  // Wikipedia notability — для entity GEO presence
+  { id: 'wikipedia-notability',
+    url: 'https://en.wikipedia.org/wiki/Wikipedia:Notability_(companies)',
+    label: 'Wikipedia Company Notability Guidelines',
+    why: 'Wikipedia упоминания критичны для GEO — Knowledge graph signal' },
+  // Perplexity Publisher Hub (если бренд хочет partner с Perplexity)
+  { id: 'perplexity-publishers',
+    url: 'https://www.perplexity.ai/hub/legal/publisher-program',
+    label: 'Perplexity Publisher Program',
+    why: 'Перspectiva contributor — revenue sharing program для citations' },
+  // Schema.org SpeakableSpecification — для голосовых AI ответов
+  { id: 'schemaorg-speakable',
+    url: 'https://schema.org/SpeakableSpecification',
+    label: 'Schema.org Speakable (для голосового AI)',
+    why: 'Google Assistant / Voice AI используют speakable для TTS' },
 ];
 
 function fetch(url){

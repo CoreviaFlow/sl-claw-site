@@ -1,0 +1,84 @@
+name: seo-aeo-watch
+
+# Daily AEO (Answer Engine Optimization) health watch.
+# Сканирует страницы на сигналы для попадания в Featured Snippets / AI Overviews.
+# 10:00 UTC = 12:00 Kyiv (между seo-watch в 08:00 и seo-geo-watch в 11:00).
+
+on:
+  schedule:
+    - cron: '0 10 * * *'  # 10:00 UTC = 12:00 Kyiv
+  workflow_dispatch:
+  push:
+    paths:
+      - 'seo-aeo-watch.js'
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run AEO watch
+        id: watch
+        continue-on-error: true
+        run: |
+          node seo-aeo-watch.js
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Show today's AEO report
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          if [ -f ".seo-alerts/aeo-${DATE}.md" ]; then
+            echo "=========================================="
+            echo "AEO Health Report ${DATE}"
+            echo "=========================================="
+            cat ".seo-alerts/aeo-${DATE}.md"
+          fi
+
+      - name: Commit report
+        if: always()
+        run: |
+          git config user.name "seo-aeo-watch[bot]"
+          git config user.email "seo-aeo-watch@sl-claw.tech"
+          git add .seo-alerts/ || true
+          git diff --staged --quiet || git commit -m "aeo-watch: daily report $(date -u +%Y-%m-%d)"
+          git push origin main || echo "push skipped"
+
+      - name: Create Issue if AEO score low
+        if: steps.watch.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          REPORT_FILE=".seo-alerts/aeo-${DATE}.md"
+          if [ ! -f "$REPORT_FILE" ]; then exit 0; fi
+          BODY_FILE=$(mktemp)
+          printf 'AEO Watch Alert %s\n\n' "$DATE" > "$BODY_FILE"
+          cat "$REPORT_FILE" >> "$BODY_FILE"
+          printf '\n\nWorkflow run: https://github.com/CoreviaFlow/sl-claw-site/actions/runs/%s\n' "$GITHUB_RUN_ID" >> "$BODY_FILE"
+          EXISTING=$(gh issue list --label "aeo-watch" --state open --limit 1 --json number --jq '.[0].number' || echo "")
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body-file "$BODY_FILE"
+          else
+            gh issue create --title "AEO Watch Alert (auto-tracking)" --body-file "$BODY_FILE" --label "aeo-watch,automated"
+          fi
+
+      - name: Close issue if AEO healthy
+        if: steps.watch.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING=$(gh issue list --label "aeo-watch" --state open --limit 1 --json number --jq '.[0].number' || echo "")
+          if [ -n "$EXISTING" ]; then
+            gh issue close "$EXISTING" --comment "AEO health восстановлен."
+          fi
