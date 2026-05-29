@@ -5,27 +5,28 @@
 > с проверяемыми источниками. **Без галлюцинаций**: если данных нет — помечено [VERIFY].
 
 ## Сводка
-- **SEO Health**: 70/100
+- **SEO Health**: 80/100
 - **GEO Score**: 94/100
 - **AEO Score**: 78/100
-- **GSC Score**: ?/100 *(не настроен)*
+- **GSC Score**: 45/100 (indexed 4/20, new errors: 16)
 
-**Total tasks: 9**
-- 🔴 P0 (критично): 1
-- 🟠 P1 (high): 4
+**Total tasks: 11**
+- 🔴 P0 (критично): 2
+- 🟠 P1 (high): 5
 - 🟡 P2 (medium): 3
 - 🟢 P3 (low): 1
 
 ## По категориям
 - **AEO**: 2 task(ов)
 - **GEO_EXTERNAL**: 6 task(ов)
+- **GSC**: 2 task(ов)
 - **AIO**: 1 task(ов)
 
 ---
 
 ## 🟠 [P1] [AEO] #2 — Переписать FAQ из seller-voice в user-query voice
 
-**Зачем**: Сейчас 0/287 страниц имеют FAQ в формате как пользователь спросил бы. Остальные — seller-voice типа «Цены и тарифы». AI не находит совпадения с естественным запросом пользователя.
+**Зачем**: Сейчас 0/290 страниц имеют FAQ в формате как пользователь спросил бы. Остальные — seller-voice типа «Цены и тарифы». AI не находит совпадения с естественным запросом пользователя.
 
 **Что делать**: Открыть niches.json (или seo-build.js где генерится FAQ). Поменять формулировки на user-query voice.
 
@@ -165,7 +166,20 @@
 
 ---
 
-## 🟠 [P1] [AIO] #9 — Real customer cases — собрать 3-5 кейсов с цифрами
+## 🟠 [P1] [GSC] #10 — Низкий indexation rate: 20% (sample 20)
+
+**Зачем**: Меньше 70% страниц в индексе = структурная проблема (canonical loops, мало internal links, низкое качество контента или robots.txt блок). Объём трафика напрямую ограничен этим.
+
+**Что делать**: Аудит причин по `.seo-alerts/gsc-autofix-2026-05-29.md`. Группировать по category — определить главный паттерн.
+
+**Файлы/источники**:
+- .seo-alerts/gsc-autofix-2026-05-29.md
+
+**Estimate**: 3-5ч (аудит + системный фикс)
+
+---
+
+## 🟠 [P1] [AIO] #11 — Real customer cases — собрать 3-5 кейсов с цифрами
 
 **Зачем**: Главный E-E-A-T gap. Сейчас в постах cite общие индустриальные цифры. Если бы был свой кейс типа «у клиента X произошло Y, метрика выросла на Z%» — это first-party data, highest E-E-A-T weight.
 
@@ -409,7 +423,7 @@ Best,
 
 ---
 
-## 🔴 [P0] [AEO] #1 — Добавить Answer Block 40-60 слов на 31 страниц
+## 🔴 [P0] [AEO] #1 — Добавить Answer Block 40-60 слов на 34 страниц
 
 **Зачем**: **AEO #1 фактор для 2026.** Без блока 40-60 слов сразу под H1 страница не попадает в Featured Snippet, Google AI Overview, Perplexity. *По данным [HubSpot Marketing Statistics](https://www.hubspot.com/marketing-statistics)*: формат «прямой ответ под H1» — главный фактор попадания в AI snippet
 
@@ -446,12 +460,64 @@ Best,
 - `n/realestate-rent/blog/kak-nastroyt-bota-pod-tovary-y-tseny-v/index.html`
 - `n/security-cctv/blog/kak-obuchyt-bota-ekspertyze-nyshy/index.html`
 - `n/seo-agency/blog/kak-nastroyt-bota-pod-tovary-y-tseny-v/index.html`
+- `n/spare-parts/blog/yy-v-prodazhakh-s-cheho-nachat-malomu-byznesu/index.html`
 - `n/water-treatment/blog/top-oshybok-pry-vnedrenyy-chat-bota-v/index.html`
 - `ua/cleaning-services/blog/chat-bot-u-telegram-whatsapp-i-na-saiti/index.html`
 - `ua/cnc-machines/blog/rozhornuty-ai-prodavtsia-za-hodynu-instruktsiia/index.html`
-- `ua/construction-materials/blog/intehratsiia-chat-bota-z-crm/index.html`
 
-**Estimate**: 8ч (15 мин на страницу)
+**Estimate**: 9ч (15 мин на страницу)
+
+---
+
+## 🔴 [P0] [GSC] #9 — Google сообщил о 16 НОВЫХ URLs not indexed
+
+**Зачем**: Это реальные жалобы от Google API (URL Inspection). НЕ выдуманные — конкретные URLs которые перестали индексироваться с прошлой проверки. Игнорировать = деградация трафика на этих страницах.
+
+**Что делать**: Открыть `.seo-alerts/gsc-autofix-2026-05-29.md` (если существует) — там корреляция с локальным state (есть ли файл, robots.txt блок, canonical, sitemap). По категориям: SAFE_AUTO применено сразу, PROPOSED разобрать руками, NEEDS_INVESTIGATION — открыть в GSC.
+
+<details><summary>📋 Шаблон / template (раскрыть)</summary>
+
+```
+## GSC New Errors Handling Workflow
+
+### Шаг 1: открыть оба отчёта
+```bash
+cat .seo-alerts/gsc-2026-05-29.md          # raw данные от Google
+cat .seo-alerts/gsc-autofix-2026-05-29.md  # корреляция с локальным state
+```
+
+### Шаг 2: для каждого URL в "NEEDS_INVESTIGATION"
+Открыть GSC напрямую: https://search.google.com/search-console/inspect?url=<URL>
+
+Стандартные причины + фиксы:
+- **"Discovered – currently not indexed"** → мало internal links → добавить
+  ссылки с релевантных страниц + повторно submit в GSC
+- **"Crawled – currently not indexed"** → Google посчитал контент thin/duplicate →
+  расширить контент, добавить unique value (case, data, expertise)
+- **"Duplicate without user-selected canonical"** → выбрать primary + canonical
+- **"Page with redirect"** → проверить цепочку, убрать лишние redirects
+- **"Soft 404"** → страница вернула 200 но содержание = home-shell. Починить routing
+
+### Шаг 3: для каждого URL в "PROPOSED"
+Прочитать reasons в отчёте, выбрать действие, применить, закоммитить.
+
+### Шаг 4: ре-submit
+После починки в GSC → URL Inspection → "Request Indexing".
+Quota: 10 запросов/день на property.
+
+### Anti-hallucination
+Цифры в этом task'е берутся из `gsc-state.json` (real Google API response),
+НЕ из контекста LLM. Список URLs — реальный, не выдуман.
+```
+
+</details>
+
+**Файлы/источники**:
+- .seo-alerts/gsc-2026-05-29.md
+- .seo-alerts/gsc-autofix-2026-05-29.md
+- https://search.google.com/search-console
+
+**Estimate**: 5ч (≈18 мин на URL для recover'а)
 
 ---
 
