@@ -1,14 +1,33 @@
 {
-  "date": "2026-05-28",
-  "scanned": 311,
+  "date": "2026-05-29",
+  "scanned": 319,
   "errors": 0,
-  "warnings": 102,
+  "warnings": 114,
   "by_kind": {
-    "blog": 52,
+    "blog": 60,
     "niche": 256,
     "static": 3
   },
-  "cannibalization": [],
+  "cannibalization": [
+    {
+      "bareSlug": "avtovoronka-prodazh-dlia-skhema|ru",
+      "count": 2,
+      "niches": "beauty-equipment, industrial-tools",
+      "paths": [
+        "n/beauty-equipment/blog/avtovoronka-prodazh-dlia-skhema/index.html",
+        "n/industrial-tools/blog/avtovoronka-prodazh-dlia-skhema-industrial-tools/index.html"
+      ]
+    },
+    {
+      "bareSlug": "kak-bot-kvalyfytsyruet-klyenta-v-nyshe|ru",
+      "count": 2,
+      "niches": "commercial-vehicles, productivity-consulting",
+      "paths": [
+        "n/commercial-vehicles/blog/kak-bot-kvalyfytsyruet-klyenta-v-nyshe/index.html",
+        "n/productivity-consulting/blog/kak-bot-kvalyfytsyruet-klyenta-v-nyshe-productivity-consulting/index.html"
+      ]
+    }
+  ],
   "thin_content": [],
   "spam_patterns": [],
   "duplicate_titles": [],
@@ -16,5 +35,5 @@
   "cannibalization_managed": 5,
   "sitemap_urls": 261,
   "sitemap_broken": [],
-  "health_score": 80
+  "health_score": 70
 }
