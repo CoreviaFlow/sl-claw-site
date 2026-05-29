@@ -1,6 +1,6 @@
 {
   "date": "2026-05-29",
-  "site": "https://sl-claw.tech/",
+  "site": "sc-domain:sl-claw.tech",
   "sitemaps": [],
   "sample_inspected": 0,
   "not_indexed": [],
@@ -9,5 +9,5 @@
   "new_errors": [],
   "resolved_errors": [],
   "score": 100,
-  "fatal_error": "GSC API /webmasters/v3/sites/https%3A%2F%2Fsl-claw.tech%2F/sitemaps: 403 {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"User does not have sufficient permission for site 'https://sl-claw.tech/'. See also: https://support.google.com/webmasters/answer/2451999.\",\n    \"errors\": [\n      {\n        \"message\": \"User does not have sufficient permission for site 'https://sl-claw.tech/'. See also: https://support.google.com/webmasters/answer/2451999.\",\n        \"domain\": \"global\",\n        \"reason\": \"forbidden\"\n      }\n    ]\n  }\n}\n"
+  "fatal_error": "GSC API /webmasters/v3/sites/sc-domain%3Asl-claw.tech/sitemaps: 403 {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"User does not have sufficient permission for site 'sc-domain:sl-claw.tech'. See also: https://support.google.com/webmasters/answer/2451999.\",\n    \"errors\": [\n      {\n        \"message\": \"User does not have sufficient permission for site 'sc-domain:sl-claw.tech'. See also: https://support.google.com/webmasters/answer/2451999.\",\n        \"domain\": \"global\",\n        \"reason\": \"forbidden\"\n      }\n    ]\n  }\n}\n"
 }
