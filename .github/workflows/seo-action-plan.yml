@@ -1,0 +1,45 @@
+name: seo-action-plan
+
+# Daily action plan generator — генерирует конкретные task'и для команды
+# на основе всех отчётов watchdog (SEO/GEO/AEO health.json).
+# Запускается ПОСЛЕ всех watch-job-ов: 13:00 UTC = 15:00 Kyiv.
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # после seo-watch(08:00), aeo-watch(10:00), geo-watch(09:00)
+  workflow_dispatch:
+  push:
+    paths:
+      - 'seo-action-plan.js'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate action plan
+        run: node seo-action-plan.js
+
+      - name: Show plan
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          if [ -f ".seo-alerts/action-plan-${DATE}.md" ]; then
+            cat ".seo-alerts/action-plan-${DATE}.md"
+          fi
+
+      - name: Commit
+        run: |
+          git config user.name "action-plan[bot]"
+          git config user.email "action-plan@sl-claw.tech"
+          git add .seo-alerts/ || true
+          git diff --staged --quiet || git commit -m "action-plan: $(date -u +%Y-%m-%d)"
+          git push origin main || echo "push skipped"
