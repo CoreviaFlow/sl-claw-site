@@ -21514,8 +21514,10 @@
      "title": "ИИ в продажах «Запчасти к спецтехнике»: с чего начать малому бизнесу",
      "lang": "ru",
      "publish": "2026-05-29",
-     "status": "planned",
-     "publishAt": "2026-05-29T08:29:00Z"
+     "status": "published",
+     "publishAt": "2026-05-29T08:29:00Z",
+     "slug": "yy-v-prodazhakh-s-cheho-nachat-malomu-byznesu",
+     "publishedAt": "2026-05-29T12:14:42.821Z"
     },
     {
      "title": "Чат-бот «Запчасти к спецтехнике» в Telegram, WhatsApp и на сайте",
@@ -24776,8 +24778,10 @@
      "title": "ШІ у продажах «Смартфони та аксесуари»: з чого почати малому бізнесу",
      "lang": "uk",
      "publish": "2026-05-29",
-     "status": "planned",
-     "publishAt": "2026-05-29T09:06:00Z"
+     "status": "published",
+     "publishAt": "2026-05-29T09:06:00Z",
+     "slug": "shi-u-prodazhakh-z-choho-pochaty-malomu-biznesu",
+     "publishedAt": "2026-05-29T12:14:42.822Z"
     },
     {
      "title": "Развернуть AI-продавца «Смартфоны и аксессуары» за час: инструкция",
@@ -30671,8 +30675,10 @@
      "title": "ШІ-асистент для бізнесу «Екскурсії та тури»: можливості",
      "lang": "uk",
      "publish": "2026-05-29",
-     "status": "planned",
-     "publishAt": "2026-05-29T11:00:00Z"
+     "status": "published",
+     "publishAt": "2026-05-29T11:00:00Z",
+     "slug": "shi-asystent-dlia-biznesu-mozhlyvosti",
+     "publishedAt": "2026-05-29T12:14:42.822Z"
     },
     {
      "title": "Бот vs форма заявки в «Екскурсії та тури»: що конвертує краще",
