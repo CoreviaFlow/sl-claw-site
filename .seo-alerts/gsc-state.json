@@ -1,13 +1,188 @@
 {
   "date": "2026-05-29",
   "site": "sc-domain:sl-claw.tech",
-  "sitemaps": [],
-  "sample_inspected": 0,
-  "not_indexed": [],
-  "indexed": 0,
+  "sitemaps": [
+    {
+      "path": "https://sl-claw.tech/sitemap-blog.xml",
+      "type": "sitemap",
+      "isPending": false,
+      "warnings": "0",
+      "errors": "0",
+      "lastSubmitted": "2026-05-23T06:02:19.924Z",
+      "contents": [
+        {
+          "type": "web",
+          "submitted": "45",
+          "indexed": "0"
+        }
+      ]
+    },
+    {
+      "path": "https://sl-claw.tech/sitemap.xml",
+      "type": "sitemap",
+      "isPending": false,
+      "warnings": "0",
+      "errors": "0",
+      "lastSubmitted": "2026-05-23T06:02:08.961Z",
+      "contents": [
+        {
+          "type": "web",
+          "submitted": "257",
+          "indexed": "0"
+        }
+      ]
+    }
+  ],
+  "sample_inspected": 20,
+  "not_indexed": [
+    {
+      "url": "https://sl-claw.tech/n/livestock-equipment/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/iso-cert/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/investment-broker/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/flooring/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/construction-services/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/lending-microfinance/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/bicycles/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/medical-clinic/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/kids-toys/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/commercial-vehicles/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/business-school/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/hvac-heating/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/osh-training/",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/hotel-booking/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/hvac-heating/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/freight-logistics/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    }
+  ],
+  "indexed": 4,
   "inspection_errors": [],
-  "new_errors": [],
+  "new_errors": [
+    "https://sl-claw.tech/n/livestock-equipment/",
+    "https://sl-claw.tech/n/iso-cert/",
+    "https://sl-claw.tech/n/investment-broker/",
+    "https://sl-claw.tech/ua/flooring/",
+    "https://sl-claw.tech/ua/construction-services/",
+    "https://sl-claw.tech/ua/lending-microfinance/",
+    "https://sl-claw.tech/ua/bicycles/",
+    "https://sl-claw.tech/n/medical-clinic/",
+    "https://sl-claw.tech/ua/kids-toys/",
+    "https://sl-claw.tech/ua/commercial-vehicles/",
+    "https://sl-claw.tech/n/business-school/",
+    "https://sl-claw.tech/n/hvac-heating/",
+    "https://sl-claw.tech/n/osh-training/",
+    "https://sl-claw.tech/n/hotel-booking/",
+    "https://sl-claw.tech/ua/hvac-heating/",
+    "https://sl-claw.tech/n/freight-logistics/"
+  ],
   "resolved_errors": [],
-  "score": 100,
-  "fatal_error": "GSC API /webmasters/v3/sites/sc-domain%3Asl-claw.tech/sitemaps: 403 {\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"User does not have sufficient permission for site 'sc-domain:sl-claw.tech'. See also: https://support.google.com/webmasters/answer/2451999.\",\n    \"errors\": [\n      {\n        \"message\": \"User does not have sufficient permission for site 'sc-domain:sl-claw.tech'. See also: https://support.google.com/webmasters/answer/2451999.\",\n        \"domain\": \"global\",\n        \"reason\": \"forbidden\"\n      }\n    ]\n  }\n}\n"
+  "score": 45
 }
