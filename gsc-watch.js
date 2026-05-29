@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* gsc-watch.js — Google Search Console API integration.
+/* gsc-watch.js — Google Search Console API integration (OAuth2).
  *
  * Делает daily fetch ошибок индексации из GSC и:
  *   1. Записывает в .seo-alerts/gsc-YYYY-MM-DD.md
@@ -7,32 +7,29 @@
  *   3. Сохраняет state в .seo-alerts/gsc-state.json
  *   4. seo-action-plan.js потом подхватывает и генерирует task'и
  *
+ * ## Auth — OAuth2 refresh_token (вместо Service Account)
+ *
+ * Решение почему OAuth2 вместо SA: GSC UI отказывается принимать
+ * service accounts на новых property — это известная проблема Google.
+ * OAuth2 user creds работают сразу под аккаунтом владельца property.
+ *
  * ## Setup (один раз)
  *
  * 1. Google Cloud Console:
- *    - Create project (или используй существующий)
- *    - Enable: Search Console API + Web Search Indexing API
- *    - Create Service Account
- *    - Download JSON key
- *
- * 2. Search Console:
- *    - Settings → Users and permissions → Add user
- *    - Email = service account email (вида xxx@yyy.iam.gserviceaccount.com)
- *    - Permission: Full (для inspect) или Restricted (для read-only)
- *
- * 3. GitHub repository:
- *    - Settings → Secrets and variables → Actions → New repository secret
- *    - Name: GSC_SERVICE_ACCOUNT
- *    - Value: содержимое JSON key файла (paste целиком)
- *
- * 4. GitHub Action workflow подключает secret как env var:
- *    env:
- *      GSC_SERVICE_ACCOUNT: ${{ secrets.GSC_SERVICE_ACCOUNT }}
- *      GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}  # https://sl-claw.tech/
+ *    - Create OAuth client ID → Desktop application
+ *    - Download client_secret JSON
+ * 2. OAuth Consent Screen → Test users → add ваш Gmail
+ * 3. Запустить gsc-oauth-init.js один раз локально → получить refresh_token
+ * 4. GitHub Secrets:
+ *    - GSC_OAUTH_CLIENT_ID
+ *    - GSC_OAUTH_CLIENT_SECRET
+ *    - GSC_OAUTH_REFRESH_TOKEN
+ *    - GSC_SITE_URL (например, sc-domain:sl-claw.tech)
  *
  * ## Запуск
  *
- * GSC_SERVICE_ACCOUNT='{"type":"service_account"...}' GSC_SITE_URL=https://sl-claw.tech/ node gsc-watch.js
+ * GSC_OAUTH_CLIENT_ID=... GSC_OAUTH_CLIENT_SECRET=... GSC_OAUTH_REFRESH_TOKEN=... \
+ *   GSC_SITE_URL=sc-domain:sl-claw.tech node gsc-watch.js
  *
  * ## Что делает GSC API
  *
@@ -48,7 +45,6 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const crypto = require('crypto');
 
 const ROOT = __dirname;
 const ALERTS = path.join(ROOT, '.seo-alerts');
@@ -58,28 +54,16 @@ const STATE = path.join(ALERTS, 'gsc-state.json');
 
 if (!fs.existsSync(ALERTS)) fs.mkdirSync(ALERTS, {recursive:true});
 
-const SA_JSON = process.env.GSC_SERVICE_ACCOUNT;
+const CLIENT_ID = process.env.GSC_OAUTH_CLIENT_ID;
+const CLIENT_SECRET = process.env.GSC_OAUTH_CLIENT_SECRET;
+const REFRESH_TOKEN = process.env.GSC_OAUTH_REFRESH_TOKEN;
 const SITE_URL = process.env.GSC_SITE_URL;
 
-if (!SA_JSON || !SITE_URL){
-  console.error('[gsc-watch] missing GSC_SERVICE_ACCOUNT or GSC_SITE_URL env vars');
+if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN || !SITE_URL){
+  console.error('[gsc-watch] missing GSC_OAUTH_* or GSC_SITE_URL env vars');
+  console.error('Required: GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET, GSC_OAUTH_REFRESH_TOKEN, GSC_SITE_URL');
   console.error('See setup instructions in script header');
-  process.exit(0);  // exit 0 — это не error, просто нужен setup
-}
-
-let SA;
-try { SA = JSON.parse(SA_JSON); }
-catch(e){ console.error('[gsc-watch] GSC_SERVICE_ACCOUNT is not valid JSON:', e.message); process.exit(2); }
-
-// ── JWT для Google service auth (без deps, чистый crypto) ──
-function b64url(buf){
-  return Buffer.from(buf).toString('base64').replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-}
-function signJwt(payload, privateKey){
-  const header = b64url(JSON.stringify({alg:'RS256',typ:'JWT'}));
-  const body = b64url(JSON.stringify(payload));
-  const sig = crypto.createSign('RSA-SHA256').update(`${header}.${body}`).sign(privateKey);
-  return `${header}.${body}.${b64url(sig)}`;
+  process.exit(0);
 }
 
 function fetchHttps(opts, body){
@@ -99,23 +83,23 @@ function fetchHttps(opts, body){
 }
 
 async function getAccessToken(){
-  const now = Math.floor(Date.now()/1000);
-  const jwt = signJwt({
-    iss: SA.client_email,
-    scope: 'https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters',
-    aud: 'https://oauth2.googleapis.com/token',
-    exp: now + 3600,
-    iat: now,
-  }, SA.private_key);
-  const body = `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${encodeURIComponent(jwt)}`;
+  // OAuth2 refresh_token flow — обменять refresh_token на access_token
+  const body = new URLSearchParams({
+    client_id: CLIENT_ID,
+    client_secret: CLIENT_SECRET,
+    refresh_token: REFRESH_TOKEN,
+    grant_type: 'refresh_token',
+  }).toString();
   const res = await fetchHttps({
     method: 'POST',
     hostname: 'oauth2.googleapis.com',
     path: '/token',
     headers: {'Content-Type':'application/x-www-form-urlencoded', 'Content-Length': Buffer.byteLength(body)},
   }, body);
-  if (res.status !== 200){ throw new Error(`OAuth failed: ${res.status} ${res.body}`); }
-  return JSON.parse(res.body).access_token;
+  if (res.status !== 200){ throw new Error(`OAuth refresh failed: ${res.status} ${res.body}`); }
+  const tok = JSON.parse(res.body);
+  if (!tok.access_token) throw new Error('No access_token in response: ' + res.body);
+  return tok.access_token;
 }
 
 async function gscApi(token, method, path, body){
