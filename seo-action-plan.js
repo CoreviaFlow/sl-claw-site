@@ -44,6 +44,7 @@ const readText = (p) => { try { return fs.readFileSync(p,'utf8'); } catch { retu
 const seoHealth = readJson(path.join(ALERTS, 'health.json'));
 const geoHealth = readJson(path.join(ALERTS, 'geo-health.json'));
 const aeoHealth = readJson(path.join(ALERTS, 'aeo-health.json'));
+const gscState = readJson(path.join(ALERTS, 'gsc-state.json'));
 const trustedSources = readJson(path.join(ROOT, 'seo-trusted-sources.json'));
 
 // ── Anti-hallucination helpers ──
@@ -441,6 +442,132 @@ Best,
 }
 
 // ═══════════════════════════════════════════════════════════════
+//  GSC TASKS — Реальные ошибки индексации из Google Search Console
+// ═══════════════════════════════════════════════════════════════
+
+if (gscState){
+  const gscAutofixReport = path.join(ALERTS, `gsc-autofix-${TODAY}.md`);
+  const autofixExists = fs.existsSync(gscAutofixReport);
+
+  // 1. Новые ошибки индексации — P0, real Google complaint
+  if (gscState.new_errors && gscState.new_errors.length){
+    task({
+      priority: 'P0',
+      category: 'GSC',
+      title: `Google сообщил о ${gscState.new_errors.length} НОВЫХ URLs not indexed`,
+      why: `Это реальные жалобы от Google API (URL Inspection). НЕ выдуманные — конкретные URLs которые перестали индексироваться с прошлой проверки. Игнорировать = деградация трафика на этих страницах.`,
+      action: `Открыть \`.seo-alerts/gsc-autofix-${TODAY}.md\` (если существует) — там корреляция с локальным state (есть ли файл, robots.txt блок, canonical, sitemap). По категориям: SAFE_AUTO применено сразу, PROPOSED разобрать руками, NEEDS_INVESTIGATION — открыть в GSC.`,
+      template: `## GSC New Errors Handling Workflow
+
+### Шаг 1: открыть оба отчёта
+\`\`\`bash
+cat .seo-alerts/gsc-${TODAY}.md          # raw данные от Google
+cat .seo-alerts/gsc-autofix-${TODAY}.md  # корреляция с локальным state
+\`\`\`
+
+### Шаг 2: для каждого URL в "NEEDS_INVESTIGATION"
+Открыть GSC напрямую: https://search.google.com/search-console/inspect?url=<URL>
+
+Стандартные причины + фиксы:
+- **"Discovered – currently not indexed"** → мало internal links → добавить
+  ссылки с релевантных страниц + повторно submit в GSC
+- **"Crawled – currently not indexed"** → Google посчитал контент thin/duplicate →
+  расширить контент, добавить unique value (case, data, expertise)
+- **"Duplicate without user-selected canonical"** → выбрать primary + canonical
+- **"Page with redirect"** → проверить цепочку, убрать лишние redirects
+- **"Soft 404"** → страница вернула 200 но содержание = home-shell. Починить routing
+
+### Шаг 3: для каждого URL в "PROPOSED"
+Прочитать reasons в отчёте, выбрать действие, применить, закоммитить.
+
+### Шаг 4: ре-submit
+После починки в GSC → URL Inspection → "Request Indexing".
+Quota: 10 запросов/день на property.
+
+### Anti-hallucination
+Цифры в этом task'е берутся из \`gsc-state.json\` (real Google API response),
+НЕ из контекста LLM. Список URLs — реальный, не выдуман.`,
+      refs: [
+        `.seo-alerts/gsc-${TODAY}.md`,
+        autofixExists ? `.seo-alerts/gsc-autofix-${TODAY}.md` : `gsc-autofix не запущен`,
+        `https://search.google.com/search-console`,
+      ],
+      estimate: `${Math.max(1, Math.ceil(gscState.new_errors.length * 0.3))}ч (≈18 мин на URL для recover'а)`
+    });
+  }
+
+  // 2. Resolved errors — положительный сигнал, отметить в команду
+  if (gscState.resolved_errors && gscState.resolved_errors.length){
+    task({
+      priority: 'P3',
+      category: 'GSC',
+      title: `✅ ${gscState.resolved_errors.length} URLs перестали быть not indexed`,
+      why: `Google вернул эти страницы в индекс. Хорошая новость для команды.`,
+      action: `Не требует действий. Информационный сигнал: что-то из недавних правок сработало. Стоит зафиксировать что именно (анализ git log за период) и переиспользовать паттерн.`,
+      refs: [`.seo-alerts/gsc-${TODAY}.md → секция RESOLVED`],
+      estimate: '0ч (информационно)'
+    });
+  }
+
+  // 3. Sitemap errors — серьёзная проблема, ломает crawl
+  const sitemapErrors = (gscState.sitemaps || []).reduce((s, sm) => s + (sm.errors || 0), 0);
+  if (sitemapErrors > 0){
+    task({
+      priority: 'P1',
+      category: 'GSC',
+      title: `${sitemapErrors} ошибок в sitemap по данным GSC`,
+      why: `Если sitemap.xml содержит broken URLs или невалидный XML — Google перестаёт ему доверять, скорость discovery новых страниц падает.`,
+      action: `Открыть GSC → Sitemaps → найти sitemap с ошибками → детали. Локально проверить sitemap.xml на: невалидный XML, URLs возвращающие 404, URLs с redirect, дубликаты <loc>.`,
+      template: `## Sitemap Errors Workflow
+
+\`\`\`bash
+# Валидация XML
+xmllint --noout sitemap.xml
+
+# Проверка каждого URL на 200 OK (sample 20)
+grep -oP '(?<=<loc>)[^<]+' sitemap.xml | shuf -n 20 | while read u; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" -L "$u")
+  echo "$code $u"
+done
+\`\`\`
+
+После починки локально → коммит → push → GSC → Sitemaps → "Submit" повторно.`,
+      refs: [`sitemap.xml`, `https://search.google.com/search-console/sitemaps`],
+      estimate: '1-2ч'
+    });
+  }
+
+  // 4. Низкий indexation rate — структурная проблема
+  if (gscState.sample_inspected > 5){
+    const indexedRate = gscState.indexed / gscState.sample_inspected;
+    if (indexedRate < 0.7){
+      task({
+        priority: 'P1',
+        category: 'GSC',
+        title: `Низкий indexation rate: ${(indexedRate*100).toFixed(0)}% (sample ${gscState.sample_inspected})`,
+        why: `Меньше 70% страниц в индексе = структурная проблема (canonical loops, мало internal links, низкое качество контента или robots.txt блок). Объём трафика напрямую ограничен этим.`,
+        action: `Аудит причин по \`.seo-alerts/gsc-autofix-${TODAY}.md\`. Группировать по category — определить главный паттерн.`,
+        refs: [autofixExists ? `.seo-alerts/gsc-autofix-${TODAY}.md` : `gsc-autofix не запускался`],
+        estimate: '3-5ч (аудит + системный фикс)'
+      });
+    }
+  }
+
+  // 5. Setup напоминание если GSC не сконфигурирован
+  if (gscState.fatal_error || (gscState.sample_inspected === 0 && !gscState.sitemaps?.length)){
+    task({
+      priority: 'P2',
+      category: 'GSC',
+      title: `GSC integration ещё не настроен — нет данных от Google`,
+      why: `Без GSC мы не знаем что Google РЕАЛЬНО думает о страницах. Внутренние сторожа (seo-watch) видят только локальные ошибки.`,
+      action: `Создать service account в Google Cloud → добавить в Search Console → положить JSON в GitHub Secret \`GSC_SERVICE_ACCOUNT\` + \`GSC_SITE_URL\`. Полная инструкция: \`docs/GSC_SETUP.md\`.`,
+      refs: [`docs/GSC_SETUP.md`, `gsc-watch.js (header)`],
+      estimate: '20-30 мин (one-time setup)'
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
 //  AIO TASKS — E-E-A-T foundation
 // ═══════════════════════════════════════════════════════════════
 
@@ -503,6 +630,7 @@ const lines = [
   `- **SEO Health**: ${seoHealth?.health_score || '?'}/100`,
   `- **GEO Score**: ${geoHealth?.geo_score || '?'}/100`,
   `- **AEO Score**: ${aeoHealth?.aeo_score || '?'}/100`,
+  `- **GSC Score**: ${gscState?.score ?? '?'}/100${gscState ? ` (indexed ${gscState.indexed}/${gscState.sample_inspected}, new errors: ${gscState.new_errors?.length || 0})` : ' *(не настроен)*'}`,
   '',
   `**Total tasks: ${tasks.length}**`,
   `- 🔴 P0 (критично): ${tasks.filter(t => t.priority === 'P0').length}`,

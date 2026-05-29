@@ -1,0 +1,108 @@
+name: gsc-watch
+
+# Daily Google Search Console мониторинг.
+# 1. Fetch ошибок индексации через GSC API
+# 2. Diff с предыдущим snapshot — новые ошибки
+# 3. Запуск gsc-autofix.js (SAFE_AUTO правки в sitemap.xml)
+# 4. При new_errors > 0 → создать/обновить GitHub Issue
+#
+# Cron: 06:00 UTC = 08:30 Kyiv (после ночного обновления GSC данных)
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'gsc-watch.js'
+      - 'gsc-autofix.js'
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run gsc-watch
+        id: watch
+        env:
+          GSC_SERVICE_ACCOUNT: ${{ secrets.GSC_SERVICE_ACCOUNT }}
+          GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+        run: |
+          if [ -z "$GSC_SERVICE_ACCOUNT" ] || [ -z "$GSC_SITE_URL" ]; then
+            echo "::warning::GSC_SERVICE_ACCOUNT or GSC_SITE_URL secret не настроен — skip"
+            echo "skipped=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          node gsc-watch.js && echo "ok=true" >> "$GITHUB_OUTPUT" || echo "ok=false" >> "$GITHUB_OUTPUT"
+
+      - name: Run gsc-autofix
+        if: steps.watch.outputs.skipped != 'true'
+        run: node gsc-autofix.js || true
+
+      - name: Show report
+        if: steps.watch.outputs.skipped != 'true'
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          [ -f ".seo-alerts/gsc-${DATE}.md" ] && cat ".seo-alerts/gsc-${DATE}.md" || true
+          [ -f ".seo-alerts/gsc-autofix-${DATE}.md" ] && cat ".seo-alerts/gsc-autofix-${DATE}.md" || true
+
+      - name: Commit results
+        if: steps.watch.outputs.skipped != 'true'
+        run: |
+          git config user.name "gsc-watch[bot]"
+          git config user.email "gsc-watch@sl-claw.tech"
+          git add .seo-alerts/ sitemap.xml || true
+          git diff --staged --quiet || git commit -m "gsc-watch: $(date -u +%Y-%m-%d)"
+          git push origin main || echo "push skipped"
+
+      - name: Open/update GitHub Issue on errors
+        if: steps.watch.outputs.skipped != 'true' && steps.watch.outputs.ok == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          BODY_FILE=$(mktemp)
+          {
+            echo "GSC Watch обнаружил новые ошибки индексации $DATE."
+            echo ""
+            echo "См. полный отчёт в \`.seo-alerts/gsc-${DATE}.md\`."
+            echo ""
+            echo "Action plan: \`.seo-alerts/gsc-autofix-${DATE}.md\`."
+            echo ""
+            echo "Что делать:"
+            echo "1. Проверить SAFE_AUTO правки в коммите (если были)"
+            echo "2. Разобрать PROPOSED — что-то требует ручного решения"
+            echo "3. Для NEEDS_INVESTIGATION — посмотреть в GSC напрямую"
+          } > "$BODY_FILE"
+
+          # Найти открытый issue с тегом gsc-watch
+          EXISTING=$(gh issue list --label gsc-watch --state open --limit 1 --json number --jq '.[0].number' 2>/dev/null || echo "")
+
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body-file "$BODY_FILE"
+          else
+            gh issue create \
+              --title "GSC: новые ошибки индексации ($DATE)" \
+              --body-file "$BODY_FILE" \
+              --label gsc-watch
+          fi
+
+      - name: Close Issue if no errors
+        if: steps.watch.outputs.skipped != 'true' && steps.watch.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING=$(gh issue list --label gsc-watch --state open --limit 1 --json number --jq '.[0].number' 2>/dev/null || echo "")
+          if [ -n "$EXISTING" ]; then
+            gh issue close "$EXISTING" --comment "Всё чисто на $(date -u +%Y-%m-%d). Закрыто автоматически."
+          fi

@@ -8,6 +8,7 @@
 - **SEO Health**: 70/100
 - **GEO Score**: 94/100
 - **AEO Score**: 78/100
+- **GSC Score**: ?/100 *(не настроен)*
 
 **Total tasks: 9**
 - 🔴 P0 (критично): 1
