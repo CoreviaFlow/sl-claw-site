@@ -21551,8 +21551,10 @@
      "title": "ШІ у продажах «Запчастини до спецтехніки»: з чого почати малому бізнесу",
      "lang": "uk",
      "publish": "2026-05-29",
-     "status": "planned",
-     "publishAt": "2026-05-29T17:10:00Z"
+     "status": "published",
+     "publishAt": "2026-05-29T17:10:00Z",
+     "slug": "shi-u-prodazhakh-z-choho-pochaty-malomu-biznesu-spare-parts",
+     "publishedAt": "2026-05-29T18:34:31.243Z"
     },
     {
      "title": "Голосовий агент для «Запчастини до спецтехніки»: коли потрібен апгрейд",
@@ -24645,8 +24647,10 @@
      "title": "ИИ в продажах «Смартфоны и аксессуары»: с чего начать малому бизнесу",
      "lang": "ru",
      "publish": "2026-05-29",
-     "status": "planned",
-     "publishAt": "2026-05-29T16:17:00Z"
+     "status": "published",
+     "publishAt": "2026-05-29T16:17:00Z",
+     "slug": "yy-v-prodazhakh-s-cheho-nachat-malomu-byznesu-smartphones-accessories",
+     "publishedAt": "2026-05-29T18:34:31.243Z"
     },
     {
      "title": "Як навчити бота експертизі ніші «Смартфони та аксесуари»",
@@ -30612,8 +30616,10 @@
      "title": "ИИ-ассистент для бизнеса «Экскурсии и туры»: возможности",
      "lang": "ru",
      "publish": "2026-05-29",
-     "status": "planned",
-     "publishAt": "2026-05-29T16:46:00Z"
+     "status": "published",
+     "publishAt": "2026-05-29T16:46:00Z",
+     "slug": "yy-assystent-dlia-byznesa-vozmozhnosty",
+     "publishedAt": "2026-05-29T18:34:31.243Z"
     },
     {
      "title": "Як навчити бота експертизі ніші «Екскурсії та тури»",
@@ -33633,8 +33639,10 @@
      "title": "Развернуть AI-продавца «SEO-агентство» за час: инструкция",
      "lang": "ru",
      "publish": "2026-05-29",
-     "status": "planned",
-     "publishAt": "2026-05-29T18:21:00Z"
+     "status": "published",
+     "publishAt": "2026-05-29T18:21:00Z",
+     "slug": "razvernut-ai-prodavtsa-za-chas-ynstruktsyia",
+     "publishedAt": "2026-05-29T18:34:31.243Z"
     },
     {
      "title": "Сколько стоит автоматизация продаж в «SEO-агентство»",
@@ -33677,8 +33685,10 @@
      "title": "Розгорнути AI-продавця «SEO-агентство» за годину: інструкція",
      "lang": "uk",
      "publish": "2026-05-29",
-     "status": "planned",
-     "publishAt": "2026-05-29T13:18:00Z"
+     "status": "published",
+     "publishAt": "2026-05-29T13:18:00Z",
+     "slug": "rozhornuty-ai-prodavtsia-za-hodynu-instruktsiia-seo-agency",
+     "publishedAt": "2026-05-29T18:34:31.243Z"
     },
     {
      "title": "Як вимірювати ефективність бота в ніші «SEO-агентство»",
