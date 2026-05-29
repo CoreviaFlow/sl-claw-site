@@ -530,7 +530,7 @@ function faqBlock(f, lang){
   return H2('FAQ') + `<div class="faq">${qa.map(([q,a])=>`<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>`;
 }
 function ctaBlock(n, f, lang){
-  return `<div class="post-cta"><div><b>${T(lang,'Готовый AI-продавец для ниши','Готовий AI-продавець для ніші')} «${esc(f.name)}»</b><span>${T(lang,'Разверни за час — продаёт в переписке 24/7.','Розгорни за годину — продає в листуванні 24/7.')}</span></div><a class="btn btn-primary" href="${lang==='uk'?'/ua/':'/n/'}${n.slug}/">${T(lang,'Получить бота','Отримати бота')}</a></div>`;
+  return `<div class="post-cta"><div><b>${T(lang,'Готовый AI-продавец для ниши','Готовий AI-продавець для ніші')} «${esc(f.name)}»</b><span>${T(lang,'Разверни за час — продаёт в переписке 24/7.','Розгорни за годину — продає в листуванні 24/7.')}</span></div><a class="btn btn-primary" href="${lang==='uk'?'/ua/':'/n/'}${n.slug}/">${T(lang,'Подключить','Підключити')}</a></div>`;
 }
 
 // футер (зеркало seo-build.js)
@@ -704,7 +704,7 @@ function renderNicheBlogIndex(n, lang, posts){
   <h1>${esc(t.title)}</h1>
   <p class="lead">${t.sub}</p>
   ${list}
-  <p style="margin-top:24px"><a class="btn btn-primary" href="${lang==='uk'?'/ua/':'/n/'}${n.slug}/">${T(lang,'Получить бота','Отримати бота')}</a></p>
+  <p style="margin-top:24px"><a class="btn btn-primary" href="${lang==='uk'?'/ua/':'/n/'}${n.slug}/">${T(lang,'Подключить','Підключити')}</a></p>
 </div></section>
 ${footerHTML(lang)}
 </body></html>`;
