@@ -23424,8 +23424,10 @@
      "title": "Автоворонка продаж для «Промышленный инструмент»: схема",
      "lang": "ru",
      "publish": "2026-05-28",
-     "status": "planned",
-     "publishAt": "2026-05-28T18:59:00Z"
+     "status": "published",
+     "publishAt": "2026-05-28T18:59:00Z",
+     "slug": "avtovoronka-prodazh-dlia-skhema-industrial-tools",
+     "publishedAt": "2026-05-29T00:10:18.641Z"
     },
     {
      "title": "Розгорнути AI-продавця «Промисловий інструмент» за годину: інструкція",
@@ -26325,8 +26327,10 @@
      "title": "Топ ошибок при внедрении чат-бота в «Водоочистка и фильтры для воды»",
      "lang": "ru",
      "publish": "2026-05-28",
-     "status": "planned",
-     "publishAt": "2026-05-28T21:57:00Z"
+     "status": "published",
+     "publishAt": "2026-05-28T21:57:00Z",
+     "slug": "top-oshybok-pry-vnedrenyy-chat-bota-v",
+     "publishedAt": "2026-05-29T00:10:18.642Z"
     },
     {
      "title": "Какие возражения снимает AI-продавец в «Водоочистка и фильтры для воды»",
@@ -36738,8 +36742,10 @@
      "title": "Бот для запису і заявок у ніші «Event-агентство»",
      "lang": "uk",
      "publish": "2026-05-28",
-     "status": "planned",
-     "publishAt": "2026-05-28T20:23:00Z"
+     "status": "published",
+     "publishAt": "2026-05-28T20:23:00Z",
+     "slug": "bot-dlia-zapysu-i-zaiavok-u-nishi",
+     "publishedAt": "2026-05-29T00:10:18.642Z"
     },
     {
      "title": "Автоматизація відділу продажів «Event-агентство» без зростання штату",
@@ -42248,8 +42254,10 @@
      "title": "Как бот квалифицирует клиента в нише «Производительность труда и оптимизация»",
      "lang": "ru",
      "publish": "2026-05-28",
-     "status": "planned",
-     "publishAt": "2026-05-28T19:26:00Z"
+     "status": "published",
+     "publishAt": "2026-05-28T19:26:00Z",
+     "slug": "kak-bot-kvalyfytsyruet-klyenta-v-nyshe-productivity-consulting",
+     "publishedAt": "2026-05-29T00:10:18.642Z"
     },
     {
      "title": "Как автоматизировать продажи в нише «Производительность труда и оптимизация» — пошагово",
