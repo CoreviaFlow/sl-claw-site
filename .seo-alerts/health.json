@@ -1,14 +1,42 @@
 {
-  "date": "2026-05-29",
-  "scanned": 319,
+  "date": "2026-05-30",
+  "scanned": 333,
   "errors": 0,
-  "warnings": 116,
+  "warnings": 136,
   "by_kind": {
-    "blog": 60,
+    "blog": 74,
     "niche": 256,
     "static": 3
   },
-  "cannibalization": [],
+  "cannibalization": [
+    {
+      "bareSlug": "yy-v-prodazhakh-s-cheho-nachat-malomu-byznesu|ru",
+      "count": 2,
+      "niches": "smartphones-accessories, spare-parts",
+      "paths": [
+        "n/smartphones-accessories/blog/yy-v-prodazhakh-s-cheho-nachat-malomu-byznesu-smartphones-accessories/index.html",
+        "n/spare-parts/blog/yy-v-prodazhakh-s-cheho-nachat-malomu-byznesu/index.html"
+      ]
+    },
+    {
+      "bareSlug": "rozhornuty-ai-prodavtsia-za-hodynu-instruktsiia|uk",
+      "count": 2,
+      "niches": "cnc-machines, seo-agency",
+      "paths": [
+        "ua/cnc-machines/blog/rozhornuty-ai-prodavtsia-za-hodynu-instruktsiia/index.html",
+        "ua/seo-agency/blog/rozhornuty-ai-prodavtsia-za-hodynu-instruktsiia-seo-agency/index.html"
+      ]
+    },
+    {
+      "bareSlug": "shi-u-prodazhakh-z-choho-pochaty-malomu-biznesu|uk",
+      "count": 2,
+      "niches": "smartphones-accessories, spare-parts",
+      "paths": [
+        "ua/smartphones-accessories/blog/shi-u-prodazhakh-z-choho-pochaty-malomu-biznesu/index.html",
+        "ua/spare-parts/blog/shi-u-prodazhakh-z-choho-pochaty-malomu-biznesu-spare-parts/index.html"
+      ]
+    }
+  ],
   "thin_content": [],
   "spam_patterns": [],
   "duplicate_titles": [],
@@ -16,5 +44,5 @@
   "cannibalization_managed": 7,
   "sitemap_urls": 261,
   "sitemap_broken": [],
-  "health_score": 80
+  "health_score": 65
 }
