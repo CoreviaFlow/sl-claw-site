@@ -1,8 +1,8 @@
 {
-  "date": "2026-05-29",
-  "scanned": 290,
+  "date": "2026-05-30",
+  "scanned": 297,
   "by_kind": {
-    "blog": 34,
+    "blog": 41,
     "niche": 256,
     "static": 0
   },
@@ -24,11 +24,11 @@
     "cohere-ai": true,
     "Bytespider": true
   },
-  "pages_with_intro_prose": 287,
-  "pages_with_anchor_ids": 263,
-  "pages_with_brand_mention": 290,
+  "pages_with_intro_prose": 294,
+  "pages_with_anchor_ids": 270,
+  "pages_with_brand_mention": 297,
   "pages_with_software_schema": 256,
-  "pages_with_date_published": 290,
+  "pages_with_date_published": 297,
   "pages_with_sameAs": 0,
   "pages_with_faq_user_voice": 256,
   "no_intro_pages": [
