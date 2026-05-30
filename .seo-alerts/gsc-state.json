@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-29",
+  "date": "2026-05-30",
   "site": "sc-domain:sl-claw.tech",
   "sitemaps": [
     {
@@ -12,7 +12,7 @@
       "contents": [
         {
           "type": "web",
-          "submitted": "45",
+          "submitted": "75",
           "indexed": "0"
         }
       ]
@@ -27,7 +27,7 @@
       "contents": [
         {
           "type": "web",
-          "submitted": "257",
+          "submitted": "261",
           "indexed": "0"
         }
       ]
@@ -36,7 +36,7 @@
   "sample_inspected": 20,
   "not_indexed": [
     {
-      "url": "https://sl-claw.tech/n/livestock-equipment/",
+      "url": "https://sl-claw.tech/contacts.html",
       "verdict": "NEUTRAL",
       "coverageState": "Discovered - currently not indexed",
       "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
@@ -44,7 +44,7 @@
       "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
     },
     {
-      "url": "https://sl-claw.tech/n/iso-cert/",
+      "url": "https://sl-claw.tech/n/smartphones-accessories/",
       "verdict": "NEUTRAL",
       "coverageState": "Discovered - currently not indexed",
       "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
@@ -52,94 +52,14 @@
       "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
     },
     {
-      "url": "https://sl-claw.tech/n/investment-broker/",
-      "verdict": "NEUTRAL",
-      "coverageState": "Discovered - currently not indexed",
-      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-      "indexingState": "INDEXING_STATE_UNSPECIFIED",
-      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
-    },
-    {
-      "url": "https://sl-claw.tech/ua/flooring/",
-      "verdict": "NEUTRAL",
-      "coverageState": "Discovered - currently not indexed",
-      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-      "indexingState": "INDEXING_STATE_UNSPECIFIED",
-      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
-    },
-    {
-      "url": "https://sl-claw.tech/ua/construction-services/",
-      "verdict": "NEUTRAL",
-      "coverageState": "Discovered - currently not indexed",
-      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-      "indexingState": "INDEXING_STATE_UNSPECIFIED",
-      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
-    },
-    {
-      "url": "https://sl-claw.tech/ua/lending-microfinance/",
-      "verdict": "NEUTRAL",
-      "coverageState": "Discovered - currently not indexed",
-      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-      "indexingState": "INDEXING_STATE_UNSPECIFIED",
-      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
-    },
-    {
-      "url": "https://sl-claw.tech/ua/bicycles/",
-      "verdict": "NEUTRAL",
-      "coverageState": "Discovered - currently not indexed",
-      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-      "indexingState": "INDEXING_STATE_UNSPECIFIED",
-      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
-    },
-    {
-      "url": "https://sl-claw.tech/n/medical-clinic/",
-      "verdict": "NEUTRAL",
-      "coverageState": "Discovered - currently not indexed",
-      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-      "indexingState": "INDEXING_STATE_UNSPECIFIED",
-      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
-    },
-    {
-      "url": "https://sl-claw.tech/ua/kids-toys/",
-      "verdict": "NEUTRAL",
-      "coverageState": "Discovered - currently not indexed",
-      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-      "indexingState": "INDEXING_STATE_UNSPECIFIED",
-      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
-    },
-    {
-      "url": "https://sl-claw.tech/ua/commercial-vehicles/",
-      "verdict": "NEUTRAL",
-      "coverageState": "Discovered - currently not indexed",
-      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-      "indexingState": "INDEXING_STATE_UNSPECIFIED",
-      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
-    },
-    {
-      "url": "https://sl-claw.tech/n/business-school/",
-      "verdict": "NEUTRAL",
-      "coverageState": "Discovered - currently not indexed",
-      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-      "indexingState": "INDEXING_STATE_UNSPECIFIED",
-      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
-    },
-    {
-      "url": "https://sl-claw.tech/n/hvac-heating/",
-      "verdict": "NEUTRAL",
-      "coverageState": "Discovered - currently not indexed",
-      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-      "indexingState": "INDEXING_STATE_UNSPECIFIED",
-      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
-    },
-    {
-      "url": "https://sl-claw.tech/n/osh-training/",
+      "url": "https://sl-claw.tech/ua/industrial-equipment/",
       "verdict": "NEUTRAL",
       "coverageState": "URL is unknown to Google",
       "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
       "indexingState": "INDEXING_STATE_UNSPECIFIED"
     },
     {
-      "url": "https://sl-claw.tech/n/hotel-booking/",
+      "url": "https://sl-claw.tech/ua/security-cctv/",
       "verdict": "NEUTRAL",
       "coverageState": "Discovered - currently not indexed",
       "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
@@ -147,7 +67,7 @@
       "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
     },
     {
-      "url": "https://sl-claw.tech/ua/hvac-heating/",
+      "url": "https://sl-claw.tech/n/cnc-machines/",
       "verdict": "NEUTRAL",
       "coverageState": "Discovered - currently not indexed",
       "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
@@ -155,7 +75,95 @@
       "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
     },
     {
-      "url": "https://sl-claw.tech/n/freight-logistics/",
+      "url": "https://sl-claw.tech/ua/greenhouses/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/prof-certification/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/hr-consulting/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/productivity-consulting/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/hotel-booking/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/livestock-equipment/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/business-coaching/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/construction-materials/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/auto-service/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/tours-excursions/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/n/auto-parts/",
+      "verdict": "NEUTRAL",
+      "coverageState": "Discovered - currently not indexed",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
+    },
+    {
+      "url": "https://sl-claw.tech/ua/salesdept-buildout/",
       "verdict": "NEUTRAL",
       "coverageState": "Discovered - currently not indexed",
       "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
@@ -163,9 +171,28 @@
       "crawledAs": "CRAWLING_USER_AGENT_UNSPECIFIED"
     }
   ],
-  "indexed": 4,
+  "indexed": 3,
   "inspection_errors": [],
   "new_errors": [
+    "https://sl-claw.tech/contacts.html",
+    "https://sl-claw.tech/n/smartphones-accessories/",
+    "https://sl-claw.tech/ua/industrial-equipment/",
+    "https://sl-claw.tech/ua/security-cctv/",
+    "https://sl-claw.tech/n/cnc-machines/",
+    "https://sl-claw.tech/ua/greenhouses/",
+    "https://sl-claw.tech/ua/prof-certification/",
+    "https://sl-claw.tech/n/hr-consulting/",
+    "https://sl-claw.tech/ua/productivity-consulting/",
+    "https://sl-claw.tech/ua/hotel-booking/",
+    "https://sl-claw.tech/ua/livestock-equipment/",
+    "https://sl-claw.tech/ua/business-coaching/",
+    "https://sl-claw.tech/ua/construction-materials/",
+    "https://sl-claw.tech/n/auto-service/",
+    "https://sl-claw.tech/ua/tours-excursions/",
+    "https://sl-claw.tech/n/auto-parts/",
+    "https://sl-claw.tech/ua/salesdept-buildout/"
+  ],
+  "resolved_errors": [
     "https://sl-claw.tech/n/livestock-equipment/",
     "https://sl-claw.tech/n/iso-cert/",
     "https://sl-claw.tech/n/investment-broker/",
@@ -183,6 +210,5 @@
     "https://sl-claw.tech/ua/hvac-heating/",
     "https://sl-claw.tech/n/freight-logistics/"
   ],
-  "resolved_errors": [],
-  "score": 45
+  "score": 43
 }
