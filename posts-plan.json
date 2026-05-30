@@ -2621,8 +2621,10 @@
      "title": "Як вимірювати ефективність бота в ніші «Будівельні матеріали»",
      "lang": "uk",
      "publish": "2026-05-30",
-     "status": "planned",
-     "publishAt": "2026-05-30T16:07:00Z"
+     "status": "published",
+     "publishAt": "2026-05-30T16:07:00Z",
+     "slug": "iak-vymiriuvaty-efektyvnist-bota-v-nishi",
+     "publishedAt": "2026-05-30T17:02:28.620Z"
     },
     {
      "title": "Як підняти конверсію з чату в ніші «Будівельні матеріали»",
@@ -2847,8 +2849,10 @@
      "title": "Как мерить эффективность бота в нише «Стройматериалы»",
      "lang": "ru",
      "publish": "2026-05-30",
-     "status": "planned",
-     "publishAt": "2026-05-30T12:49:00Z"
+     "status": "published",
+     "publishAt": "2026-05-30T12:49:00Z",
+     "slug": "kak-meryt-effektyvnost-bota-v-nyshe",
+     "publishedAt": "2026-05-30T17:02:28.620Z"
     }
    ]
   },
@@ -41093,8 +41097,10 @@
      "title": "Голосовий агент для «ЗЕД і вихід на експорт»: коли потрібен апгрейд",
      "lang": "uk",
      "publish": "2026-05-30",
-     "status": "planned",
-     "publishAt": "2026-05-30T11:36:00Z"
+     "status": "published",
+     "publishAt": "2026-05-30T11:36:00Z",
+     "slug": "holosovyi-ahent-dlia-koly-potriben-aphreid-export-consulting",
+     "publishedAt": "2026-05-30T17:02:28.624Z"
     },
     {
      "title": "Чат-бот «ЗЕД і вихід на експорт» у Telegram, WhatsApp і на сайті",
@@ -42232,8 +42238,10 @@
      "title": "Сколько стоит автоматизация продаж в «Производительность труда и оптимизация»",
      "lang": "ru",
      "publish": "2026-05-30",
-     "status": "planned",
-     "publishAt": "2026-05-30T12:09:00Z"
+     "status": "published",
+     "publishAt": "2026-05-30T12:09:00Z",
+     "slug": "skolko-stoyt-avtomatyzatsyia-prodazh-v",
+     "publishedAt": "2026-05-30T17:02:28.624Z"
     },
     {
      "title": "Чат-бот «Производительность труда и оптимизация» в Telegram, WhatsApp и на сайте",
