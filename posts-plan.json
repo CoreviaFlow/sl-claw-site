@@ -24404,8 +24404,10 @@
      "title": "Скільки коштує автоматизація продажів у «Домашній текстиль»",
      "lang": "uk",
      "publish": "2026-05-30",
-     "status": "planned",
-     "publishAt": "2026-05-30T07:16:00Z"
+     "status": "published",
+     "publishAt": "2026-05-30T07:16:00Z",
+     "slug": "skilky-koshtuie-avtomatyzatsiia-prodazhiv-u-home-textiles",
+     "publishedAt": "2026-05-30T10:46:47.830Z"
     },
     {
      "title": "Як вимірювати ефективність бота в ніші «Домашній текстиль»",
@@ -32481,8 +32483,10 @@
      "title": "Як автоматизувати продажі в ніші «Інвестиції та брокерські послуги» — покроково",
      "lang": "uk",
      "publish": "2026-05-30",
-     "status": "planned",
-     "publishAt": "2026-05-30T09:10:00Z"
+     "status": "published",
+     "publishAt": "2026-05-30T09:10:00Z",
+     "slug": "iak-avtomatyzuvaty-prodazhi-v-nishi-pokrokovo",
+     "publishedAt": "2026-05-30T10:46:47.830Z"
     },
     {
      "title": "Автоматизация отдела продаж «Инвестиции и брокерские услуги» без роста штата",
