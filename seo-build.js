@@ -330,6 +330,8 @@ function page(n, v){
   const u = urlFor(v, n.slug);
   const sel = t.seller;
   // Title: target ≤60 chars (SERP truncation). Бренд-суффикс только если влезаем; для длинных ниш — natural smart-trim.
+  // (Tagline в начале title — рассматривали для дифференциации, но при длинных ниш-именах получаются двойные «…» обрывы.
+  // Differentiator уже работает через meta description + intro paragraph 130 слов.)
   const titleBase = v.lang==='uk' ? `AI-${sel} для «${f.name}»` : `AI-${sel} для «${f.name}»`;
   const ttl = (titleBase.length <= 50) ? smartTrim(titleBase + ' | SL-CLAW', 62) : smartTrim(titleBase, 62);
   // Description: ≤155 chars (SERP truncation). Начинаем с tagline (это hook); бренд/гео опущены — они в hreflang/og:locale.
@@ -368,7 +370,7 @@ function page(n, v){
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="${u}">
 ${alts}
-<meta property="og:type" content="product">
+<meta property="og:type" content="website">
 <meta property="og:locale" content="${v.lang==='uk'?'uk_UA':'ru_UA'}">
 <meta property="og:title" content="${esc(ttl)}">
 <meta property="og:description" content="${esc(description)}">
@@ -379,6 +381,7 @@ ${alts}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="cover.svg" fetchpriority="high">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2">
 <link rel="icon" href="/favicon.ico?v=2" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
@@ -411,7 +414,7 @@ ${jsonld(n, v, f, u)}
   </div>
   <div class="np-grid">
     <div class="main">
-      <img class="cover" src="cover.svg" width="1200" height="630" alt="AI-${sel} для «${esc(f.name)}» — ${esc(f.tagline)}" loading="lazy">
+      <img class="cover" src="cover.svg" width="1200" height="630" alt="AI-${sel} для «${esc(f.name)}» — ${esc(f.tagline)}" fetchpriority="high" decoding="async">
 
       <section id="intro" class="np-intro" aria-labelledby="intro-h">
         <h2 id="intro-h" class="visually-hidden">${v.lang==='uk'?`AI-продавець для «${esc(f.name)}» — як це працює`:`AI-продавец для «${esc(f.name)}» — как это работает`}</h2>

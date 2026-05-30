@@ -73,7 +73,22 @@
   <div class="eyebrow" data-i18n="home.shopeye">// витрина</div>
   <h2 class="h2"><span data-i18n="home.popular">Популярные ниши</span> <span class="count" id="total"></span></h2>
   <p class="sub" data-i18n="home.popularsub">Каждая ниша — готовый репозиторий и <b>полноценный продавец</b>: ведёт диалог, снимает возражения, доводит до сделки. Зелёным — целевое действие закрытия.</p>
-  <div class="cards" id="featured"></div>
+  <!-- SSR-фолбэк: 12 топ-ниш рендерятся в HTML для краулеров (Googlebot часто не выполняет JS при initial crawl).
+       JS из niches.js потом перезаписывает innerHTML на интерактивные карточки. -->
+  <div class="cards" id="featured">
+    <a class="ncard" href="/n/spectech/"><h3>Спецтехника</h3><p>Подбор техники, осмотр и закрытие на покупку.</p></a>
+    <a class="ncard" href="/n/realestate-resale/"><h3>Недвижимость</h3><p>Квалификация по бюджету, район, показ квартиры.</p></a>
+    <a class="ncard" href="/n/auto-dealer/"><h3>Автосалон</h3><p>Подбор авто, test-drive, кредит/лизинг.</p></a>
+    <a class="ncard" href="/n/furniture/"><h3>Мебель</h3><p>Подбор по комнате/стилю, замер, покупка.</p></a>
+    <a class="ncard" href="/n/windows-doors/"><h3>Окна и двери</h3><p>Расчёт по размерам, замерщик, монтаж.</p></a>
+    <a class="ncard" href="/n/construction-materials/"><h3>Стройматериалы</h3><p>Подбор материалов под объект, опт и розница.</p></a>
+    <a class="ncard" href="/n/dental-clinic/"><h3>Стоматология</h3><p>Запись на приём, ответ на вопросы 24/7.</p></a>
+    <a class="ncard" href="/n/fitness-club/"><h3>Фитнес-клуб</h3><p>Подбор абонемента, пробное занятие.</p></a>
+    <a class="ncard" href="/n/language-school/"><h3>Языковая школа</h3><p>Тест уровня, подбор курса, пробный урок.</p></a>
+    <a class="ncard" href="/n/travel-agency/"><h3>Турагентство</h3><p>Подбор тура, бронь, ответы по визе.</p></a>
+    <a class="ncard" href="/n/solar-panels/"><h3>Солнечные станции</h3><p>Расчёт мощности, окупаемость, монтаж.</p></a>
+    <a class="ncard" href="/n/packaging-materials/"><h3>Упаковка и тара</h3><p>Опт под объём, расчёт, поставка.</p></a>
+  </div>
   <div style="margin-top:28px"><a class="btn btn-accent" href="catalog.html" data-i18n="home.allbtn">Смотреть все ниши →</a></div>
 </div></section>
 

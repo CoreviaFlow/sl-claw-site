@@ -245,6 +245,8 @@ async function gscApi(token, method, path, body){
     stats.fatal_error = e.message;
   }
 
+  // Бэкап предыдущего state в .prev — нужно для TG-алерта (сравнение score'ов).
+  try { if (fs.existsSync(STATE)) fs.copyFileSync(STATE, STATE + '.prev'); } catch {}
   fs.writeFileSync(STATE, JSON.stringify(stats, null, 2));
 
   // ── 6. Report ──
@@ -304,6 +306,41 @@ async function gscApi(token, method, path, body){
   fs.writeFileSync(REPORT, lines.join('\n'));
   console.log(`[gsc-watch] report: ${path.relative(ROOT, REPORT)}`);
   console.log(`[gsc-watch] score: ${stats.score}/100 · indexed: ${stats.indexed}/${stats.sample_inspected} · new errors: ${stats.new_errors.length}`);
+
+  // TG alert — пингуем фаундера при просадке score, появлении NEW errors или sitemap-ошибках.
+  // Пингуем даже при «всё OK» раз в неделю (понедельник) — heartbeat что собака жива.
+  try {
+    const { sendTg } = require('./tg-alert');
+    // Re-read prev state (prev переменная локальна в try{} выше — проще перечитать файл)
+    let prevSnapshot = null;
+    try { prevSnapshot = JSON.parse(fs.readFileSync(STATE + '.prev', 'utf8')); } catch {}
+    // Fallback: использовать score из current stats (первый запуск — нет истории)
+    const prevScore = (prevSnapshot && typeof prevSnapshot.score === 'number') ? prevSnapshot.score : stats.score;
+    const scoreDrop = prevScore - stats.score;
+    const totalSitemapErrors = (stats.sitemaps || []).reduce((sum, s) => sum + (parseInt(s.errors, 10) || 0), 0);
+    const isMonday = new Date().getUTCDay() === 1;
+    const critical = stats.new_errors.length > 0 || totalSitemapErrors > 0 || stats.score < 60;
+    const warning = scoreDrop >= 5 || stats.score < 80;
+    const shouldPing = critical || warning || isMonday;
+    if (shouldPing){
+      const emoji = critical ? '🔴' : (warning ? '🟡' : '🟢');
+      const trend = scoreDrop > 0 ? `↓ ${scoreDrop}` : (scoreDrop < 0 ? `↑ ${Math.abs(scoreDrop)}` : '→');
+      const indexRate = stats.sample_inspected > 0 ? Math.round(stats.indexed / stats.sample_inspected * 100) : 0;
+      const lines = [
+        `${emoji} *GSC watch* · sl-claw.tech`,
+        ``,
+        `Score: *${stats.score}/100* (${trend} от ${prevScore})`,
+        `Indexed: ${stats.indexed}/${stats.sample_inspected} (${indexRate}%)`,
+        `New errors: ${stats.new_errors.length} · Sitemap errors: ${totalSitemapErrors}`,
+      ];
+      if (stats.new_errors.length){
+        lines.push('', '*NEW non-indexed (top 5):*');
+        for (const u of stats.new_errors.slice(0, 5)) lines.push(`• \`${u.replace('https://sl-claw.tech', '')}\``);
+      }
+      lines.push('', `Отчёт: \`.seo-alerts/gsc-${TODAY}.md\``);
+      await sendTg(lines.join('\n'));
+    }
+  } catch (e){ console.error('[gsc-watch] TG alert failed:', e.message); }
 
   process.exit(stats.new_errors.length > 0 || stats.score < 70 ? 1 : 0);
 })();

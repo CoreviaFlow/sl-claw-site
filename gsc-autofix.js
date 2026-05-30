@@ -70,13 +70,48 @@ function urlToFilePath(url){
 function isBlockedByRobots(url){
   let p;
   try { p = new URL(url).pathname; } catch { return false; }
-  // Простой матчер: ищем "Disallow: <pathPrefix>" в robots.txt
+  // Парсим robots.txt по группам "User-agent: X" → правила до следующей пустой строки/UA.
+  // Для GSC URL Inspection релевантна группа Googlebot (или * как fallback).
+  // Раньше функция брала ПЕРВЫЙ Disallow в файле игнорируя UA-контекст — отсюда
+  // ложные сигналы «Disallow: /» когда первой группой шёл CCBot.
   const lines = robotsTxt.split(/\r?\n/);
-  for (const line of lines){
-    const m = /^\s*Disallow:\s*(\S+)/i.exec(line);
-    if (m && p.startsWith(m[1])) return m[1];
+  const groups = []; // [{uas:Set, rules:[{type:'allow'|'disallow', value:string}]}]
+  let cur = null;
+  let lastWasUA = false;
+  for (const raw of lines){
+    const line = raw.replace(/#.*$/, '').trim();
+    if (!line){ cur = null; lastWasUA = false; continue; }
+    const ua = /^User-agent:\s*(\S+)/i.exec(line);
+    if (ua){
+      if (!cur || !lastWasUA){ cur = { uas: new Set(), rules: [] }; groups.push(cur); }
+      cur.uas.add(ua[1].toLowerCase());
+      lastWasUA = true;
+      continue;
+    }
+    lastWasUA = false;
+    if (!cur) continue;
+    const dis = /^Disallow:\s*(.*)$/i.exec(line);
+    if (dis){ cur.rules.push({ type: 'disallow', value: dis[1].trim() }); continue; }
+    const all = /^Allow:\s*(.*)$/i.exec(line);
+    if (all){ cur.rules.push({ type: 'allow', value: all[1].trim() }); continue; }
   }
-  return false;
+  // Выбираем группу для Googlebot — самое специфичное имя, иначе *
+  const candidates = ['googlebot', 'googlebot-news', '*'];
+  let chosen = null;
+  for (const ua of candidates){
+    chosen = groups.find(g => g.uas.has(ua));
+    if (chosen) break;
+  }
+  if (!chosen) return false;
+  // Google использует «самое длинное совпавшее правило выигрывает» (Allow vs Disallow).
+  let best = { type: null, value: '', len: -1 };
+  for (const r of chosen.rules){
+    if (!r.value) continue; // пустой Disallow = разрешить всё
+    if (p.startsWith(r.value) && r.value.length > best.len){
+      best = { type: r.type, value: r.value, len: r.value.length };
+    }
+  }
+  return best.type === 'disallow' ? best.value : false;
 }
 
 function getHtmlMetaRobots(file){

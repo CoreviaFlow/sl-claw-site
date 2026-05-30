@@ -611,7 +611,7 @@ function renderArticle(n, lang, post, themeIdx, prettyDate, related, altUrl){
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(pageTitle)}</title>
 <meta name="description" content="${esc(desc)}">
-<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="robots" content="noindex,follow,max-image-preview:large">
 <link rel="canonical" href="${url}">
 <link rel="alternate" hreflang="${lang==='uk'?'uk-UA':'ru-UA'}" href="${url}">
 ${altUrl ? `<link rel="alternate" hreflang="${lang==='uk'?'ru-UA':'uk-UA'}" href="${altUrl}">
