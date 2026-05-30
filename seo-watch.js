@@ -280,30 +280,32 @@ fs.writeFileSync(HEALTH, JSON.stringify(stats, null, 2));
 console.log(`[seo-watch] report: ${path.relative(ROOT, REPORT)}`);
 console.log(`[seo-watch] health: ${score}/100 · errors: ${stats.errors} · warnings: ${stats.warnings}`);
 
-// TG alert — пингуем фаундера только если score просел или появились критические сигналы.
+// CRM alert — пингуем фаундера через Corevia CRM (single source of truth).
 // Cron'у плевать 0 нарушений день к дню → не пингуем чтобы не превращать алерт в шум.
 (async () => {
   try {
-    const { sendTg } = require('./tg-alert');
+    const { sendAlert } = require('./tg-alert');
     const prevScore = (prev && typeof prev.health_score === 'number') ? prev.health_score : score;
     const scoreDrop = prevScore - score;
     const critical = stats.errors > 0 || stats.cannibalization.length > 0 || sitemapBroken.length > 0;
     const shouldPing = critical || scoreDrop >= 5;
     if (shouldPing){
-      const emoji = critical ? '🔴' : '🟡';
-      const trend = scoreDrop > 0 ? `↓ ${scoreDrop}` : (scoreDrop < 0 ? `↑ ${Math.abs(scoreDrop)}` : '→');
-      const msg = [
-        `${emoji} *SEO watch* · sl-claw.tech`,
-        ``,
-        `Health: *${score}/100* (${trend} от ${prevScore})`,
-        `Errors: ${stats.errors} · Warnings: ${stats.warnings} · Cannibalization: ${stats.cannibalization.length}`,
-        `Sitemap broken: ${sitemapBroken.length}`,
-        ``,
-        `Отчёт: \`.seo-alerts/${TODAY}.md\``,
-      ].join('\n');
-      await sendTg(msg);
+      await sendAlert({
+        site: 'sl-claw.tech',
+        source: 'seo-watch',
+        severity: critical ? 'critical' : 'warning',
+        score,
+        prev_score: prevScore,
+        stats: {
+          errors: stats.errors,
+          warnings: stats.warnings,
+          cannibalization: stats.cannibalization.length,
+          sitemap_errors: sitemapBroken.length,
+        },
+        report_path: `.seo-alerts/${TODAY}.md`,
+      });
     }
-  } catch (e){ console.error('[seo-watch] TG alert failed:', e.message); }
+  } catch (e){ console.error('[seo-watch] CRM alert failed:', e.message); }
 
   // Exit code (после async push, чтобы TG-запрос успел завершиться)
   if (stats.errors > 0 || stats.cannibalization.length > 0 || sitemapBroken.length > 0){
